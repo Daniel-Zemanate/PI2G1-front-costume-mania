@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from '@components/NavBar'
+import Footer from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,7 @@ export default function RootLayout({
     <>
       <NavBar />
       <main>{children}</main>
-      <footer>sdassa</footer>
+      <Footer />
     </>
   );
 }
