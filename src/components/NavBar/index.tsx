@@ -40,12 +40,4 @@ const NavBar = () => {
   );
 };
 
-const NavItem = ({ text, route }) => {
-  return (
-    <li>
-      <Link href={route}>{text}</Link>
-    </li>
-  );
-};
-
 export default NavBar;
