@@ -5,32 +5,50 @@ import SearchBar from "../SearchBar";
 
 const NavBar = () => {
   return (
-    <nav className="p-4 h-16 overflow-hidden flex w-full justify-between shadow-lg border-b-2 border-gray-500 bg-violet-500">
-      <Link href="/">
-        <Image
-          className="h-auto w-auto max-h-8"
-          src={logo}
-          alt="Costume Mania logo object-cover"
-        />
-      </Link>
-
-      <SearchBar/>
-
-      <ul className="flex space-x-4">
-        <li>
-          <Link href="/">Log in</Link>
-        </li>
-        <li>
-          <Link href="/about">Register</Link>
-        </li>
-        <li>
-          <Link href="/contact">Contact</Link>
-        </li>
-        <li>
-          <Link href="/contact">Contact</Link>
-        </li>
-      </ul>
-    </nav>
+    <header className="bg-violet-500 shadow-lg border-b-2 border-gray-500">
+      <div className="container mx-auto p-4">
+        <div className="flex items-center justify-between gap-4">
+          <Link href="/">
+            <Image
+              src={logo}
+              alt="Costume Mania logo"
+              width={250}
+              height={40}
+            />
+          </Link>
+          <div className="w-full">
+            <div className="flex items-center space-x-4 justify-between">
+              <SearchBar />
+              <nav className="flex space-x-4">
+                <Link href="/">Log in</Link>
+                <Link href="/about">Sign up</Link>
+                <Link href="/contact">Cart</Link>
+              </nav>
+            </div>
+            <nav>
+              <ul className="flex space-x-4">
+                <li>
+                  <Link href="/">Categories</Link>
+                </li>
+                <li>
+                  <Link href="/about">Popular Models</Link>
+                </li>
+                <li>
+                  <Link href="/contact">On Sale</Link>
+                </li>
+                <li>
+                  <Link href="/contact">Customer Service</Link>
+                </li>
+                <li>
+                  <Link href="/contact">About us</Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div></div>
+    </header>
   );
 };
 
