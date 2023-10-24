@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { ReactNode } from "react";
 import Link from "next/link";
 
-function NavLink({route, label}: {route: string, label: string}) {
+type Props = {
+  route: string;
+  label: string;
+  textColor: 'black' | 'white'; // Define textColor prop as an enum
+  children?: ReactNode;
+};
+
+function NavLink({ route, label, textColor, children }: Props) {
+  const textColorClass = textColor === 'white' ? 'text-white' : 'text-black';
+
   return (
-    <Link href={route} className='whitespace-nowrap text-white'>{label}</Link>
-  )
+    <Link href={route} className={`whitespace-nowrap ${textColorClass}`}>
+      {label}
+      {children}
+    </Link>
+  );
 }
 
-export default NavLink
+export default NavLink;
