@@ -11,12 +11,8 @@ export default function RootLayout({
   return (
     <>
       <NavBar />
-<<<<<<< HEAD
       <Banner></Banner>
-      <main>{children}</main>
-=======
       <main className="mt-24">{children}</main>
->>>>>>> develop
       <Footer />
     </>
   );
