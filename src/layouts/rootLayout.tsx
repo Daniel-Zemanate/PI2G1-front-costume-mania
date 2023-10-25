@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from '@/components/Header'
 import Footer from "@/components/Footer";
+import Banner from "@/components/MainBanner";
 
 export default function RootLayout({
   children,
@@ -10,6 +11,7 @@ export default function RootLayout({
   return (
     <>
       <NavBar />
+      <Banner></Banner>
       <main className="mt-24">{children}</main>
       <Footer />
     </>
