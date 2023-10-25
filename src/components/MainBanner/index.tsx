@@ -16,7 +16,7 @@ function Banner() {
           <button type="submit" className={`${styles.secondaryButton}`}>Flash Sales</button>
         </div>
         <div>
-        <button type="submit" className={`${styles.tertiaryButton}`}>Small Moments, Monstaer Memories</button>
+        <button type="submit" className={`${styles.tertiaryButton}`}>Small Moments, Monster Memories</button>
         </div>
       </div>
   );
