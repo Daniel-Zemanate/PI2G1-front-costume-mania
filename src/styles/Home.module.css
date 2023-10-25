@@ -107,6 +107,36 @@
 .logo {
   position: relative;
 }
+
+.primaryButton{
+  background-color: #8643FF;
+  border:solid 2px #8643FF;
+  color: #FFFFFF;
+  border-radius: 4px;
+  padding: 16px 8px;
+  width: 150px;
+box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.secondaryButton{
+  background-color: #FFFFFF;
+  border:solid 2px #8643FF;
+  color: #8643FF;
+  border-radius: 4px;
+  padding: 16px 8px;
+  width: 150px;
+box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;}
+
+.tertiaryButton{
+  background-color: #FFFFFF;
+  border:solid 2px;
+  border-radius: 50px;
+  padding: 16px 8px;
+  font-weight: bold;
+  font-size: 24px;
+  width: 420px;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
@@ -199,6 +229,13 @@
       rgb(var(--background-end-rgb)) 40%
     );
     z-index: 1;
+  }
+
+  .tertiaryButton{
+    width: 350px;
+    font-weight: lighter;
+    height: 100px;
+   font-size: 24px;
   }
 }
 
