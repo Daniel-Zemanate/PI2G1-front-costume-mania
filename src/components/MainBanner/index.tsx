@@ -6,7 +6,7 @@ import Image from "next/image";
 
 function Banner() {
   return (
-      <div className="container mx-auto text-center">
+      <div className="container mx-auto text-center"  style={{ marginTop: '100px' }}>
         <figure style={{ display: 'flex', flexDirection: 'column', alignItems:'center'}}>
           <Image src={logo} alt="Logo" style={{ width: '70%', height: '200px' }}/>
           <Image src={banner} alt="BannerPrincipal" style={{ width: '90%', height: '420px' }}/>
