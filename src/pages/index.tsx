@@ -5,6 +5,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import { getCostumes } from '@/services/costumes_mock.service'
 import { costume } from '@/interfaces/costume'
 import { CostumeCard } from '@/components/Costumes/costumeCard.component'
+import NewArrivals from '@/components/NewArrivals'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ const Index: NextPage<Props> = ({ costumes }) => {
             <CostumeCard costume={item} key={item.id} />
           ))}
         </div>
+        <NewArrivals />
       </main>
     </>
   )
