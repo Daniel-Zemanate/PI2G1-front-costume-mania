@@ -1,6 +1,7 @@
 import { costume } from "@/interfaces/costume";
 import Image from "next/image";
 import { FC } from "react";
+import styles from '@/styles/Home.module.css'
 
 interface Props {
     costume: costume
@@ -21,10 +22,10 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
                         ))}
                     </div>
                     <div className="flex items-center justify-between">
-                        <button className="text-lg font-semibold text-black cursor-auto my-3 bg-violet-500 text-white border border-violet-500 py-1 px-2 rounded text-sm hover:bg-white hover:text-violet-500">Add to Cart</button>
-                        <button className="flex items-center justify-center rounded-full bg-violet-500 w-8 h-8 text-white border border-violet-500 hover:bg-white hover:text-violet-500">
-                            <svg className="w-4 h-4 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        <button className={`w-28 h-9 text-lg font-semibold text-black my-3 bg-violet-500 text-white border border-violet-500 py-1 px-2 rounded text-sm hover:bg-white hover:text-violet-500`}>Add to Cart</button>
+                        <button className="flex items-center justify-center rounded-full bg-violet-500 w-10 h-10 text-white border border-violet-500 hover:bg-white hover:text-violet-500">
+                            <svg className="w-5 h-5 transform transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                             </svg>
                         </button>
                     </div>
