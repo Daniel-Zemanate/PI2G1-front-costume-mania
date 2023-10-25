@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from '@components/NavBar'
+import NavBar from '@/components/Header'
 import Footer from "@/components/Footer";
 import Banner from "@/components/MainBanner";
 
@@ -11,8 +11,12 @@ export default function RootLayout({
   return (
     <>
       <NavBar />
+<<<<<<< HEAD
       <Banner></Banner>
       <main>{children}</main>
+=======
+      <main className="mt-24">{children}</main>
+>>>>>>> develop
       <Footer />
     </>
   );

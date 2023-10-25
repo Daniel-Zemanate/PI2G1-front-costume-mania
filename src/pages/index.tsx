@@ -1,11 +1,18 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import { GetServerSideProps, NextPage } from 'next'
+import { getCostumes } from '@/services/costumes_mock.service'
+import { costume } from '@/interfaces/costume'
+import { CostumeCard } from '@/components/Costumes/costumeCard.component'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+interface Props {
+  costumes: costume[]
+}
+
+const Index: NextPage<Props> = ({ costumes }) => {
   return (
     <>
       <Head>
@@ -16,7 +23,31 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <h1 className='text-3xl font-bold underline'>Costume Mania (test tailwind css)</h1>
+        <div className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+          {costumes?.map((item) => (
+            <CostumeCard costume={item} key={item.id} />
+          ))}
+        </div>
       </main>
     </>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+  const { page = 1 } = query;
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=10, stale-while-revalidate=59'
+  )
+  const costumes = await getCostumes()
+
+  return {
+    props: {
+      costumes: costumes
+    }
+  }
+
+}
+
+export default Index
