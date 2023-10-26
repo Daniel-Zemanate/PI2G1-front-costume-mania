@@ -2,18 +2,20 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { GetServerSideProps, NextPage } from 'next'
-import { getCostumes } from '@/services/costumes_mock.service'
+import { getCostumes, getPopularCostumes } from '@/services/costumes.service'
 import { costume } from '@/interfaces/costume'
 import { CostumeCard } from '@/components/Costumes/costumeCard.component'
 import NewArrivals from '@/components/NewArrivals'
+import PopularModels from '@/components/PopularModels'
 
 const inter = Inter({ subsets: ['latin'] })
 
 interface Props {
   costumes: costume[]
+  popularCostume: costume[]
 }
 
-const Index: NextPage<Props> = ({ costumes }) => {
+const Index: NextPage<Props> = ({ costumes, popularCostume }) => {
   return (
     <>
       <Head>
@@ -23,12 +25,7 @@ const Index: NextPage<Props> = ({ costumes }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <h1 className='text-3xl font-bold underline'>Costume Mania (test tailwind css)</h1>
-        <div className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
-          {costumes?.map((item) => (
-            <CostumeCard costume={item} key={item.id} />
-          ))}
-        </div>
+        <PopularModels costumes={popularCostume} />
         <NewArrivals />
       </main>
     </>
@@ -43,10 +40,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
     'public, s-maxage=10, stale-while-revalidate=59'
   )
   const costumes = await getCostumes()
+  const popularCostume = await getPopularCostumes()
 
   return {
     props: {
-      costumes: costumes
+      costumes,
+      popularCostume
     }
   }
 

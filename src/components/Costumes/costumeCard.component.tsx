@@ -1,7 +1,6 @@
 import { costume } from "@/interfaces/costume";
 import Image from "next/image";
 import { FC } from "react";
-import styles from '@/styles/Home.module.css'
 
 interface Props {
     costume: costume
