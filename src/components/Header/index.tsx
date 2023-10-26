@@ -7,7 +7,7 @@ import { useState } from "react";
 import Drawer from "./Drawer";
 import { AiOutlineMenu } from "react-icons/ai";
 
-const NavBar = () => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,32 +20,32 @@ const NavBar = () => {
           <div className="flex items-center space-x-4 justify-between">
             <SearchBar />
             <nav className="flex space-x-4">
-              <NavLink route="/" label="Log in" />
-              <NavLink route="/" label="Sign up" />
-              <NavLink route="/" label="Cart" />
+              <NavLink route="/" label="Log in" textColor="black" />
+              <NavLink route="/" label="Sign up" textColor="black" />
+              <NavLink route="/" label="Cart" textColor="black" />
             </nav>
           </div>
           <nav className="flex space-x-4 mt-2 hidden md:block">
-            <NavLink label="Categories" route="/" />
-            <NavLink label="Popular Models" route="/about" />
-            <NavLink label="On Sale" route="/contact" />
-            <NavLink label="Customer Service" route="/contact" />
-            <NavLink label="About us" route="/contact" />
+            <NavLink label="Categories" route="/" textColor="black" />
+            <NavLink label="Popular Models" route="/about" textColor="black" />
+            <NavLink label="On Sale" route="/contact" textColor="black" />
+            <NavLink label="Customer Service" route="/contact" textColor="black" />
+            <NavLink label="About us" route="/contact" textColor="black" />
           </nav>
         </div>
         <button onClick={() => setIsOpen(true)} className="block md:hidden p-4 border rounded">
           <AiOutlineMenu />
         </button>
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-          <NavLink label="Categories" route="/" />
-          <NavLink label="Popular Models" route="/about" />
-          <NavLink label="On Sale" route="/contact" />
-          <NavLink label="Customer Service" route="/contact" />
-          <NavLink label="About us" route="/contact" />
+          <NavLink label="Categories" route="/" textColor="black" />
+          <NavLink label="Popular Models" route="/about" textColor="black" />
+          <NavLink label="On Sale" route="/contact" textColor="black" />
+          <NavLink label="Customer Service" route="/contact" textColor="black" />
+          <NavLink label="About us" route="/contact" textColor="black" />
         </Drawer>
       </div>
     </div>
   );
 };
 
-export default NavBar;
+export default Header;
