@@ -8,6 +8,7 @@ import NewArrivals from '@/components/NewArrivals'
 import PopularModels from '@/components/PopularModels'
 import Banner from '@/components/MainBanner'
 import HomeSection from '@/components/HomeSection'
+import BannerInfo from '@/components/informativeBanner'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +34,13 @@ const Index: NextPage<Props> = ({ costumes, popularCostume }) => {
           <PopularModels costumes={popularCostume} />
         </HomeSection>
         <HomeSection>
+          <BannerInfo bannerInfo={0}></BannerInfo>
+        </HomeSection>
+        <HomeSection>
           <NewArrivals />
+        </HomeSection>
+        <HomeSection>
+          <BannerInfo bannerInfo={1}></BannerInfo>
         </HomeSection>
       </main>
     </>

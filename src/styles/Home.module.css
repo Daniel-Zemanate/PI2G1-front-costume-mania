@@ -138,6 +138,36 @@
   width: 420px;
 }
 
+
+.informattiveBanner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+
+.informattiveBanner section {
+  width: 60%;
+  text-align: start;
+}
+
+.informattiveBanner figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.informattiveBanner h1 {
+  letter-spacing: 10px;
+  font-weight: bold;
+  font-size: 48px;
+}
+
+.informattiveBanner p {
+  font-size: 24px;
+}
+
 .hiddenInFullW {
   display: none;
 }
@@ -151,6 +181,20 @@
 
   .card:hover span {
     transform: translateX(4px);
+  }
+  .primaryButton:hover {
+    transform: scale(1.1); 
+    transition: transform 0.3s ease;
+  }
+
+  .secondaryButton:hover{
+    transform: scale(1.1); 
+    transition: transform 0.3s ease;
+  }
+
+  .tertiaryButton:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid #8643FF;
   }
 }
 
@@ -257,9 +301,26 @@
 
   .tertiaryButton {
     width: 350px;
-    font-weight: lighter;
-    height: 100px;
+    font-size: 22px;
+  }
+
+  .informattiveBanner {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .informattiveBanner section {
+    width: 100%;
+  }
+  
+  .informattiveBanner h1 {
+    font-weight: bold;
+    letter-spacing: 5px;
     font-size: 24px;
+  }
+  
+  .informattiveBanner p {
+    font-size: 16px;
   }
 }
 
