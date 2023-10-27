@@ -11,7 +11,6 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <Banner></Banner>
       <main className="mt-24">{children}</main>
       <Footer />
     </>

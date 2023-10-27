@@ -4,9 +4,10 @@ import styles from '@/styles/Home.module.css'
 import { GetServerSideProps, NextPage } from 'next'
 import { getCostumes, getPopularCostumes } from '@/services/costumes.service'
 import { costume } from '@/interfaces/costume'
-import { CostumeCard } from '@/components/Costumes/costumeCard.component'
 import NewArrivals from '@/components/NewArrivals'
 import PopularModels from '@/components/PopularModels'
+import Banner from '@/components/MainBanner'
+import HomeSection from '@/components/HomeSection'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,8 +26,15 @@ const Index: NextPage<Props> = ({ costumes, popularCostume }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
-        <PopularModels costumes={popularCostume} />
-        <NewArrivals />
+        <HomeSection>
+          <Banner></Banner>
+        </HomeSection>
+        <HomeSection>
+          <PopularModels costumes={popularCostume} />
+        </HomeSection>
+        <HomeSection>
+          <NewArrivals />
+        </HomeSection>
       </main>
     </>
   )
