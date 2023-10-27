@@ -7,10 +7,8 @@ const Carousel = ({ children }: {children: ReactNode}) => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
-    centerMode: true,
     initialSlide: 0,
     responsive: [
       {
