@@ -138,36 +138,6 @@
   width: 420px;
 }
 
-
-.informattiveBanner {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-
-}
-
-.informattiveBanner section {
-  width: 60%;
-  text-align: start;
-}
-
-.informattiveBanner figure {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.informattiveBanner h1 {
-  letter-spacing: 10px;
-  font-weight: bold;
-  font-size: 48px;
-}
-
-.informattiveBanner p {
-  font-size: 24px;
-}
-
 .hiddenInFullW {
   display: none;
 }

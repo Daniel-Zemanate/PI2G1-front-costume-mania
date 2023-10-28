@@ -6,7 +6,7 @@ interface Props {
 
 const HomeSection: React.FC<Props> = ({ children }) => {
     return (
-        <section className="w-full pb-12">
+        <section className="w-full pb-8">
             {children}
         </section>)
 }

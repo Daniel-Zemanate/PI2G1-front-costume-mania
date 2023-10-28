@@ -1,4 +1,4 @@
-import { costumes } from "@/mockData/costumer"
+import { costumes } from "@/mockData/customer"
 import { costume } from "@/interfaces/costume"
 import { NextApiRequest, NextApiResponse } from "next"
 

@@ -1,4 +1,4 @@
-export interface costume {
+export interface Costume {
     id: number,
     name: string,
     price: number,

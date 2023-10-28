@@ -1,9 +1,8 @@
 import React from "react";
-import { CostumeCard } from "@/components/Costumes/costumeCard.component";
+import { CostumeCard } from "@/components/Costumes";
 import { Frijole } from "next/font/google";
 import Carousel from "../Carousel";
-import { FC } from "react";
-import { costume } from "@/interfaces/costume";
+import { Costume } from "@/interfaces/costume";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -11,14 +10,15 @@ const frijole = Frijole({
   weight: "400",
 });
 
-interface Props {
-  costumes: costume[]
+type Props = {
+  title: string,
+  costumes: Costume[]
 }
 
-export const PopularModels: FC<Props> = ({ costumes }) => {
+function CostumesSection({title, costumes}: Props) {
   return (
     <section className="w-full my-4">
-      <h4 className={`${frijole.className} text-3xl mb-4`}>Popular Models</h4>
+      <h4 className={`${frijole.className} text-4xl`}>{title}</h4>
       <div className="py-8 overflow-visible">
         <Carousel>
           {costumes.map((item) => (
@@ -27,7 +27,7 @@ export const PopularModels: FC<Props> = ({ costumes }) => {
         </Carousel>
       </div>
     </section>
-  );
+  )
 }
 
-export default PopularModels;
+export default CostumesSection

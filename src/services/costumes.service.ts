@@ -16,3 +16,9 @@ export const getPopularCostumes = async () => {
     const response = await fetch(url);
     return await response.json();
 }
+
+export const getNewCostumes = async () => {
+    const url = `${process.env.URL_LOCAL}/api/costumes/new`
+    const response = await fetch(url);
+    return await response.json();
+}

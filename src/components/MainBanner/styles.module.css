@@ -1,0 +1,88 @@
+.primaryButton {
+  background-color: #8643FF;
+  border: solid 2px #8643FF;
+  color: #FFFFFF;
+  border-radius: 4px;
+  padding: 16px 8px;
+  width: 150px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.secondaryButton {
+  background-color: #FFFFFF;
+  border: solid 2px #8643FF;
+  color: #8643FF;
+  border-radius: 4px;
+  padding: 16px 8px;
+  width: 150px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}
+
+.tertiaryButton {
+  background-color: #FFFFFF;
+  border: solid 2px;
+  border-radius: 50px;
+  padding: 16px 8px;
+  font-weight: bold;
+  font-size: 24px;
+  width: 420px;
+}
+
+.hiddenInFullW {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    background: rgba(var(--card-rgb), 0.1);
+    border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  }
+
+  .card:hover span {
+    transform: translateX(4px);
+  }
+  .primaryButton:hover {
+    transform: scale(1.1); 
+    transition: transform 0.3s ease;
+  }
+
+  .secondaryButton:hover{
+    transform: scale(1.1); 
+    transition: transform 0.3s ease;
+  }
+
+  .tertiaryButton:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 2px solid #8643FF;
+  }
+}
+
+@media (max-width: 700px) {
+  .cropped {
+    width: 295px;
+    height: 315;
+    overflow: hidden;
+  }
+
+  .cropped img {
+    width: 974px !important;
+  }
+
+  .primaryBanner {
+    margin: 0px 0px 0px -286px;
+  }
+
+  .tertiaryButton {
+    width: 350px;
+    font-size: 22px;
+  }
+
+  .hiddenInFullW {
+    width: 342px;
+    display: block;
+  }
+
+  .secondaryBanner {
+    margin: 0px 0px 0px -600px;
+  }
+}
