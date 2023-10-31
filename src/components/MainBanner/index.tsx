@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "@assets/logo-mask.png";
 import banner from "@assets/mainBanner.png";
+import star from "@assets/star.svg";
 import styles from "./styles.module.css";
 import Image from "next/image";
 import Button from "../Button";
@@ -18,7 +19,11 @@ function Banner() {
       <figure className="flex flex-col items-center">
         <span className="flex flex-col md:flex-row items-center gap-4">
           <Image className="-rotate-12" src={logo} alt="Logo" width="120" />
-          <h1 className={`${frijole.className} text-4xl md:text-6xl ${styles.title}`}>CostumeMania</h1>
+          <h1
+            className={`${frijole.className} text-4xl md:text-6xl ${styles.title}`}
+          >
+            CostumeMania
+          </h1>
         </span>
         <div className={`${styles.cropped} flex justify-center`}>
           <Image
@@ -29,15 +34,21 @@ function Banner() {
           />
         </div>
       </figure>
-      <div className="flex flex-row justify-center gap-6 mb-8 md:mb-10">
-        <Button buttonStyle="primary" label="Shop Now" />
-        <Button buttonStyle="secondary" label="Flash Sales" />
+      <div className="flex flex-col items-center gap-8">
+        <span className="relative">
+          <h4 className="bg-white border-2 border-purple-2 border-primary rounded-full p-6 font-bold text-xl italic hover:shadow-md hover:border-2 hover:border-purple-3">
+            Small Moments, Monster Memories
+          </h4>
+          <div className="absolute -top-[1.225rem] right-10">
+            <Image src={star} alt="star" />
+          </div>
+        </span>
+        <div className="flex flex-row justify-center gap-6 mb-8 md:mb-10">
+          <Button buttonStyle="primary" label="Shop Now" />
+          <Button buttonStyle="secondary" label="Flash Sales" />
+        </div>
       </div>
-      <div>
-        <button type="submit" className={`${styles.tertiaryButton}`}>
-          Small Moments, Monster Memories
-        </button>
-      </div>
+      <div></div>
       <figure className="flex flex-col items-center">
         <div className={`${styles.cropped} ${styles.hiddenInFullW}`}>
           <Image

@@ -1,13 +1,3 @@
-.tertiaryButton {
-  background-color: #FFFFFF;
-  border: solid 2px;
-  border-radius: 50px;
-  padding: 16px 8px;
-  font-weight: bold;
-  font-size: 24px;
-  width: 420px;
-}
-
 .hiddenInFullW {
   display: none;
 }
@@ -20,11 +10,6 @@
 
   .card:hover span {
     transform: translateX(4px);
-  }
-
-  .tertiaryButton:hover{
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border: 2px solid #8643FF;
   }
 }
 
