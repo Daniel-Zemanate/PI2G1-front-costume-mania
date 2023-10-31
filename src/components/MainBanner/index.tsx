@@ -3,6 +3,7 @@ import logo from "@assets/logo.png";
 import banner from "@assets/mainBanner.png";
 import styles from './styles.module.css'
 import Image from "next/image";
+import Button from '../Button';
 
 function Banner() {
   return (
@@ -14,8 +15,8 @@ function Banner() {
         </div>
       </figure>
       <div className="flex flex-row justify-center gap-6 mb-8 md:mb-10">
-        <button type="submit" className={`${styles.primaryButton}`}>Shop Now</button>
-        <button type="submit" className={`${styles.secondaryButton}`}>Flash Sales</button>
+        <Button buttonStyle='primary' label='Shop Now' />
+        <Button buttonStyle='secondary' label='Flash Sales' />
       </div>
       <div>
         <button type="submit" className={`${styles.tertiaryButton}`}>Small Moments, Monster Memories</button>

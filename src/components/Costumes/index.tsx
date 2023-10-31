@@ -1,6 +1,7 @@
 import { Costume } from "@/interfaces/costume";
 import Image from "next/image";
 import { FC } from "react";
+import Button from "../Button";
 
 interface Props {
   costume: Costume;
@@ -37,11 +38,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             ))}
           </div>
           <div className="flex items-center justify-between">
-            <button
-              className={`w-28 h-9 text-lg font-semibold text-black my-3 bg-violet-500 text-white border border-violet-500 py-1 px-2 rounded text-sm hover:bg-white hover:text-violet-500`}
-            >
-              Add to Cart
-            </button>
+            <Button label="Add to Cart" buttonStyle="primary" size="small" />
             <button className="flex items-center justify-center rounded-full bg-violet-500 w-10 h-10 text-white border border-violet-500 hover:bg-white hover:text-violet-500">
               <svg
                 className="w-5 h-5 transform transition-transform duration-300"
