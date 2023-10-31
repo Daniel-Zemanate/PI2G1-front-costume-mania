@@ -10,7 +10,7 @@ const SearchBar = () => {
           type="text"
           placeholder="Search..."
         />
-        <button type="submit" className="bg-white text-violet-500 h-full border px-2">
+        <button type="submit" className="bg-white text-purple-1 h-full px-2">
           <FaSearch />
         </button>
       </div>

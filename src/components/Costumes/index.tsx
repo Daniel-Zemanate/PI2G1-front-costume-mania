@@ -10,7 +10,7 @@ interface Props {
 export const CostumeCard: FC<Props> = ({ costume }) => {
   return (
     <>
-      <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
+      <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-white">
         <Image
           src={costume.url_image}
           className="h-48 w-80 object-scale-down rounded-t-xl"
@@ -31,7 +31,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             {costume.sizes?.map((item) => (
               <div
                 key={item.id}
-                className="bg-white dark:bg-white-500 text-violet-500 dark:text-violet dark:border-violet-500 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
+                className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
               >
                 {item.no_size}
               </div>
@@ -39,12 +39,12 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
           </div>
           <div className="flex items-center justify-between">
             <Button label="Add to Cart" buttonStyle="primary" size="small" />
-            <button className="flex items-center justify-center rounded-full bg-violet-500 w-10 h-10 text-white border border-violet-500 hover:bg-white hover:text-violet-500">
+            <button className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm">
               <svg
-                className="w-5 h-5 transform transition-transform duration-300"
-                fill="none"
+                className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
+                fill="white"
                 viewBox="0 0 24 24"
-                stroke="currentColor"
+                stroke="white"
               >
                 <path
                   strokeLinecap="round"

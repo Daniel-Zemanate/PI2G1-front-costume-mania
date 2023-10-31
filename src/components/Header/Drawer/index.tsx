@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Link from "next/link";
-import logo from "@assets/logo.png";
+import logo from "@assets/logo-mask.png";
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
 
@@ -41,7 +41,7 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
               <Image
                 src={logo}
                 alt="Costume Mania logo"
-                width={250}
+                width={80}
                 height={40}
               />
             </Link>
@@ -52,7 +52,7 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
               <AiOutlineClose />
             </button>
           </div>
-          <div className="bg-violet-300 text-black flex flex-col h-full gap-6 p-4">
+          <div className="bg-purple-2 bg-opacity-20 text-black flex flex-col h-full gap-6 p-4">
             {children}
             <div className="mt-auto">
               <SearchBar />

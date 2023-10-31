@@ -2,6 +2,8 @@ import React from "react";
 import NavLink from "../NavLink/NavLink";
 import { Frijole } from "next/font/google";
 import { FaInstagram, FaFacebook, FaSnapchat } from "react-icons/fa";
+import logoText from "@assets/logo-text.png";
+import Image from "next/image";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -11,13 +13,15 @@ const frijole = Frijole({
 
 function Footer() {
   return (
-    <footer className="bg-gray-400 text-black py-6 flex flex-col justify-between px-6 gap-4">
-      <p className={`${frijole.className} text-lg`}>Costume Mania</p>
+    <footer className="bg-purple-3 bg-opacity-50 text-black py-6 flex flex-col justify-between px-6 gap-4">
       <div className="flex flex-col w-full justify-between md:flex-row md:space-x-4">
-        <p className="text-sm text-end md:text-start hidden md:block">
-          Discover Your Distinctive Look: <br />
-          Fashioned with Precision, Worn with Confidence
-        </p>
+        <div className="flex flex-col">
+          <Image src={logoText} width={100} alt="Costume Mania" />
+          <p className="text-sm text-end md:text-start hidden md:block">
+            Discover Your Distinctive Look: <br />
+            Fashioned with Precision, Worn with Confidence
+          </p>
+        </div>
         <div>
           <nav className="flex flex-col md:flex-row md:space-x-4 justify-end w-full py-4 gap-2">
             <NavLink label="Home" route="/" textColor="black" />

@@ -37,7 +37,7 @@ const Carousel = ({ children }: {children: ReactNode}) => {
 
   return (
     <>
-      <Slider {...settings} className="py-4">
+      <Slider {...settings} className="p-4 mx-4">
         {children}
       </Slider>
     </>

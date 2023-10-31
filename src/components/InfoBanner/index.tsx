@@ -12,7 +12,7 @@ const BannerInfo: FC<Props> = ({ title, text, mainImage, backgroundImage }) => {
   return (
     <div className="flex flex-col sm:flex-row items-center justify-between">
       <section className="w-full md:w-3/5 text-left">
-        <h1 className="text-2xl md:text-5xl font-bold tracking-wider tracking-widest">{title}</h1>
+        <h1 className="text-2xl md:text-5xl font-bold tracking-wider tracking-widest mb-4">{title}</h1>
         <p className="text-base sm:text-2xl">{text}</p>
       </section>
       <div>

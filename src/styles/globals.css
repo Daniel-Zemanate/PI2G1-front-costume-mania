@@ -21,3 +21,8 @@ body {
   overflow: visible;
   padding: 3rem 0;
 }
+
+.slick-next:before, .slick-prev:before {
+  color: theme('colors.purple-1') !important;
+  font-size: 30px !important;
+}

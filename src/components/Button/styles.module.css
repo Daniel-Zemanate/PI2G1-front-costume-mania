@@ -1,7 +1,6 @@
 .primary {
-  background-color: #8643ff;
-  border: solid 2px #8643ff;
-  color: #ffffff;
+  background-color: theme('colors.purple-2');
+  color: theme('colors.white');;
   border-radius: 4px;
   padding: 16px 8px;
   width: 150px;
@@ -10,9 +9,9 @@
 }
 
 .secondary {
-  background-color: #ffffff;
-  border: solid 2px #8643ff;
-  color: #8643ff;
+  background-color: theme('colors.white');;
+  border: solid 2px theme('colors.purple-2');
+  color: theme('colors.purple-2');
   border-radius: 4px;
   padding: 16px 8px;
   width: 150px;
@@ -36,8 +35,6 @@
   font-size: 0.9rem;
   margin-top: 0.75rem;
   margin-bottom: 0.75rem;
-  border: 1px solid #e5e7eb; 
-  border-color: #8b5cf6; 
   padding: 0 0.25rem;
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -47,6 +44,6 @@
 .smallButton:hover {
   transform: none;
   transition: none;
-  background-color: white;
-  color: #8b5cf6;
+  background-color: theme('colors.white');;
+  color: theme('colors.purple-2');
 }
