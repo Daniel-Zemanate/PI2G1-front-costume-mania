@@ -17,7 +17,8 @@ const Header = () => {
           <Image
             src={logo}
             alt="Costume Mania logo"
-            style={{ width: "auto", maxHeight: "100%" }}
+            width={100}
+            height={100}
           />
         </Link>
         <div className="w-full hidden md:block">
