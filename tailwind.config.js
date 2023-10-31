@@ -7,6 +7,9 @@ module.exports = {
     extend: {
       padding: {
         '5vw': '5vw'
+      },
+      spacing:{
+        '1.225rem': '1.225rem'
       }
     },
     colors:{
