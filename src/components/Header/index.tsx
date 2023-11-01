@@ -25,7 +25,7 @@ const Header = () => {
           <div className="flex items-center space-x-4 justify-between">
             <SearchBar />
             <nav className="flex space-x-4">
-              <NavLink route="/" label="Log in" textColor="white" />
+              <NavLink route="/login" label="Log in" textColor="white" />
               <NavLink route="/signup" label="Sign up" textColor="white" />
               <NavLink route="/" label="Cart" textColor="white" />
             </nav>

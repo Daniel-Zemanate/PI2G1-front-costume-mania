@@ -42,7 +42,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             <button className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm">
               <svg
                 className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
-                fill="white"
+                fill="none"
                 viewBox="0 0 24 24"
                 stroke="white"
               >
