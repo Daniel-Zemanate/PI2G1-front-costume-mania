@@ -14,7 +14,7 @@ const Form = ({
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-purple-3 bg-opacity-25 px-16 py-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%]"
+      className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto"
       {...rest}
     >
       {children}

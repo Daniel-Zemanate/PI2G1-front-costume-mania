@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <main className={`mt-24 ${raleway.className} flex flex-col justify-between items-center pb-4 min-h-screen w-full`}>{children}</main>
+      <main className={`mt-24 ${raleway.className} flex flex-col justify-between items-center min-h-[65vh] w-full`}>{children}</main>
       <Footer />
     </>
   );

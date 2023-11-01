@@ -26,7 +26,7 @@ const Carousel = ({ children }: {children: ReactNode}) => {
         },
       },
       {
-        breakpoint: 640, 
+        breakpoint: 680, 
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
