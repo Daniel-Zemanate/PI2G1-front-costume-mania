@@ -4,15 +4,16 @@ import Link from "next/link";
 type Props = {
   route: string;
   label: string;
-  textColor: 'black' | 'white'; // Define textColor prop as an enum
+  textColor: string;
   children?: ReactNode;
+  className?: string
 };
 
-function NavLink({ route, label, textColor, children }: Props) {
-  const textColorClass = textColor === 'white' ? 'text-white' : 'text-black';
+function NavLink({ route, label, textColor = 'black', children, className }: Props) {
+  const textColorClass = `text-${textColor}`
 
   return (
-    <Link href={route} className={`whitespace-nowrap ${textColorClass}`}>
+    <Link href={route} className={`whitespace-nowrap ${textColorClass} ${className}`}>
       {label}
       {children}
     </Link>

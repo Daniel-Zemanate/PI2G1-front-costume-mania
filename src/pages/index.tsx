@@ -16,8 +16,6 @@ import spot2 from "@assets/spot2.png";
 import custome2 from "@assets/custome2.png";
 import RootLayout from "@/layouts/rootLayout";
 
-
-
 interface Props {
   newCostumes: Costume[];
   popularCostumes: Costume[];
@@ -47,23 +45,21 @@ const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main}`}>
-        <HomeSection>
-          <Banner></Banner>
-        </HomeSection>
-        <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-          <CostumesSection title="Popular Models" costumes={popularCostumes} />
-        </HomeSection>
-        <HomeSection>
-          <InfoBanner {...bannersInfo[0]} />
-        </HomeSection>
-        <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-          <CostumesSection title="New Arrivals" costumes={newCostumes} />
-        </HomeSection>
-        <HomeSection>
-          <InfoBanner {...bannersInfo[1]} />
-        </HomeSection>
-      </main>
+      <HomeSection>
+        <Banner></Banner>
+      </HomeSection>
+      <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
+        <CostumesSection title="Popular Models" costumes={popularCostumes} />
+      </HomeSection>
+      <HomeSection>
+        <InfoBanner {...bannersInfo[0]} />
+      </HomeSection>
+      <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
+        <CostumesSection title="New Arrivals" costumes={newCostumes} />
+      </HomeSection>
+      <HomeSection>
+        <InfoBanner {...bannersInfo[1]} />
+      </HomeSection>
     </RootLayout>
   );
 };
