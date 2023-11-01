@@ -15,7 +15,7 @@ const frijole = Frijole({
 
 function Banner() {
   return (
-    <div className="container mx-auto text-center py-4 md:py-12">
+    <div className="container mx-auto text-center pb-4 md:pb-12">
       <figure className="flex flex-col items-center">
         <span className="flex flex-col md:flex-row items-center gap-4">
           <Image className="-rotate-12" src={logo} alt="Logo" width="120" />
