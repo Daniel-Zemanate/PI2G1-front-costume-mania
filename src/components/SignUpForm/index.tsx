@@ -53,7 +53,7 @@ function SignUpForm() {
         <Form.TextSection>
           <span>
             Already have an account?{" "}
-            <NavLink label="Log in" route="/login" textColor="purple-2" />
+            <NavLink label="Log in" route="/auth/login" textColor="purple-2" />
           </span>
         </Form.TextSection>
       </Form.Header>

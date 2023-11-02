@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineShoppingCart } from "react-icons/ai";
 import Link from "next/link";
 import logo from "@assets/logo-mask.png";
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
+import { signOut, useSession } from "next-auth/react";
+import NavLink from "@/components/NavLink/NavLink";
+import Button from "@/components/Button";
 
 type Props = {
   children: React.ReactNode;
@@ -12,6 +15,8 @@ type Props = {
 };
 
 export default function Drawer({ children, isOpen, setIsOpen }: Props) {
+  const { data: session } = useSession();
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -31,7 +36,7 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
     >
       <section
         className={
-          "w-full right-0 absolute bg-white h-3/4 shadow-xl delay-400 duration-500 ease-in-out transform overflow-hidden" +
+          "w-full right-0 absolute bg-white h-5/6 shadow-xl delay-400 duration-500 ease-in-out transform overflow-hidden" +
           (isOpen ? " translate-y-0 " : " -translate-y-full ")
         }
       >
@@ -52,7 +57,25 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
               <AiOutlineClose />
             </button>
           </div>
+          {session?.user && (
+            <div className="flex items-center justify-between bg-orange-2 px-3">
+              <NavLink route="/user-info" textColor="black">
+                Welcome, {session.user.name}
+              </NavLink>
+              <Button
+                label="Sign out"
+                buttonStyle="secondary"
+                size="small"
+                onClick={() => signOut()}
+              />
+            </div>
+          )}
           <div className="bg-purple-2 bg-opacity-20 text-black flex flex-col h-full gap-6 p-4">
+            {session?.user && (
+              <NavLink route="/" textColor="black" className="text-2xl">
+                <AiOutlineShoppingCart />
+              </NavLink>
+            )}
             {children}
             <div className="mt-auto">
               <SearchBar />

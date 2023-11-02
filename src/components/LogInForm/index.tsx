@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Form from "../Form";
 import Button from "../Button";
 import NavLink from "../NavLink/NavLink";
+import { signIn } from "next-auth/react";
 
 // validation
 const LogInSchema = yup.object().shape({
@@ -26,7 +27,17 @@ function LogInForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(LogInSchema) });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: true,
+      callbackUrl: '/'
+    });
+
+    console.log(result);
+  });
 
   return (
     <Form onSubmit={onSubmit}>
@@ -34,7 +45,8 @@ function LogInForm() {
         <Form.Title>Log in</Form.Title>
         <Form.TextSection>
           <span>
-            Don&apos;t have an account? <NavLink label="Sign up" route="/signup" textColor="purple-2"/>
+            Don&apos;t have an account?{" "}
+            <NavLink label="Sign up" route="/signup" textColor="purple-2" />
           </span>
         </Form.TextSection>
       </Form.Header>
@@ -55,7 +67,14 @@ function LogInForm() {
           error={errors.password?.message}
         />
       </Form.Body>
-      <p className="self-end">Forgot password? <NavLink label="Recover" route="/password-recovery" textColor="purple-2"/></p>
+      <p className="self-end">
+        Forgot password?{" "}
+        <NavLink
+          label="Recover"
+          route="/password-recovery"
+          textColor="purple-2"
+        />
+      </p>
       <Form.ButtonSection>
         <Button
           label="Cancel"
