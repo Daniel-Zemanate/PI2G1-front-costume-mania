@@ -9,7 +9,6 @@ import { Frijole } from "next/font/google";
 
 const frijole = Frijole({
   subsets: ["latin"],
-  variable: "--font-frijole",
   weight: "400",
 });
 

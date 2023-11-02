@@ -19,7 +19,8 @@ module.exports = {
       'orange-1': '#FF941A',
       'orange-2': '#F25F29',
       'white': 'white',
-      'red': '#C40F01'
+      'red': '#C40F01',
+      'black': 'black'
     },
   },
   plugins: [],

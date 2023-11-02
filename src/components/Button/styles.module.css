@@ -41,9 +41,16 @@
   padding-left: 0.5rem;
 }
 
-.smallButton:hover {
+.primary.smallButton:hover {
   transform: none;
   transition: none;
-  background-color: theme('colors.white');;
+  background-color: theme('colors.white');
   color: theme('colors.purple-2');
+}
+
+.secondary.smallButton:hover{
+  transform: none;
+  transition: none;
+  background-color: theme('colors.purple-2');
+  color: theme('colors.white');
 }

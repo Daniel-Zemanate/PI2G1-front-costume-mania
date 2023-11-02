@@ -3,8 +3,8 @@ import Link from "next/link";
 
 type Props = {
   route: string;
-  label: string;
-  textColor: string;
+  label?: string;
+  textColor: 'white' | 'black' | 'purple-2';
   children?: ReactNode;
   className?: string
 };
