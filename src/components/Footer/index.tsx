@@ -1,15 +1,8 @@
 import React from "react";
 import NavLink from "../NavLink/NavLink";
-import { Frijole } from "next/font/google";
 import { FaInstagram, FaFacebook, FaSnapchat } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
 import Image from "next/image";
-
-const frijole = Frijole({
-  subsets: ["latin"],
-  variable: "--font-frijole",
-  weight: "400",
-});
 
 function Footer() {
   return (

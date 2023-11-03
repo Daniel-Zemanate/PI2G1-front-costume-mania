@@ -7,7 +7,6 @@ import styles from './styles.module.css'
 
 const frijole = Frijole({
   subsets: ["latin"],
-  variable: "--font-frijole",
   weight: "400",
 });
 
