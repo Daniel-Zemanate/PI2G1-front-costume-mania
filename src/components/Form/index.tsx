@@ -6,11 +6,7 @@ type Props = {
   onSubmit?: any;
 };
 
-const Form = ({
-  children,
-  onSubmit,
-  ...rest
-}: Props) => {
+const Form = ({ children, onSubmit, ...rest }: Props) => {
   return (
     <form
       onSubmit={onSubmit}
@@ -25,7 +21,6 @@ const Form = ({
 const Header = ({ children }: { children: ReactNode }) => {
   return <div className="text-center p-4">{children}</div>;
 };
-
 
 const Title = ({ children }: { children: ReactNode }) => {
   return <h2 className="text-2xl font-bold">{children}</h2>;
@@ -65,10 +60,15 @@ const Body = ({
   );
 };
 
+const ErrorSection = ({ children }: { children: ReactNode }) => {
+  return <span className="text-red text-lg text-center ">{children}</span>;
+};
+
 Form.Header = Header;
 Form.Title = Title;
 Form.TextSection = TextSection;
 Form.Body = Body;
 Form.ButtonSection = ButtonSection;
+Form.Errors = ErrorSection;
 
 export default Form;

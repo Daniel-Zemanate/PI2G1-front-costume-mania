@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FormInput from "@/components/Form/FormInput";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import Form from "../Form";
 import Button from "../Button";
 import NavLink from "../NavLink/NavLink";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 // validation
 const LogInSchema = yup.object().shape({
@@ -26,17 +27,22 @@ function LogInForm() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(LogInSchema) });
+  const [error, setError] = useState<string>();
+
+  const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
-
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      redirect: true,
-      callbackUrl: '/'
-    });
+      redirect: false,
+    }) as any;
 
-    console.log(result);
+    if (result?.ok) {
+      router.push("/");
+    } else {
+      setError(result?.error);
+    }
   });
 
   return (
@@ -50,6 +56,9 @@ function LogInForm() {
           </span>
         </Form.TextSection>
       </Form.Header>
+
+      <Form.Errors>{error}</Form.Errors>
+
       <Form.Body register={register}>
         <FormInput
           name="email"
@@ -67,6 +76,7 @@ function LogInForm() {
           error={errors.password?.message}
         />
       </Form.Body>
+
       <p className="self-end">
         Forgot password?{" "}
         <NavLink
@@ -75,6 +85,7 @@ function LogInForm() {
           textColor="purple-2"
         />
       </p>
+
       <Form.ButtonSection>
         <Button
           label="Cancel"
