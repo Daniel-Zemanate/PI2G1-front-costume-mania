@@ -1,3 +1,4 @@
+import { ApiResponse } from "@/interfaces/costume";
 
 export const getCostume = async (costumeId: number) => {
     const url = `${process.env.URL_LOCAL}/api/costumes/${costumeId}`
@@ -5,8 +6,15 @@ export const getCostume = async (costumeId: number) => {
     return await response.json();
 }
 
-export const getCostumes = async () => {
-    const url = `${process.env.URL_LOCAL}/api/costumes`
+export const getCostumes = async (query: any): Promise<ApiResponse> => {
+    const params = new URLSearchParams()
+    const {category, search, size} = query
+
+    if(category) params.set("category", category)
+    if(size) params.set("size", size)
+    if(!category && !search && !size) params.set("page", "0")
+
+    const url = `${process.env.URL_LOCAL}/api/costumes?${params.toString()}`
     const response = await fetch(url);
     return await response.json();
 }

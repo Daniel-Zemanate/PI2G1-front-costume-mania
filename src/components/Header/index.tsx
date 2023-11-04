@@ -23,7 +23,7 @@ const Header = () => {
         <div className="w-full hidden md:block">
           <SearchBar />
           <nav className="flex space-x-4 mt-2 hidden md:block">
-            <NavLink label="Categories" route="/" textColor="white" />
+            <NavLink label="Costumes" route="/costumes" textColor="white" />
             <NavLink label="Popular Models" route="/about" textColor="white" />
             <NavLink label="On Sale" route="/contact" textColor="white" />
             <NavLink
@@ -74,7 +74,7 @@ const Header = () => {
           <AiOutlineMenu />
         </button>
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
-          <NavLink label="Categories" route="/" textColor="black" />
+          <NavLink label="Costumes" route="/costumes" textColor="black" />
           <NavLink label="Popular Models" route="/about" textColor="black" />
           <NavLink label="On Sale" route="/contact" textColor="black" />
           <NavLink

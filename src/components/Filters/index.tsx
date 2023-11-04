@@ -1,0 +1,116 @@
+import { Category } from "@/interfaces/costume";
+import { Disclosure } from "@headlessui/react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import React from "react";
+import {
+  AiOutlineMinus as MinusIcon,
+  AiOutlinePlus as PlusIcon,
+  AiOutlineDelete as DeleteIcon,
+} from "react-icons/ai";
+
+type Props = {
+  categories: Category[];
+};
+
+const sizes = [
+  {
+    label: "Child",
+    value: 0,
+  },
+  {
+    label: "Adult",
+    value: 1,
+  },
+];
+
+function Filters({ categories }: Props) {
+  const router = useRouter();
+  const searchParams = useSearchParams()
+
+  const handleClick = (key: string, value: any) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    current.set(key, value);
+    const search = current.toString();
+    console.log(search)
+    router.push(`${router.pathname}?${search}`);
+  };
+
+  const handleResetFilters = () => {
+    router.push(router.pathname);
+  };
+
+  return (
+    <aside className="px-5 self-start w-full md:max-w-[15rem] lg:w-xs lg:max-w-xs rounded-lg md:px-4 px-8 shadow-lg">
+      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:text-3xl py-5 font-bold">
+        <h3>Filters</h3>
+        <button onClick={handleResetFilters}>
+          <DeleteIcon />
+        </button>
+      </span>
+      <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
+        {({ open }) => (
+          <>
+            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500 mb-2">
+              <span className="font-medium text-lg text-gray-900">
+                Category
+              </span>
+              <span className="ml-6 flex items-center">
+                {open ? (
+                  <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                )}
+              </span>
+            </Disclosure.Button>
+            <Disclosure.Panel>
+              <ul>
+                {categories.map((category) => (
+                  <li
+                    key={category.idCategory}
+                    className="space-y-6 cursor-pointer pl-5 pt-1"
+                    onClick={() => handleClick("category", category.idCategory)}
+                  >
+                    {category.name}
+                  </li>
+                ))}
+              </ul>
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+
+      <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
+        {({ open }) => (
+          <>
+            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500 mb-2">
+              <span className="font-medium text-lg text-gray-900">Size</span>
+              <span className="ml-6 flex items-center">
+                {open ? (
+                  <MinusIcon className="h-5 w-5" aria-hidden="true" />
+                ) : (
+                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                )}
+              </span>
+            </Disclosure.Button>
+            <Disclosure.Panel>
+              <ul>
+                {sizes.map((size) => (
+                  <li
+                    key={size.value}
+                    className="space-y-6 cursor-pointer pl-5 pt-1"
+                    onClick={() => handleClick("size", size.value)}
+                  >
+                    {size.label}
+                  </li>
+                ))}
+              </ul>
+            </Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
+    </aside>
+  );
+}
+
+export default Filters;
