@@ -15,10 +15,14 @@ import custome1 from "@assets/custome1.png";
 import spot2 from "@assets/spot2.png";
 import custome2 from "@assets/custome2.png";
 import RootLayout from "@/layouts/rootLayout";
+import CategoriesBanner from "@/components/CategoriesBanner";
+import { getAllCategories } from "@/services/categories.service";
 
 interface Props {
   newCostumes: Costume[];
   popularCostumes: Costume[];
+  categories: Costume[];
+  // categories: Category[];
 }
 
 const bannersInfo = [
@@ -36,7 +40,7 @@ const bannersInfo = [
   },
 ];
 
-const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes }) => {
+const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes, categories }) => {
   return (
     <RootLayout>
       <Head>
@@ -60,6 +64,9 @@ const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes }) => {
       <HomeSection>
         <InfoBanner {...bannersInfo[1]} />
       </HomeSection>
+      <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
+        <CategoriesBanner title="All categories" categories={categories}></CategoriesBanner>
+      </HomeSection>
     </RootLayout>
   );
 };
@@ -77,11 +84,13 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const popularCostumes = await getPopularCostumes();
   const newCostumes = await getNewCostumes();
+  const categories = await getAllCategories();
 
   return {
     props: {
       newCostumes,
       popularCostumes,
+      categories
     },
   };
 };
