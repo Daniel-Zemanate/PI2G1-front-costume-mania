@@ -16,8 +16,8 @@ const Header = () => {
 
   return (
     <div className="fixed top-0 w-full bg-purple-1 shadow-lg border-b-2 border-gray-500 z-50 h-24">
-      <div className="flex items-center justify-between gap-4 container mx-auto px-6 md:px-4 items-center h-full">
-        <Link href="/" className="h-full flex items-center">
+      <div className="flex items-center justify-between gap-4 container mx-auto px-6 md:px-4 items-center w-full">
+        <Link href="/" className="h-full flex items-center min-w-[100px]">
           <Image src={logo} alt="Costume Mania logo" width={100} height={100} />
         </Link>
         <div className="w-full hidden md:block">
@@ -26,30 +26,27 @@ const Header = () => {
             <NavLink label="Costumes" route="/costumes" textColor="white" />
             <NavLink label="Popular Models" route="/about" textColor="white" />
             <NavLink label="On Sale" route="/contact" textColor="white" />
-            <NavLink
-              label="Customer Service"
-              route="/contact"
-              textColor="white"
-            />
             <NavLink label="About us" route="/contact" textColor="white" />
           </nav>
         </div>
-        <nav className="flex space-x-4 items-center hidden md:flex">
+        <nav className="flex space-x-4 items-center hidden md:flex pt-2">
           {session?.user ? (
-            <>
-              <NavLink route="/user-info" textColor="white">
-                Welcome, {session.user.name}
-              </NavLink>
-              <NavLink route="/" textColor="white" className="text-2xl">
-                <AiOutlineShoppingCart />
-              </NavLink>
+            <div className="flex flex-col justify-center items-center">
+              <span className="flex gap-6">
+                <NavLink route="/user-info" textColor="white">
+                  Welcome, {session.user.name}
+                </NavLink>
+                <NavLink route="/" textColor="white" className="text-2xl">
+                  <AiOutlineShoppingCart />
+                </NavLink>
+              </span>
               <Button
                 label="Sign out"
                 buttonStyle="secondary"
                 size="small"
                 onClick={() => signOut()}
               />
-            </>
+            </div>
           ) : (
             <>
               <Button
@@ -69,7 +66,7 @@ const Header = () => {
         </nav>
         <button
           onClick={() => setIsOpen(true)}
-          className="block md:hidden p-4 border rounded text-white"
+          className="block md:hidden p-4 text-white text-4xl"
         >
           <AiOutlineMenu />
         </button>

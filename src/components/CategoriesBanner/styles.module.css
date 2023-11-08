@@ -1,32 +1,50 @@
 .card {
-    position: relative;
-    cursor: pointer;
-    flex-direction: column;
+  position: relative;
+  cursor: pointer;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card .titleContainer {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  opacity: 0;
+  transition: top 0.2s, opacity 0.4s;
+}
+
+@media (max-width: 700px) {
+  .card {
+    width: 80%;
+  }
+
+  .card .titleContainer {
+    display: flex;
+    opacity: 1;
+    transition: none;
+    height: 100%;
+    width: 100%;
     justify-content: center;
     align-items: center;
   }
-  
-  .card .titleContainer {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    opacity: 0; 
-    transition: top 0.2s, opacity 0.4s;
+
+  .card .imageContainer {
+    filter: blur(1px) opacity(80%);
+    transform: scale(1.2);
   }
-  
+}
+
+@media (min-width: 700px) {
+  .card:hover .titleContainer {
+    top: 50%;
+    opacity: 1;
+    width: 100%;
+    text-align: center;
+  }
+
   .card:hover .imageContainer {
     filter: blur(5px) opacity(60%);
     transform: scale(1.2);
   }
-  
-  .card:hover .titleContainer {
-    top: 50%;
-    opacity: 1;
-  }
-  
-  @media (max-width: 700px) {
-    .card {
-      width: 80%;
-    }
-  }
-  
+}

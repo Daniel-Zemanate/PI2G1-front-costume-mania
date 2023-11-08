@@ -21,7 +21,7 @@ function Footer() {
             <NavLink label="Models" route="/about" textColor="black" />
             <NavLink label="Sale" route="/contact" textColor="black" />
             <NavLink label="Cart" route="/contact" textColor="black" />
-            <NavLink label="Checkout" route="/contact" textColor="black" />
+            <NavLink label="Customer Service" route="/contact" textColor="black" />
           </nav>
           <div className="flex w-full justify-end gap-4">
             <FaInstagram />

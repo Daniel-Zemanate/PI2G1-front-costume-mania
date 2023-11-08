@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { AiOutlineClose, AiOutlineShoppingCart } from "react-icons/ai";
 import Link from "next/link";
-import logo from "@assets/logo-mask.png";
+import logoText from "@assets/logo-text.png";
 import Image from "next/image";
 import SearchBar from "@/components/SearchBar";
-import { signOut, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import NavLink from "@/components/NavLink/NavLink";
 import Button from "@/components/Button";
 
@@ -36,23 +36,29 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
     >
       <section
         className={
-          "w-full right-0 absolute bg-white h-5/6 shadow-xl delay-400 duration-500 ease-in-out transform overflow-hidden" +
+          "w-full right-0 absolute bg-white h-4/6 shadow-xl delay-400 duration-500 ease-in-out transform overflow-hidden border-b-2" +
           (isOpen ? " translate-y-0 " : " -translate-y-full ")
         }
       >
         <article className="relative w-full flex flex-col overflow-y-scroll h-full">
-          <div className="flex w-full justify-between p-2 items-center">
+          <div className="flex w-full justify-between p-2 items-center bg-purple-1">
             <Link href="/">
               <Image
-                src={logo}
+                src={logoText}
                 alt="Costume Mania logo"
-                width={80}
-                height={40}
+                width={100}
+                height={60}
               />
             </Link>
+            {!session?.user && (
+              <div className="text-white flex gap-4 text-lg">
+                <button onClick={() => signIn()}>Log in</button>|
+                <Link href={`/auth/signup`}>Sign up</Link>
+              </div>
+            )}
             <button
               onClick={() => setIsOpen(false)}
-              className="p-4 border rounded"
+              className="p-4 text-white text-4xl"
             >
               <AiOutlineClose />
             </button>

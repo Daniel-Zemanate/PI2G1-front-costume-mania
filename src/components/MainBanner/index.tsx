@@ -19,7 +19,7 @@ function Banner() {
         <span className="flex flex-col md:flex-row items-center gap-4">
           <Image className="-rotate-12" src={logo} alt="Logo" width="120" />
           <h1
-            className={`${frijole.className} text-4xl md:text-6xl ${styles.title}`}
+            className={`${frijole.className} text-4xl sm:text-5xl md:text-6xl ${styles.title}`}
           >
             CostumeMania
           </h1>

@@ -40,8 +40,8 @@ function Filters({ categories }: Props) {
   };
 
   return (
-    <aside className="px-5 self-start w-full md:max-w-[15rem] lg:w-xs lg:max-w-xs rounded-lg md:px-4 px-8 shadow-lg">
-      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:text-3xl py-5 font-bold">
+    <aside className="self-start w-full md:max-w-[12rem] lg:max-w-[15rem] xl:max-w-[20rem] rounded-lg md:px-4 px-8 shadow-lg">
+      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:texl-xl lg:text-2xl py-5 font-bold">
         <h3>Filters</h3>
         {searchParams.toString() && (
           <button onClick={handleResetFilters} className="text-2xl">

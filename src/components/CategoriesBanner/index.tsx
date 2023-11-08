@@ -33,7 +33,7 @@ const CategoriesBanner: FC<Props> = ({ title, categories }) => {
           <Link
             href={`/costumes?category=${item.idCategory}`}
             key={item.idCategory}
-            className={`${styles.card} p-4 relative cursor-pointer bg-white m-4 rounded-lg shadow-lg overflow-hidden h-64 lg:h-80`}
+            className={`${styles.card} relative cursor-pointer bg-white m-4 rounded-lg shadow-lg overflow-hidden h-64 lg:h-80`}
           >
             <div className={`${styles.imageContainer} w-full h-full overflow-hidden`}>
               <Image
