@@ -1,0 +1,67 @@
+.card{
+    padding: 10px;
+    position: relative;
+    cursor: pointer;
+    background-color: white;
+    height: 250px;
+    margin: 10px;
+    border-radius: 5%;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    
+}
+
+.card div:nth-child(1){
+    margin-top: 15px;
+}
+
+.card:hover div:nth-child(1){
+    filter: blur(4px);
+    margin-top: 15px;
+
+}
+
+.card div:nth-child(2){
+    position: absolute;
+    z-index: 2; 
+    width: 98%;
+    opacity: 0;
+    top: 90%;
+    border-radius:8px;
+    height: 60px;
+    top: 35%;
+    transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transform: scale(0.8);
+}
+
+.card:hover div:nth-child(2){
+    position: absolute;
+    z-index: 2;
+    top: 35%;
+    opacity: 1;
+    height: 60px;
+    transform: scale(1);
+    
+}
+
+.logo{
+    display: flex;
+    position: absolute;
+    left: -15px;
+    top: -30px;
+    rotate: -40deg;
+}
+
+@media (max-width: 700px) {
+    .card{
+        width: 80%;
+        justify-content: center;
+    }
+
+    .card div:nth-child(2){
+        opacity: 1;
+    }
+    
+}  
+
+
