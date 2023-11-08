@@ -1,6 +1,6 @@
 import CostumesList from "@/components/CostumesList";
 import Filters from "@/components/Filters";
-import { ApiResponse, Category } from "@/interfaces/costume";
+import { ApiCostume, Category } from "@/interfaces/costume";
 import RootLayout from "@/layouts/rootLayout";
 import { getCategories } from "@/services/categories.service";
 import Head from "next/head";
@@ -17,7 +17,7 @@ const frijole = Frijole({
 });
 
 type Props = {
-  costumes: ApiResponse;
+  costumes: ApiCostume[];
   categories: Category[];
 };
 
@@ -47,7 +47,7 @@ function CostumesPage({ costumes, categories }: Props) {
         />
         <div className="flex flex-col md:flex-row md:justify-between w-full gap-4 my-4">
           <Filters categories={categories} />
-          <CostumesList costumes={costumes.content} />
+          <CostumesList costumes={costumes} />
         </div>
       </section>
     </RootLayout>
@@ -55,7 +55,7 @@ function CostumesPage({ costumes, categories }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const costumes: ApiResponse = await getCostumes(query);
+  const costumes: ApiCostume[] = await getCostumes(query);
   const categories = await getCategories();
 
   return {

@@ -1,10 +1,11 @@
-import { Costume } from "@/interfaces/costume";
+import { ApiCostume } from "@/interfaces/costume";
 import Image from "next/image";
 import { FC } from "react";
 import Button from "../Button";
+import logoText from "@assets/logo-text.png";
 
 interface Props {
-  costume: Costume;
+  costume: ApiCostume;
 }
 
 export const CostumeCard: FC<Props> = ({ costume }) => {
@@ -12,7 +13,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
     <>
       <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-white">
         <Image
-          src={costume.url_image}
+          src={costume.urlImage || logoText}
           className="h-48 w-80 object-scale-down rounded-t-xl"
           alt={costume.name}
           height={320}
@@ -28,12 +29,12 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             </p>
           </div>
           <div className="flex items-center">
-            {costume.sizes?.map((item) => (
+            {costume.sizes?.map((size) => (
               <div
-                key={item.id}
+                key={size.noSize}
                 className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
               >
-                {item.no_size}
+                {size.noSize}
               </div>
             ))}
           </div>

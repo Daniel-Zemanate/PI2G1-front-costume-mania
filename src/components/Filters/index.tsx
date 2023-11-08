@@ -26,13 +26,12 @@ const sizes = [
 
 function Filters({ categories }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   const handleClick = (key: string, value: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.set(key, value);
     const search = current.toString();
-    console.log(search)
     router.push(`${router.pathname}?${search}`);
   };
 
@@ -44,14 +43,16 @@ function Filters({ categories }: Props) {
     <aside className="px-5 self-start w-full md:max-w-[15rem] lg:w-xs lg:max-w-xs rounded-lg md:px-4 px-8 shadow-lg">
       <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:text-3xl py-5 font-bold">
         <h3>Filters</h3>
-        <button onClick={handleResetFilters}>
-          <DeleteIcon />
-        </button>
+        {searchParams.toString() && (
+          <button onClick={handleResetFilters} className="text-2xl">
+            <DeleteIcon />
+          </button>
+        )}
       </span>
       <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
         {({ open }) => (
           <>
-            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500 mb-2">
+            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500">
               <span className="font-medium text-lg text-gray-900">
                 Category
               </span>
