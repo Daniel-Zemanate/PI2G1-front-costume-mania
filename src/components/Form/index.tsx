@@ -4,13 +4,14 @@ import { ReactNode } from "react";
 type Props = {
   children?: ReactNode;
   onSubmit?: any;
+  className?: string;
 };
 
-const Form = ({ children, onSubmit, ...rest }: Props) => {
+const Form = ({ children, onSubmit, className, ...rest }: Props) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto"
+      className={`${className}`}
       {...rest}
     >
       {children}
@@ -18,31 +19,33 @@ const Form = ({ children, onSubmit, ...rest }: Props) => {
   );
 };
 
-const Header = ({ children }: { children: ReactNode }) => {
-  return <div className="text-center p-4">{children}</div>;
+const Header = ({ className, children }: { className?: string, children: ReactNode }) => {
+  return <div className={`${className}`}>{children}</div>;
 };
 
-const Title = ({ children }: { children: ReactNode }) => {
-  return <h2 className="text-2xl font-bold">{children}</h2>;
+const Title = ({ children, className }: { children: ReactNode, className?: string }) => {
+  return <h2 className={`${className}`}>{children}</h2>;
 };
 
-const ButtonSection = ({ children }: { children: ReactNode }) => {
-  return <div className="mt-4 flex justify-center gap-4">{children}</div>;
+const ButtonSection = ({ children, className }: { children: ReactNode, className?: string }) => {
+  return <div className={`${className}`}>{children}</div>;
 };
 
-const TextSection = ({ children }: { children: ReactNode }) => {
-  return <div className="mt-4 flex justify-center gap-4">{children}</div>;
+const TextSection = ({ children, className }: { children: ReactNode, className?: string }) => {
+  return <div className={`${className}`}>{children}</div>;
 };
 
 const Body = ({
   children,
   register,
+  className
 }: {
   children: ReactNode;
   register?: any;
+  className?:string
 }) => {
   return (
-    <div className="flex flex-col justify-center">
+    <div className={`${className}`}>
       {Array.isArray(children)
         ? children.map((child) => {
             return child.props.name
@@ -61,7 +64,7 @@ const Body = ({
 };
 
 const ErrorSection = ({ children }: { children: ReactNode }) => {
-  return <span className="text-red text-lg text-center ">{children}</span>;
+  return <span className="text-red text-lg text-center">{children}</span>;
 };
 
 Form.Header = Header;

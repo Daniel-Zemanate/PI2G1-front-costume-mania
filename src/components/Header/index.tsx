@@ -33,8 +33,8 @@ const Header = () => {
           {session?.user ? (
             <div className="flex flex-col justify-center items-center">
               <span className="flex gap-6">
-                <NavLink route="/user-info" textColor="white">
-                  Welcome, {session.user.name}
+                <NavLink route="/account" textColor="white">
+                  Welcome, <span className="text-orange-2">{session.user.name}</span>
                 </NavLink>
                 <NavLink route="/" textColor="white" className="text-2xl">
                   <AiOutlineShoppingCart />

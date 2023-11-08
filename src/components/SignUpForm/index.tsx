@@ -47,17 +47,17 @@ function SignUpForm() {
   const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Form.Header>
-        <Form.Title>Create account</Form.Title>
-        <Form.TextSection>
+    <Form onSubmit={onSubmit} className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto">
+      <Form.Header className="text-center p-4">
+        <Form.Title className="text-2xl font-bold">Create account</Form.Title>
+        <Form.TextSection className="mt-4 flex justify-center gap-4">
           <span>
             Already have an account?{" "}
             <NavLink label="Log in" route="/auth/login" textColor="purple-2" />
           </span>
         </Form.TextSection>
       </Form.Header>
-      <Form.Body register={register}>
+      <Form.Body register={register}  className="flex flex-col justify-center">
         <FormInput
           name="firstName"
           label="First Name"
@@ -99,7 +99,7 @@ function SignUpForm() {
           error={errors.passwordConfirmation?.message}
         />
       </Form.Body>
-      <Form.ButtonSection>
+      <Form.ButtonSection className="mt-4 flex justify-center gap-4">
         <Button
           label="Cancel"
           to="/"

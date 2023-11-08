@@ -10,6 +10,9 @@ module.exports = {
       },
       spacing:{
         '1.225rem': '1.225rem'
+      },
+      flex: {
+        '2': '2 2 0%'
       }
     },
     colors:{

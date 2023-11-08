@@ -15,6 +15,7 @@ const FormInput: FC<InputProps> = ({
   error,
   label,
   wrapperClass,
+  className,
   ...rest
 }) => {
 
@@ -25,7 +26,7 @@ const FormInput: FC<InputProps> = ({
         aria-invalid={error ? "true" : "false"}
         {...register(name)}
         {...rest}
-        className="w-full rounded py-1 px-2"
+        className={`${className} w-full rounded py-1 px-2`}
       />
       <small className="h-5 overflow-hidden whitespace-nowrap text-overflow-ellipsis block self-end text-red">
         {error}

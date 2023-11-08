@@ -4,8 +4,7 @@
   border-radius: 4px;
   padding: 16px 8px;
   width: 150px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .secondary {
@@ -15,8 +14,7 @@
   border-radius: 4px;
   padding: 16px 8px;
   width: 150px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .primary:hover {

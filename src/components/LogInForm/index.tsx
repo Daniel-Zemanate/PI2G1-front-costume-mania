@@ -32,11 +32,11 @@ function LogInForm() {
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
-    const result = await signIn("credentials", {
+    const result = (await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
-    }) as any;
+    })) as any;
 
     if (result?.ok) {
       router.push("/");
@@ -46,20 +46,27 @@ function LogInForm() {
   });
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Form.Header>
-        <Form.Title>Log in</Form.Title>
-        <Form.TextSection>
+    <Form
+      onSubmit={onSubmit}
+      className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto"
+    >
+      <Form.Header className="text-center p-4">
+        <Form.Title className="text-2xl font-bold">Log in</Form.Title>
+        <Form.TextSection className="mt-4 flex justify-center gap-4">
           <span>
             Don&apos;t have an account?{" "}
-            <NavLink label="Sign up" route="/signup" textColor="purple-2" />
+            <NavLink
+              label="Sign up"
+              route="/auth/signup"
+              textColor="purple-2"
+            />
           </span>
         </Form.TextSection>
       </Form.Header>
 
       <Form.Errors>{error}</Form.Errors>
 
-      <Form.Body register={register}>
+      <Form.Body register={register} className="flex flex-col justify-center">
         <FormInput
           name="email"
           type="email"
@@ -81,12 +88,12 @@ function LogInForm() {
         Forgot password?{" "}
         <NavLink
           label="Recover"
-          route="/password-recovery"
+          route="/auth/password-recovery"
           textColor="purple-2"
         />
       </p>
 
-      <Form.ButtonSection>
+      <Form.ButtonSection className="mt-4 flex justify-center gap-4">
         <Button
           label="Cancel"
           to="/"

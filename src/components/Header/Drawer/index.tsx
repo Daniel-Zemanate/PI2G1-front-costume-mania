@@ -65,7 +65,7 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
           </div>
           {session?.user && (
             <div className="flex items-center justify-between bg-orange-2 px-3">
-              <NavLink route="/user-info" textColor="black">
+              <NavLink route="/account" textColor="black">
                 Welcome, {session.user.name}
               </NavLink>
               <Button
