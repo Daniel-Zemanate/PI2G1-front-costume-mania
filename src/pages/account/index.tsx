@@ -66,9 +66,9 @@ function AccountPage() {
           listClasses="hover:underline mx-2 font-bold"
           capitalizeLinks
         />
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           {user && <AccountDetailsForm className="flex-2" account={user} />}
-          <aside className="flex flex-col h-full justify-between gap-6 flex-1 ml-12">
+          <aside className="flex flex-col h-full justify-between gap-6 flex-1 m-0 md:ml-12">
             <Favorites />
             <Purchases />
           </aside>
