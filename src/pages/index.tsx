@@ -1,11 +1,10 @@
 import Head from "next/head";
-import styles from "@/styles/Home.module.css";
 import { GetServerSideProps, NextPage } from "next";
 import {
   getPopularCostumes,
   getNewCostumes,
 } from "@/services/costumes.service";
-import { Costume } from "@/interfaces/costume";
+import { ApiCostume, Category, Costume } from "@/interfaces/costume";
 import Banner from "@/components/MainBanner";
 import HomeSection from "@/components/HomeSection";
 import InfoBanner from "@/components/InfoBanner";
@@ -16,13 +15,12 @@ import spot2 from "@assets/spot2.png";
 import custome2 from "@assets/custome2.png";
 import RootLayout from "@/layouts/rootLayout";
 import CategoriesBanner from "@/components/CategoriesBanner";
-import { getAllCategories } from "@/services/categories.service";
+import { getCategories } from "@/services/categories.service";
 
 interface Props {
-  newCostumes: Costume[];
-  popularCostumes: Costume[];
-  categories: Costume[];
-  // categories: Category[];
+  newCostumes: ApiCostume[];
+  popularCostumes: ApiCostume[];
+  categories: Category[];
 }
 
 const bannersInfo = [
@@ -40,7 +38,11 @@ const bannersInfo = [
   },
 ];
 
-const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes, categories }) => {
+const HomePage: NextPage<Props> = ({
+  newCostumes,
+  popularCostumes,
+  categories,
+}) => {
   return (
     <RootLayout>
       <Head>
@@ -55,17 +57,17 @@ const HomePage: NextPage<Props> = ({ newCostumes, popularCostumes, categories })
       <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
         <CostumesSection title="Popular Models" costumes={popularCostumes} />
       </HomeSection>
-      <HomeSection>
-        <InfoBanner {...bannersInfo[0]} />
+      <HomeSection additionalClasses="bg-opacity-20">
+        <CategoriesBanner
+          title="Categories"
+          categories={categories}
+        ></CategoriesBanner>
       </HomeSection>
       <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
         <CostumesSection title="New Arrivals" costumes={newCostumes} />
       </HomeSection>
       <HomeSection>
-        <InfoBanner {...bannersInfo[1]} />
-      </HomeSection>
-      <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-        <CategoriesBanner title="All categories" categories={categories}></CategoriesBanner>
+        <InfoBanner {...bannersInfo[0]} />
       </HomeSection>
     </RootLayout>
   );
@@ -75,8 +77,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   res,
 }) => {
-  const { page = 1 } = query;
-
   res.setHeader(
     "Cache-Control",
     "public, s-maxage=10, stale-while-revalidate=59"
@@ -84,13 +84,13 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const popularCostumes = await getPopularCostumes();
   const newCostumes = await getNewCostumes();
-  const categories = await getAllCategories();
+  const categories = await getCategories();
 
   return {
     props: {
       newCostumes,
       popularCostumes,
-      categories
+      categories,
     },
   };
 };

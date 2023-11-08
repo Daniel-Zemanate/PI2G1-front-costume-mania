@@ -2,7 +2,7 @@ import React from "react";
 import { CostumeCard } from "@/components/Costumes";
 import { Frijole } from "next/font/google";
 import Carousel from "../Carousel";
-import { Costume } from "@/interfaces/costume";
+import { ApiCostume, Costume } from "@/interfaces/costume";
 import styles from './styles.module.css'
 
 const frijole = Frijole({
@@ -12,7 +12,7 @@ const frijole = Frijole({
 
 type Props = {
   title: string,
-  costumes: Costume[]
+  costumes: ApiCostume[]
 }
 
 function CostumesSection({title, costumes}: Props) {
@@ -22,7 +22,7 @@ function CostumesSection({title, costumes}: Props) {
       <div className="py-2 overflow-visible">
         <Carousel>
           {costumes.map((item) => (
-            <CostumeCard key={item.id} costume={item} />
+            <CostumeCard key={item.idModel} costume={item} />
           ))}
         </Carousel>
       </div>
