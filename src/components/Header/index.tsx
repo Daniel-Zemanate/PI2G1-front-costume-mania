@@ -5,9 +5,12 @@ import SearchBar from "../SearchBar";
 import NavLink from "../NavLink/NavLink";
 import { useState } from "react";
 import Drawer from "./Drawer";
-import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiOutlineMenu,
+  AiOutlineShoppingCart,
+  AiOutlineUser,
+} from "react-icons/ai";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Button from "../Button";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +19,7 @@ const Header = () => {
 
   return (
     <div className="fixed top-0 w-full bg-purple-1 shadow-lg border-b-2 border-gray-500 z-50 h-24">
-      <div className="flex items-center justify-between gap-4 container mx-auto px-6 md:px-4 items-center w-full">
+      <div className="flex items-center justify-between gap-8 lg:gap-24 container mx-auto px-6 md:px-4 items-center w-full">
         <Link href="/" className="h-full flex items-center min-w-[100px]">
           <Image src={logo} alt="Costume Mania logo" width={100} height={100} />
         </Link>
@@ -29,40 +32,45 @@ const Header = () => {
             <NavLink label="About us" route="/contact" textColor="white" />
           </nav>
         </div>
-        <nav className="flex space-x-4 items-center hidden md:flex pt-2">
-          {session?.user ? (
-            <div className="flex flex-col justify-center items-center">
-              <span className="flex gap-6">
-                <NavLink route="/account" textColor="white">
-                  Welcome, <span className="text-orange-2">{session.user.name}</span>
+        <nav className="flex items-center hidden md:flex w-full lg:w-1/2 gap-8 justify-between">
+          <span className="flex text-white w-48 justify-between gap-2 xl:gap-6">
+            {session?.user ? (
+              <>
+                <NavLink
+                  route="/account"
+                  textColor="white"
+                  className="flex items-center gap-2"
+                >
+                  <span className="text-2xl">
+                    <AiOutlineUser />
+                  </span>
+                  <span className="flex text-orange-2">
+                    {session.user.name}
+                  </span>
                 </NavLink>
-                <NavLink route="/" textColor="white" className="text-2xl">
-                  <AiOutlineShoppingCart />
+                |
+                <button
+                  onClick={() => signOut()}
+                  className="text-white whitespace-nowrap"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <button onClick={() => signIn()} className="text-white">
+                  Log in
+                </button>
+                |
+                <NavLink route="/auth/signup" textColor="white">
+                  Sign up
                 </NavLink>
-              </span>
-              <Button
-                label="Sign out"
-                buttonStyle="secondary"
-                size="small"
-                onClick={() => signOut()}
-              />
-            </div>
-          ) : (
-            <>
-              <Button
-                label="Log in"
-                buttonStyle="secondary"
-                size="small"
-                onClick={() => signIn()}
-              />
-              <Button
-                label="Sign up"
-                buttonStyle="primary"
-                size="small"
-                to="/auth/signup"
-              />
-            </>
-          )}
+              </>
+            )}
+          </span>
+          <NavLink route="/" textColor="white" className="text-3xl">
+            <AiOutlineShoppingCart />
+          </NavLink>
         </nav>
         <button
           onClick={() => setIsOpen(true)}
@@ -74,11 +82,6 @@ const Header = () => {
           <NavLink label="Costumes" route="/costumes" textColor="black" />
           <NavLink label="Popular Models" route="/about" textColor="black" />
           <NavLink label="On Sale" route="/contact" textColor="black" />
-          <NavLink
-            label="Customer Service"
-            route="/contact"
-            textColor="black"
-          />
           <NavLink label="About us" route="/contact" textColor="black" />
         </Drawer>
       </div>

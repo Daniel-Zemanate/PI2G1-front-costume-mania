@@ -41,12 +41,12 @@ const CategoriesBanner: FC<Props> = ({ title, categories }) => {
                 className="h-48 rounded-t-xl"
                 alt={item.name}
                 fill
-                objectFit="cover"
+                style={{objectFit: 'cover'}}
               />
             </div>
             <div className={`${styles.titleContainer}`}>
               <h4
-                className={`${frijole.className} text-4xl sm:text-2xl md:text-2xl lg:text-3xl text-orange-2 text-center`}
+                className={`${frijole.className} text-xl sm:text-2xl md:text-2xl lg:text-3xl text-orange-2 text-center`}
                 style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}
               >
                 {item.name}

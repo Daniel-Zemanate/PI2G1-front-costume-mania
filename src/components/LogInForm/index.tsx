@@ -6,8 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Form from "../Form";
 import Button from "../Button";
 import NavLink from "../NavLink/NavLink";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 // validation
 const LogInSchema = yup.object().shape({
@@ -38,7 +39,16 @@ function LogInForm() {
       redirect: false,
     })) as any;
 
+    console.log(result);
+
     if (result?.ok) {
+      const session = await getSession();
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful!",
+        text: `Welcome back, ${session?.user?.name}!`,
+      });
       router.push("/");
     } else {
       setError(result?.error);

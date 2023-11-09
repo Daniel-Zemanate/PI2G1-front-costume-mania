@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
-import { AiOutlineClose, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiOutlineClose,
+  AiOutlineShoppingCart,
+  AiOutlineUser,
+} from "react-icons/ai";
 import Link from "next/link";
 import logoText from "@assets/logo-text.png";
 import Image from "next/image";
@@ -65,8 +69,15 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
           </div>
           {session?.user && (
             <div className="flex items-center justify-between bg-orange-2 px-3">
-              <NavLink route="/account" textColor="black">
-                Welcome, {session.user.name}
+              <NavLink
+                route="/account"
+                textColor="white"
+                className="flex items-center gap-2"
+              >
+                <span className="text-2xl">
+                  <AiOutlineUser />
+                </span>
+                <span className="flex">{session.user.name}</span>
               </NavLink>
               <Button
                 label="Sign out"
