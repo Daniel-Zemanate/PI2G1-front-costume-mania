@@ -19,7 +19,7 @@ const SearchBar = () => {
       const search = current.toString()
       router.push(`${pathname}?${search}`)
     } else{
-      router.push("/costumes", {query: {search: searchValue}})
+      router.push({pathname: '/costumes' ,query: {search: searchValue}})
     }
   }
 

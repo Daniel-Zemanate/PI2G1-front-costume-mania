@@ -1,6 +1,6 @@
 export const costumes = [
   {
-    id: 1,
+    idModel: 1,
     name: "Elsa from Frozen",
     price: 46.0,
     urlImage:
@@ -17,10 +17,14 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
 
   {
-    id: 2,
+    idModel: 2,
     name: "Batman Costume",
     price: 39.99,
     urlImage:
@@ -37,9 +41,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 3,
+    idModel: 3,
     name: "Snow White Costume",
     price: 55.5,
     urlImage:
@@ -56,9 +64,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 4,
+    idModel: 4,
     name: "Pirate Costume",
     price: 29.99,
     urlImage:
@@ -75,9 +87,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 5,
+    idModel: 5,
     name: "Jack Sparrow",
     price: 29.99,
     urlImage:
@@ -94,9 +110,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 6,
+    idModel: 6,
     name: "Increble child",
     price: 29.99,
     urlImage:
@@ -113,9 +133,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 7,
+    idModel: 7,
     name: "Mario Bros",
     price: 29.99,
     urlImage:
@@ -132,9 +156,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 8,
+    idModel: 8,
     name: "Mario Bros",
     price: 29.99,
     urlImage:
@@ -151,9 +179,13 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 9,
+    idModel: 9,
     name: "Red riding hood",
     price: 85.99,
     urlImage:
@@ -170,9 +202,13 @@ export const costumes = [
         sizeDescription: "Sample Size 2",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
   {
-    id: 10,
+    idModel: 10,
     name: "Princess Peach",
     price: 150.99,
     urlImage:
@@ -189,5 +225,9 @@ export const costumes = [
         sizeDescription: "Sample Size 4",
       },
     ],
+    category: {
+      idCategory: 1,
+      name: "dummy"
+    }
   },
 ];

@@ -16,7 +16,7 @@ export interface Size {
 export interface ApiCostume {
     idModel:  number;
     name:     string;
-    urlImage: null;
+    urlImage: string | null;
     category: Category;
     sizes:    ApiSize[];
     price: number;

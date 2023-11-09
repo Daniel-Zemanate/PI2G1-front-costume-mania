@@ -1,4 +1,4 @@
-import { ApiResponse } from "@/interfaces/costume";
+import { ApiCostume } from "@/interfaces/costume";
 
 export const getCostume = async (costumeId: number) => {
     const url = `${process.env.URL_LOCAL}/api/costumes/${costumeId}`
@@ -6,7 +6,7 @@ export const getCostume = async (costumeId: number) => {
     return await response.json();
 }
 
-export const getCostumes = async (query: any): Promise<ApiResponse> => {
+export const getCostumes = async (query: any): Promise<ApiCostume[]> => {
     const params = new URLSearchParams()
     const {category, search, size} = query
 
