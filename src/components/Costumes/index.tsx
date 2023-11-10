@@ -14,7 +14,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   const { data: session } = useSession();
 
   const router = useRouter();
-  const [favs, setFavs] = useState<ApiCostume[]>([])
+  const [favs, setFavs] = useState<ApiCostume[]>([]);
 
   useEffect(() => {
     const favs = localStorage.getItem("favs");
@@ -22,28 +22,32 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   }, []);
 
   const handleFavClick = () => {
-    if (!session) router.push("/auth/login");
+    if (!session) {
+      router.push("/auth/login");
+      return;
+    }
+    console.log(costume)
     const favs = localStorage.getItem("favs");
     if (!favs) {
       const newFavs = [costume];
       localStorage.setItem("favs", JSON.stringify(newFavs));
-      setFavs(newFavs); 
+      setFavs(newFavs);
       return;
     }
     const existingFavs = JSON.parse(favs);
     existingFavs.push(costume);
     localStorage.setItem("favs", JSON.stringify(existingFavs));
-    setFavs(existingFavs); 
+    setFavs(existingFavs);
   };
 
   const handleFavRemove = () => {
     const favs = localStorage.getItem("favs");
     if (!favs) return;
-    const existingFavs: ApiCostume[] = JSON.parse(favs)
-    const newFavs = existingFavs.filter(e => e.idModel !== costume.idModel)
-    localStorage.setItem("favs", JSON.stringify(newFavs))
-    setFavs(newFavs); 
-  }
+    const existingFavs: ApiCostume[] = JSON.parse(favs);
+    const newFavs = existingFavs.filter((e) => e.idModel !== costume.idModel);
+    localStorage.setItem("favs", JSON.stringify(newFavs));
+    setFavs(newFavs);
+  };
 
   return (
     <>
@@ -61,7 +65,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
           </p>
           <div className="flex items-center">
             <p className="text-lg text-black cursor-auto my-3">
-              ${costume.price}
+              $ {costume.price.toFixed(2)}
             </p>
           </div>
           <div className="flex items-center">
@@ -78,11 +82,19 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             <Button label="Add to Cart" buttonStyle="primary" size="small" />
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
-              onClick={favs.some(e => e.idModel === costume.idModel) ? handleFavRemove : handleFavClick}
+              onClick={
+                favs.some((e) => e.idModel === costume.idModel)
+                  ? handleFavRemove
+                  : handleFavClick
+              }
             >
               <svg
                 className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
-                fill={favs.some(e => e.idModel === costume.idModel) ? "white" : "none"}
+                fill={
+                  favs.some((e) => e.idModel === costume.idModel)
+                    ? "white"
+                    : "none"
+                }
                 viewBox="0 0 24 24"
                 stroke="white"
               >

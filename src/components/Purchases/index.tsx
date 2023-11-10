@@ -28,7 +28,7 @@ function Purchases() {
         Purchases
       </h3>
 
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-4 px-4">
         {purchases.map((item, index) => (
           <li key={index} className="flex justify-between">
             <div>

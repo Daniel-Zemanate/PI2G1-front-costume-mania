@@ -18,10 +18,10 @@ function Footer() {
         <div>
           <nav className="flex flex-col md:flex-row md:space-x-4 justify-end w-full py-4 gap-2">
             <NavLink label="Home" route="/" textColor="black" />
-            <NavLink label="Models" route="/about" textColor="black" />
-            <NavLink label="Sale" route="/contact" textColor="black" />
-            <NavLink label="Cart" route="/contact" textColor="black" />
-            <NavLink label="Customer Service" route="/contact" textColor="black" />
+            <NavLink label="Models" route="/" textColor="black" />
+            <NavLink label="Sale" route="/" textColor="black" />
+            <NavLink label="Cart" route="/" textColor="black" />
+            <NavLink label="Customer Service" route="/" textColor="black" />
           </nav>
           <div className="flex w-full justify-end gap-4">
             <FaInstagram />

@@ -30,11 +30,11 @@ export const authOptions: NextAuthOptions = {
         //   return user
         // } else return null
 
-        if (email === "abc@mail.com" && password === "123456") {
+        if (email === "leomessi@mail.com" && password === "123456") {
           return {
             id: 1,
-            email: "abc@mail.com",
-            name: "Martín Rosas"
+            email: "leomessi@mail.com",
+            name: "Lionel Messi"
           } as any;
         } else {
           throw new Error('The credentials are invalid')

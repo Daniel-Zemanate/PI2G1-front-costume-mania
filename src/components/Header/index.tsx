@@ -27,9 +27,9 @@ const Header = () => {
           <SearchBar />
           <nav className="flex space-x-4 mt-2 hidden md:block">
             <NavLink label="Costumes" route="/costumes" textColor="white" />
-            <NavLink label="Popular Models" route="/about" textColor="white" />
-            <NavLink label="On Sale" route="/contact" textColor="white" />
-            <NavLink label="About us" route="/contact" textColor="white" />
+            <NavLink label="Popular Models" route="/" textColor="white" />
+            <NavLink label="On Sale" route="/" textColor="white" />
+            <NavLink label="About us" route="/" textColor="white" />
           </nav>
         </div>
         <nav className="flex items-center hidden md:flex w-full lg:w-1/2 gap-8 justify-between">
@@ -44,7 +44,7 @@ const Header = () => {
                   <span className="text-2xl">
                     <AiOutlineUser />
                   </span>
-                  <span className="flex text-orange-2">
+                  <span className="flex text-orange-2 font-bold">
                     {session.user.name}
                   </span>
                 </NavLink>
@@ -80,9 +80,9 @@ const Header = () => {
         </button>
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
           <NavLink label="Costumes" route="/costumes" textColor="black" />
-          <NavLink label="Popular Models" route="/about" textColor="black" />
-          <NavLink label="On Sale" route="/contact" textColor="black" />
-          <NavLink label="About us" route="/contact" textColor="black" />
+          <NavLink label="Popular Models" route="/" textColor="black" />
+          <NavLink label="On Sale" route="/" textColor="black" />
+          <NavLink label="About us" route="/" textColor="black" />
         </Drawer>
       </div>
     </div>
