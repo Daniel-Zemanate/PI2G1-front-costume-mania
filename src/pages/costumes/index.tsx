@@ -10,6 +10,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
 import { GetServerSideProps } from "next";
 import { getCostumes } from "@/services/costumes.service";
+import SearchBar from "@/components/SearchBar";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -46,6 +47,11 @@ function CostumesPage({ costumes, categories }: Props) {
           capitalizeLinks
         />
         <div className="flex flex-col md:flex-row md:justify-between w-full gap-4 my-4">
+          <SearchBar
+            className="block md:hidden border-2"
+            inputClassName=" focus:outline-none"
+            buttonClassName="bg-white text-purple-1"
+          />
           <Filters categories={categories} />
           <CostumesList costumes={costumes} />
         </div>

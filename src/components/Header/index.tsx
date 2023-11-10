@@ -24,7 +24,7 @@ const Header = () => {
           <Image src={logo} alt="Costume Mania logo" width={100} height={100} />
         </Link>
         <div className="w-full hidden md:block">
-          <SearchBar />
+          <SearchBar inputClassName="border-0 focus:outline-none rounded-r-none" buttonClassName="bg-white text-purple-1" />
           <nav className="flex space-x-4 mt-2 hidden md:block">
             <NavLink label="Costumes" route="/costumes" textColor="white" />
             <NavLink label="Popular Models" route="/" textColor="white" />

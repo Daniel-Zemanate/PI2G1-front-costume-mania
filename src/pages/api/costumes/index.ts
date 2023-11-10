@@ -18,6 +18,8 @@ export default async function handler(
       if (size) url += `/bySize/${size}`;
     }
 
+    console.log(url)
+
     const response = await fetch(url);
     const data = await response.json();
 

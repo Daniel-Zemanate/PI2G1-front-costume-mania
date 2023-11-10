@@ -1,39 +1,53 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SearchBar = () => {
-  const [searchValue, setSearchValue] = useState("");
+type Props = {
+  className?: string;
+  inputClassName?: string;
+  buttonClassName?: string;
+};
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
+const SearchBar = ({ className, inputClassName, buttonClassName }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") || ""
+  );
+
+  useEffect(() => {
+    setSearchValue(searchParams.get("search") || "");
+  }, [searchParams]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if(pathname === "/costumes"){     
+    if (pathname === "/costumes") {
       const current = new URLSearchParams(Array.from(searchParams.entries()));
-      current.set("search", searchValue)
-      const search = current.toString()
-      router.push(`${pathname}?${search}`)
-    } else{
-      router.push({pathname: '/costumes' ,query: {search: searchValue}})
+      current.set("search", searchValue);
+      const search = current.toString();
+      router.push(`${pathname}?${search}`);
+    } else {
+      router.push({ pathname: "/costumes", query: { search: searchValue } });
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex rounded-lg w-full">
+    <form
+      onSubmit={handleSubmit}
+      className={`flex rounded-lg w-full ${className}`}
+    >
       <div className="flex rounded-md overflow-hidden w-full shadow-inner">
         <input
-          className="w-full h-full border-0 focus:outline-none  focus:border-blue-500 rounded-r-none p-2 px-4"
+          className={`w-full h-full p-2 px-4 ${inputClassName}`}
           type="text"
           placeholder="Search..."
           value={searchValue}
           onChange={(event) => setSearchValue(event.target.value)}
         />
-        <button type="submit" className="bg-white text-purple-1 h-full px-2">
+        <button type="submit" className={`h-full px-2 ${buttonClassName}`}>
           <FaSearch />
         </button>
       </div>
