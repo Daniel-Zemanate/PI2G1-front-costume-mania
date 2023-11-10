@@ -5,12 +5,14 @@ import Button from "../Button";
 import logoText from "@assets/logo-text.png";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import styles from "./styles.module.css";
 
 interface Props {
   costume: ApiCostume;
 }
 
-export const CostumeCard: FC<Props> = ({ costume }) => {
+
+export const CostumeCardDetail: FC<Props> = ({ costume }) => {
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -50,40 +52,55 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   };
 
   const handleImageClick = () => {
-    router.push(`/costume/${costume.idModel}`);
+    router.push(`/costumes/${costume.idModel}`);
   };
 
   return (
     <>
-      <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-white">
-        <Image
+  <div className={`${styles.container} bg-white px-16 py-8 my-8 rounded-lg flex max-w-screen-lg min-w-[33%] m-auto`}>
+        <Image 
           src={costume.urlImage || logoText}
-          className="h-48 w-80 object-scale-down rounded-t-xl"
+          className={`${styles.image} object-scale-down rounded-lg`}
           alt={costume.name}
           height={320}
           width={288}
           onClick={handleImageClick}
         />
-        <div className="px-4 py-3 w-64">
-          <p className="text-lg font-bold text-black truncate block capitalize">
-            {costume.name}
-          </p>
-          <div className="flex items-center">
-            <p className="text-lg text-black cursor-auto my-3">
-              $ {costume.price.toFixed(2)}
-            </p>
-          </div>
-          <div className="flex items-center">
+        <div className="px-4 py-3 w-auto">
+          <section  className={`${styles.serctionContainer} w-full md:w-3/5 text-left`}>
+            <h1 className="text-2xl md:text-5xl font-bold tracking-wider tracking-widest mb-4">{costume.name}</h1>
+            <p className="text-base sm:text-2xl">{costume.name}</p>
+          </section>
+          <section  className={`${styles.serctionContainer} w-full md:w-3/5 text-left`}>
+            <p className="text-base sm:text-2xl font-bold" >Size</p>
+            <div className="flex items-center">
             {costume.sizes?.map((size) => (
               <div
                 key={size.noSize}
-                className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
-              >
+                className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 rounded-lg border-2 border-purple-2 border-primary dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
+                style={{width: '50px', height: '50px'}}
+                >
                 {size.noSize}
               </div>
             ))}
-          </div>
-          <div className="flex items-center justify-between">
+            </div>
+          </section>
+          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
+            <p className="text-base sm:text-2xl font-bold">Quantity</p>
+            <input type="number" defaultValue={0} style={{width:'50px' , border:'solid 1px'}} className="text-lg font-bold text-black  rounded-lg border-2 border-purple-2 border-primary truncate block capitalize text-right"/>
+              
+             
+          </section>
+          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
+              <p className="text-base sm:text-2xl font-bold"> Price</p>
+
+              <p className="text-base sm:text-2xl font-bold">
+              ${costume.price.toFixed(2)}
+             </p>
+          </section>
+          
+          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
+
             <Button label="Add to Cart" buttonStyle="primary" size="small" />
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
@@ -111,7 +128,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
                 />
               </svg>
             </button>
-          </div>
+          </section>
         </div>
       </div>
     </>

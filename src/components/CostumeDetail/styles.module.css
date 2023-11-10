@@ -1,0 +1,49 @@
+.container{
+  justify-content: left;
+  width: auto;
+  gap: 50px;
+  padding:20px
+}
+
+.serctionContainer{
+  width: 100%;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.serctionContainer2{
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  margin-bottom: 30px;
+  align-items: center;
+  
+}
+
+@media (max-width: 700px) {
+  .container{
+    flex-direction: column;
+    gap: 10px;
+
+  }
+
+  .serctionContainer{
+    align-items: center;
+    gap: 10px;
+  }
+
+  .serctionContainer2{
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .image{
+    width: 150px;
+    align-self: center;
+  }
+}
+
+@media (min-width: 700px) {
+}

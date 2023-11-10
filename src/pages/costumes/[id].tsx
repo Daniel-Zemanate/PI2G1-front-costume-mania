@@ -1,11 +1,23 @@
+import { CostumeCardDetail } from "@/components/CostumeDetail";
+import CostumesSection from "@/components/CostumesSection";
+import HomeSection from "@/components/HomeSection";
+import { ApiCostume } from "@/interfaces/costume";
 import RootLayout from "@/layouts/rootLayout";
+import { getCostume, getPopularCostumes } from "@/services/costumes.service";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 
-function CostumePage() {
+interface Props {
+  costume: ApiCostume;
+  popularCostumes: ApiCostume[];
+
+}
+
+function CostumePage({ costume,popularCostumes }: Props) {
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = router.query;  
   return (
     <RootLayout>
       <Head>
@@ -14,9 +26,30 @@ function CostumePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>Costume ID: {id}</div>;
+      {/* <div>Costume ID: {costume.idModel}</div> */}
+      <HomeSection additionalClasses="bg-opacity-20">
+      <CostumeCardDetail costume={costume}></CostumeCardDetail>
+      </HomeSection>
+      <HomeSection>
+        <h1 className="text-2xl md:text-3xl font-bold tracking-wider tracking-widest mb-4 text-center">More items to explore</h1>
+      <CostumesSection title="" costumes={popularCostumes} />
+      </HomeSection>
     </RootLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const costumeId = parseInt(query.id as string, 10);
+  const costume: ApiCostume = await getCostume(costumeId);
+  const popularCostumes = await getPopularCostumes();
+ 
+  console.log(costume)
+  return {
+    props: {
+      costume,
+      popularCostumes,
+    },
+  };
+};
 
 export default CostumePage;
