@@ -50,7 +50,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   };
 
   const handleImageClick = () => {
-    router.push(`/costume/${costume.idModel}`);
+    router.push(`/costumes/${costume.idModel}`);
   };
 
   return (
