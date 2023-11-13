@@ -11,6 +11,8 @@ import { AiOutlineHome } from "react-icons/ai";
 import { GetServerSideProps } from "next";
 import { getCostumes } from "@/services/costumes.service";
 import SearchBar from "@/components/SearchBar";
+import Spinner from "@/components/Spinner";
+import useCostumesQuery from "@/hooks/useCostumesQuery";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -23,6 +25,8 @@ type Props = {
 };
 
 function CostumesPage({ costumes, categories }: Props) {
+  const { data, isRefetching, isError, isLoading } = useCostumesQuery(costumes);
+
   return (
     <RootLayout>
       <Head>
@@ -52,8 +56,9 @@ function CostumesPage({ costumes, categories }: Props) {
             inputClassName=" focus:outline-none"
             buttonClassName="bg-white text-purple-1"
           />
+
           <Filters categories={categories} />
-          <CostumesList costumes={costumes} />
+          {isRefetching ? <Spinner /> : <CostumesList costumes={data} />}
         </div>
       </section>
     </RootLayout>

@@ -8,6 +8,8 @@ import {
   AiOutlinePlus as PlusIcon,
   AiOutlineDelete as DeleteIcon,
 } from "react-icons/ai";
+import useCostumesQuery from "@/hooks/useCostumesQuery";
+import SearchBar from "../SearchBar";
 
 type Props = {
   categories: Category[];
@@ -27,21 +29,26 @@ const sizes = [
 function Filters({ categories }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { refetch } = useCostumesQuery();
 
   const handleClick = (key: string, value: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.set(key, value);
     const search = current.toString();
-    router.push(`${router.pathname}?${search}`);
+    router
+      .push(`${router.pathname}?${search}`, undefined, { shallow: true })
+      .then(() => refetch());
   };
 
   const handleResetFilters = () => {
-    router.push(router.pathname);
+    router
+      .push(`${router.pathname}`, undefined, { shallow: true })
+      .then(() => refetch());
   };
 
   return (
     <aside className="self-start w-full md:max-w-[12rem] lg:max-w-[15rem] xl:max-w-[20rem] rounded-lg md:px-4 px-8 shadow-lg">
-      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:texl-xl lg:text-2xl py-5 font-bold">
+      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:texl-xl lg:text-2xl py-3 font-bold">
         <h3>Filters</h3>
         {searchParams.toString() && (
           <button onClick={handleResetFilters} className="text-2xl">
@@ -49,6 +56,15 @@ function Filters({ categories }: Props) {
           </button>
         )}
       </span>
+
+      <div className="border-gray-200 py-4 my-2">
+        <SearchBar
+          className="border-2"
+          inputClassName="border-0 focus:outline-none rounded-r-none"
+          buttonClassName="bg-white text-purple-1"
+        />
+      </div>
+
       <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
         {({ open }) => (
           <>

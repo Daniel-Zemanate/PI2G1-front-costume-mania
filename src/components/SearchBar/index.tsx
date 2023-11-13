@@ -1,3 +1,4 @@
+import useCostumesQuery from "@/hooks/useCostumesQuery";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -21,6 +22,8 @@ const SearchBar = ({ className, inputClassName, buttonClassName }: Props) => {
     setSearchValue(searchParams.get("search") || "");
   }, [searchParams]);
 
+  const { refetch } = useCostumesQuery();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -28,7 +31,7 @@ const SearchBar = ({ className, inputClassName, buttonClassName }: Props) => {
       const current = new URLSearchParams(Array.from(searchParams.entries()));
       current.set("search", searchValue);
       const search = current.toString();
-      router.push(`${pathname}?${search}`);
+      router.push(`${router.pathname}?${search}`, undefined, { shallow: true }).then(() => refetch());
     } else {
       router.push({ pathname: "/costumes", query: { search: searchValue } });
     }
