@@ -1,24 +1,20 @@
 import React from "react";
+import Header from '@/components/Header'
 import Footer from "@/components/Footer";
-import Link from "next/link";
-import logo from "@assets/logo.png";
-import Image from "next/image";
+import { Raleway } from "next/font/google";
 
-export default function SimpleLayout({
+const raleway = Raleway({ subsets: ["latin"] });
+
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col ">
-      <Link href="/" className="self-center">
-        <Image src={logo} alt="Costume Mania logo" width={80} height={40} />
-      </Link>
-
-      <main className="flex-grow main flex flex-col justify-between items-center py-4 px-5 my-8">
-        {children}
-      </main>
+    <>
+      <Header simple/>
+      <main className={`mt-16 ${raleway.className} flex flex-col justify-between items-center min-h-[65vh] w-full`}>{children}</main>
       <Footer />
-    </div>
+    </>
   );
 }

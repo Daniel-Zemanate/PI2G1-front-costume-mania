@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { fetchDummyUserData } from "@/utils/user";
 import Favorites from "@/components/Favorites";
 import Purchases from "@/components/Purchases";
+import { Tab } from "@headlessui/react";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -26,7 +27,7 @@ export interface UserData {
   city: string;
   zipCode: string;
   country: string;
-  password: string
+  password: string;
 }
 
 function AccountPage() {
@@ -43,6 +44,8 @@ function AccountPage() {
     setUser(userData);
   }, [session]);
 
+  const tabs = ["Account", "Favorites", "Purchases"];
+
   return (
     <RootLayout>
       <Head>
@@ -56,7 +59,7 @@ function AccountPage() {
           className={`${frijole.className} text-5xl py-4 md:py-6 text-orange-2`}
           style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}
         >
-          Account details
+          Account
         </h1>
         <Breadcrumbs
           homeElement={<AiOutlineHome />}
@@ -66,12 +69,41 @@ function AccountPage() {
           listClasses="hover:underline mx-2 font-bold"
           capitalizeLinks
         />
-        <div className="flex flex-col md:flex-row">
-          {user && <AccountDetailsForm className="flex-2" account={user} />}
-          <aside className="flex flex-col h-full justify-between gap-6 flex-1 m-0 md:ml-12">
-            <Favorites />
-            <Purchases />
-          </aside>
+        <div>
+          <Tab.Group>
+            <Tab.List className="flex flex-row space-x-1 bg-purple-3 bg-opacity-50 md:text-2xl p-2 gap-2 md:gap-8 justify-center mb-2 shadow-md rounded">
+              {tabs.map((e, idx) => (
+                <Tab
+                  key={idx}
+                  className={({
+                    selected,
+                  }) => `w-full rounded-lg py-2.5 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 
+                    ${
+                      selected
+                        ? "bg-white shadow"
+                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    }`}
+                >
+                  {e}
+                </Tab>
+              ))}
+            </Tab.List>
+            <Tab.Panels>
+              <Tab.Panel>
+                {user && (
+                  <AccountDetailsForm className="flex-2" account={user} />
+                )}
+              </Tab.Panel>
+              <Tab.Panel>
+                <Favorites />
+              </Tab.Panel>
+              <Tab.Panel>
+                <Purchases />
+              </Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+
+          {/* <aside className="flex flex-col h-full justify-between gap-6 flex-1 m-0 md:ml-12"></aside> */}
         </div>
       </section>
     </RootLayout>

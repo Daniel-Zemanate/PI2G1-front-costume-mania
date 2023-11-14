@@ -1,8 +1,8 @@
 import { Category } from "@/interfaces/costume";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Listbox } from "@headlessui/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import {
   AiOutlineMinus as MinusIcon,
   AiOutlinePlus as PlusIcon,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/ai";
 import useCostumesQuery from "@/hooks/useCostumesQuery";
 import SearchBar from "../SearchBar";
+import ListBox from "../ListBox";
 
 type Props = {
   categories: Category[];
@@ -57,13 +58,28 @@ function Filters({ categories }: Props) {
         )}
       </span>
 
-      <div className="border-gray-200 py-4 my-2">
+      <div className="border-gray-200 py-4">
         <SearchBar
           className="border-2"
           inputClassName="border-0 focus:outline-none rounded-r-none"
           buttonClassName="bg-white text-purple-1"
         />
       </div>
+
+      {/* <Listbox>
+        <Listbox.Button>sda</Listbox.Button>
+        <Listbox.Options>
+          {categories.map((category) => (
+            <Listbox.Option
+              key={category.idCategory}
+              value={category.name}
+              onClick={() => handleClick("category", category.idCategory)}
+            >
+              {category.name}
+            </Listbox.Option>
+          ))}
+        </Listbox.Options>
+      </Listbox> */}
 
       <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
         {({ open }) => (
