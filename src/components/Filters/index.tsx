@@ -10,7 +10,6 @@ import {
 } from "react-icons/ai";
 import useCostumesQuery from "@/hooks/useCostumesQuery";
 import SearchBar from "../SearchBar";
-import ListBox from "../ListBox";
 
 type Props = {
   categories: Category[];
