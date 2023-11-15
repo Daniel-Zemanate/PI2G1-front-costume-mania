@@ -3,22 +3,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import logo from "@assets/logo-mask.png";
 import Link from "next/link";
+import { getFavoritesState, removeFavorite } from "@/store/slices/favoritesSlices";
+import { useDispatch, useSelector } from "react-redux";
 
 function Favorites() {
-  const [favs, setFavs] = useState<ApiCostume[]>([]);
-
-  useEffect(() => {
-    const favs = localStorage.getItem("favs");
-    if (favs) setFavs(JSON.parse(favs));
-  }, []);
+  const { favorites } = useSelector(getFavoritesState)
+  const dispatch = useDispatch();
 
   const handleFavRemove = (idModel: number) => {
-    const favs = localStorage.getItem("favs");
-    if (!favs) return;
-    const existingFavs: ApiCostume[] = JSON.parse(favs);
-    const newFavs = existingFavs.filter((e) => e.idModel !== idModel);
-    localStorage.setItem("favs", JSON.stringify(newFavs));
-    setFavs(newFavs);
+    dispatch(removeFavorite(idModel))    
   };
 
   return (
@@ -27,9 +20,9 @@ function Favorites() {
         Favorites
       </h3>
 
-      {favs.length ? (
+      {favorites.length ? (
         <ul className="flex flex-col gap-4 px-4">
-          {favs.map((e) => (
+          {favorites.map((e) => (
             <li key={e.idModel} className="flex justify-between">
               <Link href={`/costumes/${e.idModel}`} className="flex gap-4">
                 <div className="w-20 flex justify-center">

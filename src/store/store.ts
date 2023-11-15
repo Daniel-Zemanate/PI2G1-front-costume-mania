@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import cartSlice from './slices/cartSlice';
+import favoritesSlices from './slices/favoritesSlices';
 import {
   useDispatch as useDispatchBase,
   useSelector as useSelectorBase,
@@ -11,6 +12,7 @@ import {
 export const store = configureStore({
   reducer: {
     cart: cartSlice,
+    favorites: favoritesSlices,
   },
 });
 

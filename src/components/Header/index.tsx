@@ -15,12 +15,14 @@ import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
 import { useSelector } from "@/store/store";
 import { getCartState } from "@/store/slices/cartSlice";
+import { getFavoritesState } from "@/store/slices/favoritesSlices";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const { items: cartItems } = useSelector(getCartState);
+  const { favorites } = useSelector(getFavoritesState);
 
   const [favs, setFavs] = useState<ApiCostume[]>([]);
 
@@ -72,6 +74,23 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                   Sign out
                 </Dropdown.Item>
               </Dropdown>
+              <Dropdown
+                buttonIcon={!simple ? <FaHeart /> : null}
+                buttonText={"Favorites"}
+              >
+                {favorites.length ? (
+                  favorites.map((fav, idx) => (
+                    <Dropdown.Item key={idx}>
+                      <div className="flex justify-between w-full">
+                        <span>{fav.name} </span>
+                        <span>${Number(fav.price).toFixed(2)}</span>
+                      </div>
+                    </Dropdown.Item>
+                  ))
+                ) : (
+                  <p>No favorites</p>
+                )}
+              </Dropdown>
             </>
           ) : (
             <>
@@ -86,19 +105,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
               </Dropdown>
             </>
           )}
-          <Dropdown
-            buttonIcon={!simple ? <FaHeart /> : null}
-            buttonText={"Favorites"}
-          >
-            {favs.map((fav, idx) => (
-              <Dropdown.Item key={idx}>
-                <div className="flex justify-between w-full">
-                  <span>{fav.name} </span>
-                  <span>${Number(fav.price).toFixed(2)}</span>
-                </div>
-              </Dropdown.Item>
-            ))}
-          </Dropdown>
           <Dropdown
             buttonIcon={!simple ? <FaShoppingCart /> : null}
             buttonText={"Cart"}
