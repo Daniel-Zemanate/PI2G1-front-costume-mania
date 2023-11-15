@@ -1,28 +1,19 @@
-import Breadcrumbs from "@/components/Breadcrumbs";
 import { CostumeCardDetail } from "@/components/CostumeDetail";
 import CostumesSection from "@/components/CostumesSection";
-import HomeSection from "@/components/HomeSection";
 import { ApiCostume, Costume } from "@/interfaces/costume";
 import RootLayout from "@/layouts/rootLayout";
 import { getCostume, getPopularCostumes } from "@/services/costumes.service";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import { AiOutlineHome } from "react-icons/ai";
 
 interface Props {
-  costume: Costume;
+  costume: ApiCostume;
   popularCostumes: ApiCostume[];
-
 }
 
-  const CostumePage: NextPage<Props> = ({
-    costume,
-    popularCostumes,
-  }) => {
-    console.log('aqui')
-    console.log(costume)
-    return (
+const CostumePage: NextPage<Props> = ({ costume, popularCostumes }) => {
+  return (
     <RootLayout>
       <Head>
         <title>Costumes</title>
@@ -30,23 +21,19 @@ interface Props {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <div>Costume ID: {costume.idModel}</div> */}
-      <HomeSection additionalClasses="bg-opacity-20">
-      <CostumeCardDetail costume={costume}></CostumeCardDetail>
-      </HomeSection>
-      <HomeSection>
-        <h1 className="text-2xl md:text-3xl font-bold tracking-wider tracking-widest mb-4 text-center">More items to explore</h1>
-      <CostumesSection title="" costumes={popularCostumes} />
-      </HomeSection>
+      <main className="w-[90vw] py-8 ">
+        <CostumeCardDetail costume={costume} />
+        <CostumesSection title="More items to explore" costumes={popularCostumes} />
+      </main>
     </RootLayout>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const costumeId = parseInt(query.id as string, 10);
   const costume: Costume = await getCostume(costumeId);
   const popularCostumes = await getPopularCostumes();
- 
+
   return {
     props: {
       costume,

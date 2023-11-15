@@ -22,7 +22,7 @@ function CostumesSection({title, costumes}: Props) {
       <div className="py-2 overflow-visible">
         <Carousel>
           {costumes.map((item) => (
-            <CostumeCard key={item.idModel} costume={item} />
+            <CostumeCard key={item.modelId} costume={item} />
           ))}
         </Carousel>
       </div>

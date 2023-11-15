@@ -8,7 +8,6 @@ import {
   AiOutlinePlus as PlusIcon,
   AiOutlineDelete as DeleteIcon,
 } from "react-icons/ai";
-import useCostumesQuery from "@/hooks/useCostumesQuery";
 import SearchBar from "../SearchBar";
 
 type Props = {
@@ -29,21 +28,17 @@ const sizes = [
 function Filters({ categories }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { refetch } = useCostumesQuery();
 
   const handleClick = (key: string, value: any) => {
     const current = new URLSearchParams(Array.from(searchParams.entries()));
+    current.delete("page")
     current.set(key, value);
     const search = current.toString();
-    router
-      .push(`${router.pathname}?${search}`, undefined, { shallow: true })
-      .then(() => refetch());
+    router.push(`${router.pathname}?${search}`);
   };
 
   const handleResetFilters = () => {
-    router
-      .push(`${router.pathname}`, undefined, { shallow: true })
-      .then(() => refetch());
+    router.push(`${router.pathname}`);
   };
 
   return (

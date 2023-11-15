@@ -1,17 +1,17 @@
 import CostumesList from "@/components/CostumesList";
 import Filters from "@/components/Filters";
-import { ApiCostume, Category } from "@/interfaces/costume";
+import { ApiCostumeResponse, ApiCostume, Category } from "@/interfaces/costume";
 import SimpleLayout from "@/layouts/simpleLayout";
 import { getCategories } from "@/services/categories.service";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { Frijole } from "next/font/google";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
 import { GetServerSideProps } from "next";
 import { getCostumes } from "@/services/costumes.service";
-import Spinner from "@/components/Spinner";
-import useCostumesQuery from "@/hooks/useCostumesQuery";
+import Pagination from "@/components/Pagination";
+import ErrorMessage from "@/components/ErrorMessage";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -19,12 +19,26 @@ const frijole = Frijole({
 });
 
 type Props = {
-  costumes: ApiCostume[];
+  response: ApiCostumeResponse | { message: string };
   categories: Category[];
 };
 
-function CostumesPage({ costumes, categories }: Props) {
-  const { data, isRefetching, isError, isLoading } = useCostumesQuery(costumes);
+function CostumesPage({ response, categories }: Props) {
+  if ("message" in response) {
+    return (
+      <SimpleLayout>
+        <ErrorMessage text={response.message} title="Error" />
+      </SimpleLayout>
+    );
+  }
+
+  const {
+    content: costumes,
+    totalPages,
+    pageable: { pageNumber },
+    first,
+    last,
+  } = response;
 
   return (
     <SimpleLayout>
@@ -34,7 +48,7 @@ function CostumesPage({ costumes, categories }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="min-h-[50%] w-[90vw] px-4 sm:px-6 lg:px-8">
+      <main className="min-h-[50%] w-[90vw] px-4 sm:px-6 lg:px-8">
         <h1
           className={`${frijole.className} text-5xl py-4 md:py-6 text-orange-2`}
           style={{ textShadow: "2px 2px 2px rgba(0, 0, 0, 1)" }}
@@ -51,21 +65,32 @@ function CostumesPage({ costumes, categories }: Props) {
         />
         <div className="flex flex-col md:flex-row md:justify-between w-full gap-4 my-4">
           <Filters categories={categories} />
-          {isRefetching ? <Spinner /> : <CostumesList costumes={data} />}
+
+          <div className="flex flex-col w-full items-center gap-8">
+            <CostumesList costumes={costumes} />
+            <Pagination
+              currentPage={pageNumber}
+              totalPages={totalPages}
+              first={first}
+              last={last}
+            />
+          </div>
         </div>
-      </section>
+      </main>
     </SimpleLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const costumes: ApiCostume[] = await getCostumes(query);
+  const page = Number(query?.page) || 0;
+
+  const response: ApiCostumeResponse = await getCostumes({ ...query, page });
   const categories = await getCategories();
 
   return {
     props: {
       categories,
-      costumes,
+      response,
     },
   };
 };

@@ -82,7 +82,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                   favorites.map((fav, idx) => (
                     <Dropdown.Item key={idx}>
                       <div className="flex justify-between w-full">
-                        <span>{fav.name} </span>
+                        <span>{fav.model} </span>
                         <span>${Number(fav.price).toFixed(2)}</span>
                       </div>
                     </Dropdown.Item>
@@ -114,7 +114,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                 <Dropdown.Item key={idx}>
                   <div className="flex justify-between w-full gap-6">
                     <span>
-                      {item.name} x {item.quantity}
+                      {item.model} x {item.quantity}
                     </span>
                     <span>
                       ${(Number(item.price) * item.quantity).toFixed(2)}

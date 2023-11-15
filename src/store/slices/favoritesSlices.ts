@@ -27,7 +27,7 @@ export const favoritesSlice = createSlice({
     ) => {
       const idToRemove = action.payload;
       const indexToRemove = state.favorites.findIndex(
-        (favorite) => favorite.idModel === idToRemove
+        (favorite) => favorite.modelId === idToRemove
       );
 
       if (indexToRemove !== -1) {

@@ -1,6 +1,6 @@
 import { ApiCostume } from "@/interfaces/costume";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import Button from "../Button";
 import logoText from "@assets/logo-text.png";
 import { useSession } from "next-auth/react";
@@ -30,11 +30,11 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   };
 
   const handleFavRemove = () => {
-    dispatch(removeFavorite(costume.idModel));
+    dispatch(removeFavorite(costume.modelId));
   };
 
   const handleImageClick = () => {
-    router.push(`/costumes/${costume.idModel}`);
+    router.push(`/costumes/${costume.modelId}`);
   };
 
   const handleSizeClick = (size: string) => {
@@ -57,16 +57,16 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
     <>
       <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-white">
         <Image
-          src={costume.urlImage || logoText}
-          className="h-48 w-80 object-scale-down rounded-t-xl"
-          alt={costume.name}
+          src={costume.image || logoText}
+          className="h-48 w-80 object-scale-down rounded-t-xl cursor-pointer"
+          alt={costume.model}
           height={320}
           width={288}
           onClick={handleImageClick}
         />
         <div className="px-4 py-3 w-64">
           <p className="text-lg font-bold text-black truncate block capitalize">
-            {costume.name}
+            {costume.model}
           </p>
           <div className="flex items-center">
             <p className="text-lg text-black cursor-auto my-3">
@@ -76,15 +76,15 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
           <div className="flex items-center">
             {costume.sizes?.map((size) => (
               <button
-                key={size.noSize}
+                key={size.size}
                 className={`dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm ${
-                  selectedSize === size.noSize
+                  selectedSize === size.size
                     ? "bg-purple-2 text-white"
                     : "bg-white text-purple-2"
                 }`}
-                onClick={() => handleSizeClick(size.noSize)}
+                onClick={() => handleSizeClick(size.size)}
               >
-                {size.noSize}
+                {size.size}
               </button>
             ))}
           </div>
@@ -99,7 +99,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
               onClick={
-                favorites.some((e) => e.idModel === costume.idModel)
+                favorites.some((e) => e.modelId === costume.modelId)
                   ? handleFavRemove
                   : handleFavClick
               }
@@ -107,7 +107,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
               <svg
                 className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
                 fill={
-                  favorites.some((e) => e.idModel === costume.idModel)
+                  favorites.some((e) => e.modelId === costume.modelId)
                     ? "white"
                     : "none"
                 }

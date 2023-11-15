@@ -1,30 +1,46 @@
-import { ApiCostume } from "@/interfaces/costume";
-import { unifyObjects } from "@/utils/costumes";
+import { ApiCostumeResponse } from "@/interfaces/costume";
 import { NextApiRequest, NextApiResponse } from "next";
 
-type Data = ApiCostume[] | { message: string };
+type Data = ApiCostumeResponse | [] | { message: string };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
-    const { search, category, size } = req.query;
-    let url = `${process.env.CATALOG_API_URL}/catalog`;
+    try {
+      const { search, category, size, page = 1 } = req.query;
 
-    if (Object.keys(req.query).length) {
-      if (search) url += `/byKeyWord/${search}`;
-      if (category) url += `/byCategory/${category}`;
-      if (size) url += `/bySize/${size}`;
+      let url = `${process.env.CATALOG_API_URL}/catalog`;
+
+      if (!search && !category && !size) {
+        url += `/all`;
+      } else {
+        if (search) url += `/byKeyWord/${search}`;
+        if (category) url += `/byCategory/${category}`;
+        if (size) url += `/bySize/${size}`;
+      }
+
+      url += `/page/${Number(page) - 1}`;
+
+      const response = await fetch(url);
+
+      if (response.status === 200) {
+        const data = await response.json();
+        res.status(200).json(data);
+      } else if (response.status === 204) {
+        res.status(204).end();
+      } else {
+        console.error(response);
+        throw new Error("Server error");
+      }
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ message: "Internal server error. Please try again later." });
     }
-
-    console.log(url)
-
-    const response = await fetch(url);
-    const data = await response.json();
-
-    res.status(200).json(unifyObjects(data));
   } else {
-    res.status(400).json({ message: "Método no permitido" });
+    res.status(500).json({ message: "Método no permitido" });
   }
 }

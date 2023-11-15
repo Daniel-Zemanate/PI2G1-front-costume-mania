@@ -55,16 +55,13 @@ const HomePage: NextPage<Props> = ({
         <Banner></Banner>
       </HomeSection>
       <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-        <CostumesSection title="Popular Models" costumes={popularCostumes} />
+        <CategoriesBanner title="Categories" categories={categories} />
       </HomeSection>
       <HomeSection additionalClasses="bg-opacity-20">
-        <CategoriesBanner
-          title="Categories"
-          categories={categories}
-        ></CategoriesBanner>
+        <CostumesSection title="New Arrivals" costumes={newCostumes} />
       </HomeSection>
       <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-        <CostumesSection title="New Arrivals" costumes={newCostumes} />
+        <CostumesSection title="Popular Models" costumes={popularCostumes} />
       </HomeSection>
       <HomeSection>
         <InfoBanner {...bannersInfo[0]} />

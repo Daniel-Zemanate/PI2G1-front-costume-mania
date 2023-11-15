@@ -1,4 +1,4 @@
-import { Costume } from "@/interfaces/costume";
+import { ApiCostume, Costume } from "@/interfaces/costume";
 import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import Button from "../Button";
@@ -6,106 +6,94 @@ import logoText from "@assets/logo-text.png";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import styles from "./styles.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addFavorite,
+  getFavoritesState,
+  removeFavorite,
+} from "@/store/slices/favoritesSlices";
 
 interface Props {
-  costume: Costume;
+  costume: ApiCostume;
 }
-
 
 export const CostumeCardDetail: FC<Props> = ({ costume }) => {
   const { data: session } = useSession();
-
   const router = useRouter();
-  const [favs, setFavs] = useState<Costume[]>([]);
-
-  useEffect(() => {
-    const favs = localStorage.getItem("favs");
-    if (favs) setFavs(JSON.parse(favs));
-  }, []);
+  const dispatch = useDispatch();
+  const { favorites } = useSelector(getFavoritesState);
 
   const handleFavClick = () => {
     if (!session) {
       router.push("/auth/login");
       return;
     }
-    console.log(costume)
-    const favs = localStorage.getItem("favs");
-    if (!favs) {
-      const newFavs = [costume];
-      localStorage.setItem("favs", JSON.stringify(newFavs));
-      setFavs(newFavs);
-      return;
-    }
-    const existingFavs = JSON.parse(favs);
-    existingFavs.push(costume);
-    localStorage.setItem("favs", JSON.stringify(existingFavs));
-    setFavs(existingFavs);
+
+    dispatch(addFavorite(costume));
   };
 
   const handleFavRemove = () => {
-    const favs = localStorage.getItem("favs");
-    if (!favs) return;
-    const existingFavs: Costume[] = JSON.parse(favs);
-    const newFavs = existingFavs.filter((e) => e.modelId !== costume.modelId);
-    localStorage.setItem("favs", JSON.stringify(newFavs));
-    setFavs(newFavs);
-  };
-
-  const handleImageClick = () => {
-    router.push(`/costumes/${costume.modelId}`);
+    dispatch(removeFavorite(costume.modelId));
   };
 
   return (
     <>
-  <div className={`${styles.container} bg-white px-16 py-8 my-8 rounded-lg flex max-w-screen-lg min-w-[33%] m-auto`}>
-        <Image 
+      <div
+        className={`bg-white rounded-lg flex flex-col px-4 md:flex-row items-center justify-center gap-16 max-w-screen-lg m-auto mb-12`}
+      >
+        <Image
           src={costume.image || logoText}
-          className={`${styles.image} object-scale-down rounded-lg`}
           alt={costume.model}
           height={320}
           width={288}
-          onClick={handleImageClick}
         />
-        <div className="px-4 py-3 w-auto">
-          <section  className={`${styles.serctionContainer} w-full md:w-3/5 text-left`}>
-            <h1 className="text-2xl md:text-5xl font-bold tracking-wider tracking-widest mb-4">{costume.category}</h1>
-            <p className="text-base sm:text-2xl">{costume.model}</p>
-          </section>
-          <section  className={`${styles.serctionContainer} w-full md:w-3/5 text-left`}>
-            <p className="text-base sm:text-2xl font-bold" >Size</p>
+        <div className="px-4 py-3 w-full md:max-w-[40%]">
+          <small className="p-1 text-white md:text-lg bg-purple-2 text-center rounded drop-shadow-sm mb-16">
+            {costume.category}
+          </small>
+
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            {costume.model}
+          </h1>
+          <section
+            className={`${styles.serctionContainer} w-full md:w-3/5 text-left`}
+          >
+            <p className="text-base sm:text-2xl font-bold">Size</p>
             <div className="flex items-center">
-            {costume.sizes?.map((size) => (
-              <div
-                key={size.no_size}
-                className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 rounded-lg border-2 border-purple-2 border-primary dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
-                style={{width: '50px', height: '50px'}}
+              {costume.sizes?.map((size) => (
+                <div
+                  key={size.size}
+                  className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 rounded-lg border-2 border-purple-2 border-primary dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
+                  style={{ width: "50px", height: "50px" }}
                 >
-                {size.no_size}
-              </div>
-            ))}
+                  {size.size}
+                </div>
+              ))}
             </div>
           </section>
-          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
+          <section className={`${styles.serctionContainer2} w-full`}>
             <p className="text-base sm:text-2xl font-bold">Quantity</p>
-            <input type="number" defaultValue={0} style={{width:'50px' , border:'solid 1px'}} className="text-lg font-bold text-black  rounded-lg border-2 border-purple-2 border-primary truncate block capitalize text-right"/>
-              
-             
+            <input
+              type="number"
+              defaultValue={0}
+              style={{ width: "50px", border: "solid 1px" }}
+              className="text-lg font-bold text-black  rounded-lg border-2 border-purple-2 border-primary truncate block capitalize text-right"
+            />
           </section>
-          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
-              <p className="text-base sm:text-2xl font-bold"> Price</p>
+          <section className={`${styles.serctionContainer2} w-full`}>
+            <p className="text-base sm:text-2xl font-bold"> Price</p>
 
-              <p className="text-base sm:text-2xl font-bold">
+            <p className="text-base sm:text-2xl font-bold">
               ${costume.price.toFixed(2)}
-             </p>
+            </p>
           </section>
-          
-          <section  className={`${styles.serctionContainer2} w-full md:w-3/5`}>
 
+          <section className={`${styles.serctionContainer2} w-full`}>
             <Button label="Add to Cart" buttonStyle="primary" size="small" />
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
               onClick={
-                favs.some((e) => e.modelId === costume.modelId)
+                favorites.some((e) => e.modelId === costume.modelId)
                   ? handleFavRemove
                   : handleFavClick
               }
@@ -113,7 +101,7 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
               <svg
                 className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
                 fill={
-                  favs.some((e) => e.modelId === costume.modelId)
+                  favorites.some((e) => e.modelId === costume.modelId)
                     ? "white"
                     : "none"
                 }

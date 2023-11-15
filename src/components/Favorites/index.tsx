@@ -10,8 +10,8 @@ function Favorites() {
   const { favorites } = useSelector(getFavoritesState)
   const dispatch = useDispatch();
 
-  const handleFavRemove = (idModel: number) => {
-    dispatch(removeFavorite(idModel))    
+  const handleFavRemove = (modelId: number) => {
+    dispatch(removeFavorite(modelId))    
   };
 
   return (
@@ -23,12 +23,12 @@ function Favorites() {
       {favorites.length ? (
         <ul className="flex flex-col gap-4 px-4">
           {favorites.map((e) => (
-            <li key={e.idModel} className="flex justify-between">
-              <Link href={`/costumes/${e.idModel}`} className="flex gap-4">
+            <li key={e.modelId} className="flex justify-between">
+              <Link href={`/costumes/${e.modelId}`} className="flex gap-4">
                 <div className="w-20 flex justify-center">
                   <Image
-                    src={e.urlImage || logo}
-                    alt={e.name}
+                    src={e.image || logo}
+                    alt={e.model}
                     width={75}
                     height={75}
                     style={{
@@ -38,11 +38,11 @@ function Favorites() {
                   />
                 </div>
                 <div className="flex flex-col justify-center">
-                  <p>{e.name}</p>
+                  <p>{e.model}</p>
                   <p>$ {e.price.toFixed(2)}</p>
                 </div>
               </Link>
-              <button onClick={() => handleFavRemove(e.idModel)}>X</button>
+              <button onClick={() => handleFavRemove(e.modelId)}>X</button>
             </li>
           ))}
         </ul>
