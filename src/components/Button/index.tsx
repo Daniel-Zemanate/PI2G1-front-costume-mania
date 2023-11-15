@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./styles.module.css";
-import NavLink from "../NavLink/NavLink";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -9,10 +8,12 @@ type Props = {
   type?: "button" | "submit" | "reset" | undefined;
   to?: string;
   onClick?: () => void;
-  size?: "large" | "small"; // Added size prop
+  size?: "large" | "small";
+  disabled?: boolean,
+  className?: string
 };
 
-function Button({ label, type = undefined, buttonStyle, to, onClick, size = "large" }: Props) {
+function Button({ label, type = undefined, buttonStyle, to, onClick, size = "large", disabled = false, className }: Props) {
   const router = useRouter();
 
   const buttonClickHandler = () => {
@@ -23,13 +24,14 @@ function Button({ label, type = undefined, buttonStyle, to, onClick, size = "lar
     }
   };
 
-  const buttonClassName = `${styles[buttonStyle]} ${size === "small" ? styles.smallButton : styles.largeButton}`;
+  const buttonClassName = `${styles[buttonStyle]} ${size === "small" ? styles.smallButton : styles.largeButton} ${disabled ? styles.disabledButton : ""} ${className || ""}`;
 
   return (
     <button
       type={type}
-      className={buttonClassName}
+      className={`${className} ${buttonClassName}`}
       onClick={buttonClickHandler}
+      disabled={disabled}
     >
       {label}
     </button>

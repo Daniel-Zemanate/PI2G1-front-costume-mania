@@ -5,6 +5,8 @@ import Button from "../Button";
 import logoText from "@assets/logo-text.png";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { CartCostume, addItem, getCartState } from "@/store/slices/cartSlice";
 
 interface Props {
   costume: ApiCostume;
@@ -15,6 +17,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
 
   const router = useRouter();
   const [favs, setFavs] = useState<ApiCostume[]>([]);
+  const [selectedSize, setSelectedSize] = useState<string>();
 
   useEffect(() => {
     const favs = localStorage.getItem("favs");
@@ -26,7 +29,6 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
       router.push("/auth/login");
       return;
     }
-    console.log(costume)
     const favs = localStorage.getItem("favs");
     if (!favs) {
       const newFavs = [costume];
@@ -53,6 +55,24 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
     router.push(`/costumes/${costume.idModel}`);
   };
 
+  const handleSizeClick = (size: string) => {
+    setSelectedSize((prevSize) => (prevSize === size ? undefined : size));
+  };
+
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    if (!selectedSize) return;
+
+    const cartItem: CartCostume = {
+      ...costume,
+      quantity: 1,
+    };
+
+    dispatch(addItem(cartItem));
+    setSelectedSize(undefined);
+  };
+
   return (
     <>
       <div className="w-64 h-96 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl bg-white">
@@ -75,16 +95,27 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
           </div>
           <div className="flex items-center">
             {costume.sizes?.map((size) => (
-              <div
+              <button
                 key={size.noSize}
-                className="bg-white dark:bg-white-500 text-purple-2 dark:text-purple-2 dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm"
+                className={`dark:border-purple-2 dark:border dark:rounded py-1 px-2 mr-2 text-sm ${
+                  selectedSize === size.noSize
+                    ? "bg-purple-2 text-white"
+                    : "bg-white text-purple-2"
+                }`}
+                onClick={() => handleSizeClick(size.noSize)}
               >
                 {size.noSize}
-              </div>
+              </button>
             ))}
           </div>
           <div className="flex items-center justify-between">
-            <Button label="Add to Cart" buttonStyle="primary" size="small" />
+            <Button
+              label="Add to Cart"
+              buttonStyle="primary"
+              size="small"
+              onClick={handleAddToCart}
+              disabled={!selectedSize && true}
+            />
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
               onClick={

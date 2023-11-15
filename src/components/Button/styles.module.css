@@ -1,27 +1,25 @@
-.primary {
-  background-color: theme('colors.purple-2');
-  color: theme('colors.white');;
+/* styles.module.css */
+
+.primary,
+.secondary {
   border-radius: 4px;
   padding: 16px 8px;
   width: 150px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.primary {
+  background-color: theme("colors.purple-2");
+  color: theme("colors.white");
 }
 
 .secondary {
-  background-color: theme('colors.white');;
-  border: solid 2px theme('colors.purple-2');
-  color: theme('colors.purple-2');
-  border-radius: 4px;
-  padding: 16px 8px;
-  width: 150px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: theme("colors.white");
+  border: solid 2px theme("colors.purple-2");
+  color: theme("colors.purple-2");
 }
 
-.primary:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
-}
-
+.primary:hover,
 .secondary:hover {
   transform: scale(1.05);
   transition: transform 0.3s ease;
@@ -42,13 +40,30 @@
 .primary.smallButton:hover {
   transform: none;
   transition: none;
-  background-color: theme('colors.white');
-  color: theme('colors.purple-2');
+  background-color: theme("colors.white");
+  color: theme("colors.purple-2");
 }
 
-.secondary.smallButton:hover{
+.secondary.smallButton:hover {
   transform: none;
   transition: none;
-  background-color: theme('colors.purple-2');
-  color: theme('colors.white');
+  background-color: theme("colors.purple-2");
+  color: theme("colors.white");
 }
+
+.disabledButton {
+  background-color: theme("colors.lightGrey");
+  color: theme("colors.grey");
+  cursor: not-allowed;
+}
+
+.primary.disabledButton:hover,
+.secondary.disabledButton:hover,
+.primary.smallButton.disabledButton:hover {
+  transform: none;
+  transition: none;
+  background-color: theme("colors.lightGrey");
+  color: theme("colors.grey");
+  cursor: not-allowed;
+}
+

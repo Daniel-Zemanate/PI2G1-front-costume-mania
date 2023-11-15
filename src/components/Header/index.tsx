@@ -13,28 +13,14 @@ import bwLogo from "@assets/logo-bw.svg";
 import { ApiCostume } from "@/interfaces/costume";
 import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
-
-const dummyCart = [
-  {
-    model: "Little Wolf",
-    price: "50.50",
-  },
-  {
-    model: "Wolf",
-    price: "10.50",
-  },
-  {
-    model: "Scream",
-    price: "23",
-  },
-];
+import { useSelector } from "@/store/store";
+import { getCartState } from "@/store/slices/cartSlice";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { data: session } = useSession();
-
   const router = useRouter();
+  const { items: cartItems } = useSelector(getCartState);
 
   const [favs, setFavs] = useState<ApiCostume[]>([]);
 
@@ -74,7 +60,9 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
           {session?.user ? (
             <>
               <Dropdown
-                buttonIcon={<Image src={bwLogo} alt="user avatar" />}
+                buttonIcon={
+                  !simple ? <Image src={bwLogo} alt="user avatar" /> : null
+                }
                 buttonText={session.user.name}
               >
                 <Dropdown.Item onClick={() => router.push("/account")}>
@@ -115,14 +103,22 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             buttonIcon={!simple ? <FaShoppingCart /> : null}
             buttonText={"Cart"}
           >
-            {dummyCart.map((item, idx) => (
-              <Dropdown.Item key={idx}>
-                <div className="flex justify-between w-full">
-                  <span>{item.model} </span>
-                  <span>${Number(item.price).toFixed(2)}</span>
-                </div>
-              </Dropdown.Item>
-            ))}
+            {cartItems.length ? (
+              cartItems.map((item, idx) => (
+                <Dropdown.Item key={idx}>
+                  <div className="flex justify-between w-full gap-6">
+                    <span>
+                      {item.name} x {item.quantity}
+                    </span>
+                    <span>
+                      ${(Number(item.price) * item.quantity).toFixed(2)}
+                    </span>
+                  </div>
+                </Dropdown.Item>
+              ))
+            ) : (
+              <p>Nothing here... yet!</p>
+            )}
           </Dropdown>
         </nav>
         <button
