@@ -1,24 +1,28 @@
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { CostumeCardDetail } from "@/components/CostumeDetail";
 import CostumesSection from "@/components/CostumesSection";
 import HomeSection from "@/components/HomeSection";
-import { ApiCostume } from "@/interfaces/costume";
+import { ApiCostume, Costume } from "@/interfaces/costume";
 import RootLayout from "@/layouts/rootLayout";
 import { getCostume, getPopularCostumes } from "@/services/costumes.service";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React from "react";
+import { AiOutlineHome } from "react-icons/ai";
 
 interface Props {
-  costume: ApiCostume;
+  costume: Costume;
   popularCostumes: ApiCostume[];
 
 }
 
-function CostumePage({ costume,popularCostumes }: Props) {
-  const router = useRouter();
-  const { id } = router.query;  
-  return (
+  const CostumePage: NextPage<Props> = ({
+    costume,
+    popularCostumes,
+  }) => {
+    console.log('aqui')
+    console.log(costume)
+    return (
     <RootLayout>
       <Head>
         <title>Costumes</title>
@@ -40,10 +44,9 @@ function CostumePage({ costume,popularCostumes }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const costumeId = parseInt(query.id as string, 10);
-  const costume: ApiCostume = await getCostume(costumeId);
+  const costume: Costume = await getCostume(costumeId);
   const popularCostumes = await getPopularCostumes();
  
-  console.log(costume)
   return {
     props: {
       costume,

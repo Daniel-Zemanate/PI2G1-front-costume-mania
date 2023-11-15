@@ -1,8 +1,15 @@
 export interface Costume {
-    id: number,
-    name: string,
+    // id: number,
+    // name: string,
+    // price: number,
+    // url_image: string,
+    // sizes: Size[]
+    modelId: number,
+    model: string,
     price: number,
-    url_image: string,
+    image: string,
+    sizeType: number,
+    category: string
     sizes: Size[]
 }
 
