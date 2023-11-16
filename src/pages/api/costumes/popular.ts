@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
-    let url = `${process.env.CATALOG_API_URL}/catalog/popular`;
+    let url = `${process.env.CATALOG_API_URL}/catalog/news`;
     const response = await fetch(url);
     const data = await response.json();
     res.status(200).json(unifyObjects(data));
