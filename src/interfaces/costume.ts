@@ -69,3 +69,8 @@ export interface Sort {
     sorted:   boolean;
     unsorted: boolean;
 }
+
+export type KeyValue = {
+    key: string;
+    value: string;
+  };

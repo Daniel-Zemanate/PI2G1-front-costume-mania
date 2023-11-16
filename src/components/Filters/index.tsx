@@ -1,4 +1,4 @@
-import { Category } from "@/interfaces/costume";
+import { Category, KeyValue } from "@/interfaces/costume";
 import { Disclosure, Listbox } from "@headlessui/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import {
   AiOutlineDelete as DeleteIcon,
 } from "react-icons/ai";
 import SearchBar from "../SearchBar";
+import Select from "../Select";
 
 type Props = {
   categories: Category[];
@@ -16,12 +17,12 @@ type Props = {
 
 const sizes = [
   {
-    label: "Child",
-    value: 0,
+    key: "0",
+    value: "Child",
   },
   {
-    label: "Adult",
-    value: 1,
+    key: "1",
+    value: "Adult",
   },
 ];
 
@@ -29,10 +30,16 @@ function Filters({ categories }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const categoryOptions: KeyValue[] = categories.map((category) => ({
+    key: category.idCategory.toString(),
+    value: category.name,
+  }));
+
   const handleClick = (key: string, value: any) => {
+    console.log("awsdad");
     const current = new URLSearchParams(Array.from(searchParams.entries()));
-    current.delete("page")
-    current.set(key, value);
+    current.delete("page");
+    !value ? current.delete(key) : current.set(key, value);
     const search = current.toString();
     router.push(`${router.pathname}?${search}`);
   };
@@ -42,17 +49,17 @@ function Filters({ categories }: Props) {
   };
 
   return (
-    <aside className="self-start w-full md:max-w-[12rem] lg:max-w-[15rem] xl:max-w-[20rem] rounded-lg md:px-4 px-8 shadow-lg">
-      <span className="flex justify-between rounded-lg px-4 w-full bg-purple-3 bg-opacity-50 text-xl md:texl-xl lg:text-2xl py-3 font-bold">
-        <h3>Filters</h3>
+    <aside className="self-start w-full md:max-w-[12rem] lg:max-w-[15rem] xl:max-w-[20rem] rounded-lg px-8 md:py-2 shadow-lg bg-lightGrey">
+      <span className="flex justify-between items-center rounded-lg w-full text-xl lg:text-2xl py-3 font-bold mb-2">
+        <h3 className="">Filters</h3>
         {searchParams.toString() && (
-          <button onClick={handleResetFilters} className="text-2xl">
+          <button onClick={handleResetFilters} className="text-xl bg-orange-2 p-2 rounded-full">
             <DeleteIcon />
           </button>
         )}
       </span>
 
-      <div className="border-gray-200 py-4">
+      <div className="border-gray-200">
         <SearchBar
           className="border-2"
           inputClassName="border-0 focus:outline-none rounded-r-none"
@@ -60,82 +67,21 @@ function Filters({ categories }: Props) {
         />
       </div>
 
-      {/* <Listbox>
-        <Listbox.Button>sda</Listbox.Button>
-        <Listbox.Options>
-          {categories.map((category) => (
-            <Listbox.Option
-              key={category.idCategory}
-              value={category.name}
-              onClick={() => handleClick("category", category.idCategory)}
-            >
-              {category.name}
-            </Listbox.Option>
-          ))}
-        </Listbox.Options>
-      </Listbox> */}
+      <Select
+        label="Category"
+        options={categoryOptions}
+        onChange={handleClick}
+        className="my-4"
+        filter
+      />
 
-      <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
-        {({ open }) => (
-          <>
-            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500">
-              <span className="font-medium text-lg text-gray-900">
-                Category
-              </span>
-              <span className="ml-6 flex items-center">
-                {open ? (
-                  <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                )}
-              </span>
-            </Disclosure.Button>
-            <Disclosure.Panel>
-              <ul>
-                {categories.map((category) => (
-                  <li
-                    key={category.idCategory}
-                    className="space-y-6 cursor-pointer pl-5 pt-1"
-                    onClick={() => handleClick("category", category.idCategory)}
-                  >
-                    {category.name}
-                  </li>
-                ))}
-              </ul>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
-
-      <Disclosure as="div" className="border-t border-gray-200 p-4 my-2">
-        {({ open }) => (
-          <>
-            <Disclosure.Button className="flex w-full items-center justify-between text-gray-400 hover:text-gray-500 mb-2">
-              <span className="font-medium text-lg text-gray-900">Size</span>
-              <span className="ml-6 flex items-center">
-                {open ? (
-                  <MinusIcon className="h-5 w-5" aria-hidden="true" />
-                ) : (
-                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
-                )}
-              </span>
-            </Disclosure.Button>
-            <Disclosure.Panel>
-              <ul>
-                {sizes.map((size) => (
-                  <li
-                    key={size.value}
-                    className="space-y-6 cursor-pointer pl-5 pt-1"
-                    onClick={() => handleClick("size", size.value)}
-                  >
-                    {size.label}
-                  </li>
-                ))}
-              </ul>
-            </Disclosure.Panel>
-          </>
-        )}
-      </Disclosure>
+      <Select
+        label="Size"
+        options={sizes}
+        onChange={handleClick}
+        filter
+        className="my-4"
+      />
     </aside>
   );
 }
