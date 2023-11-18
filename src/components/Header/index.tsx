@@ -10,26 +10,25 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Dropdown from "../Dropdown";
 import { useRouter } from "next/router";
 import bwLogo from "@assets/logo-bw.svg";
-import { ApiCostume } from "@/interfaces/costume";
 import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
-import { useSelector } from "@/store/store";
+import { useDispatch, useSelector } from "@/store/store";
 import { getCartState } from "@/store/slices/cartSlice";
-import { getFavoritesState } from "@/store/slices/favoritesSlices";
+import { fetchFavs, getFavoritesState } from "@/store/slices/favoritesSlices";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const { items: cartItems } = useSelector(getCartState);
-  const { favorites } = useSelector(getFavoritesState);
-
-  const [favs, setFavs] = useState<ApiCostume[]>([]);
+  const { favorites, status } = useSelector(getFavoritesState);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const favs = localStorage.getItem("favs");
-    if (favs) setFavs(JSON.parse(favs));
-  }, []);
+    if (status === "idle") {
+      dispatch(fetchFavs());
+    }
+  }, [dispatch, status]);
 
   return (
     <div
@@ -81,15 +80,16 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                 {favorites.length ? (
                   favorites.map((fav, idx) => (
                     <Dropdown.Item key={idx}>
-                      <div className="flex justify-between w-full">
-                        <span>{fav.model} </span>
-                        <span>${Number(fav.price).toFixed(2)}</span>
+                      <div className="flex justify-between w-full gap-4">
+                        <span className="text-wrap">{fav.nameModel} </span>
+                        {/* <span>{fav.category.name}</span> */}
                       </div>
                     </Dropdown.Item>
                   ))
                 ) : (
                   <p>No favorites</p>
                 )}
+                {/* {favorites.length >= 3 && <p>dsdads</p>} */}
               </Dropdown>
             </>
           ) : (
@@ -112,10 +112,13 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             {cartItems.length ? (
               cartItems.map((item, idx) => (
                 <Dropdown.Item key={idx}>
-                  <div className="flex justify-between w-full gap-6">
-                    <span>
-                      {item.model} x {item.quantity}
-                    </span>
+                  <div className="flex justify-between w-full gap-6 items-center">
+                    <div className="flex flex-col items-start">
+                      <span>
+                      {item.model} x 
+                      </span>
+                      <span className="text-xs">Size: L</span>
+                    </div>
                     <span>
                       ${(Number(item.price) * item.quantity).toFixed(2)}
                     </span>

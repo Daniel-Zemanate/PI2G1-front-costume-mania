@@ -68,7 +68,7 @@ function Select({
           </Listbox.Button>
           <Listbox.Options className="absolute mt-0.5 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10">
             {selectOptions.map((option, idx) => (
-              <Listbox.Option key={`${idx}`} value={option}>
+              <Listbox.Option key={`${idx}`} value={option} className="cursor-pointer hover:bg-orange-2 hover:bg-opacity-20">
                 {({ selected }) => (
                   <span className="flex justify-between mx-3">
                     <span

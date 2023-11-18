@@ -7,12 +7,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addFavorite,
+  addFav,
   getFavoritesState,
-  removeFavorite,
+  removeFav,
 } from "@/store/slices/favoritesSlices";
 import { CartCostume, addItem } from "@/store/slices/cartSlice";
 import StepInput from "../StepInput";
+import { AppDispatch } from "@/store/store";
 
 interface Props {
   costume: ApiCostume;
@@ -21,7 +22,7 @@ interface Props {
 export const CostumeCardDetail: FC<Props> = ({ costume }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { favorites } = useSelector(getFavoritesState);
 
   const [selectedSize, setSelectedSize] = useState<string>();
@@ -33,11 +34,14 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
       return;
     }
 
-    dispatch(addFavorite(costume));
+    dispatch(addFav(costume.modelId));
   };
 
   const handleFavRemove = () => {
-    dispatch(removeFavorite(costume.modelId));
+    const fav = favorites.find((e) => e.idModel === costume.modelId)
+    if(!fav) return
+    const {idFav} = fav    
+    dispatch(removeFav(idFav));
   };
 
   const handleSizeClick = (size: string) => {
@@ -140,7 +144,7 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
               <button
                 className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
                 onClick={
-                  favorites.some((e) => e.modelId === costume.modelId)
+                  favorites.some((e) => e.idModel === costume.modelId)
                     ? handleFavRemove
                     : handleFavClick
                 }
@@ -148,7 +152,7 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
                 <svg
                   className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
                   fill={
-                    favorites.some((e) => e.modelId === costume.modelId)
+                    favorites.some((e) => e.idModel === costume.modelId)
                       ? "white"
                       : "none"
                   }

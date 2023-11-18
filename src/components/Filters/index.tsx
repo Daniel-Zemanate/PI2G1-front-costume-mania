@@ -36,7 +36,6 @@ function Filters({ categories }: Props) {
   }));
 
   const handleClick = (key: string, value: any) => {
-    console.log("awsdad");
     const current = new URLSearchParams(Array.from(searchParams.entries()));
     current.delete("page");
     !value ? current.delete(key) : current.set(key, value);

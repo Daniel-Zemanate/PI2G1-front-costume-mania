@@ -20,7 +20,7 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 
 // Inferred type: { users: UsersState}
-type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch;
 
 // Since we use typescript, lets utilize `useDispatch`
 export const useDispatch = () => useDispatchBase<AppDispatch>();

@@ -1,13 +1,19 @@
 import { ApiCostume } from "@/interfaces/costume";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Button from "../Button";
 import logoText from "@assets/logo-text.png";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { CartCostume, addItem, getCartState } from "@/store/slices/cartSlice";
-import { addFavorite, getFavoritesState, removeFavorite } from "@/store/slices/favoritesSlices";
+import {
+  addFav,
+  fetchFavs,
+  getFavoritesState,
+  removeFav,
+} from "@/store/slices/favoritesSlices";
+import { AppDispatch } from "@/store/store";
 
 interface Props {
   costume: ApiCostume;
@@ -15,10 +21,16 @@ interface Props {
 
 export const CostumeCard: FC<Props> = ({ costume }) => {
   const { data: session } = useSession();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState<string>();
-  const { favorites } = useSelector(getFavoritesState)
+  const { favorites, status } = useSelector(getFavoritesState);
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchFavs());
+    }
+  }, [dispatch, status]);
 
   const handleFavClick = () => {
     if (!session) {
@@ -26,11 +38,14 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
       return;
     }
 
-    dispatch(addFavorite(costume));
+    dispatch(addFav(costume.modelId));
   };
 
   const handleFavRemove = () => {
-    dispatch(removeFavorite(costume.modelId));
+    const fav = favorites.find((e) => e.idModel === costume.modelId)
+    if(!fav) return
+    const {idFav} = fav    
+    dispatch(removeFav(idFav));
   };
 
   const handleImageClick = () => {
@@ -99,7 +114,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
             <button
               className="flex items-center justify-center rounded-full bg-orange-2 w-10 h-10 text-white drop-shadow-sm"
               onClick={
-                favorites.some((e) => e.modelId === costume.modelId)
+                favorites.some((e) => e.idModel === costume.modelId)
                   ? handleFavRemove
                   : handleFavClick
               }
@@ -107,7 +122,7 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
               <svg
                 className="w-5 h-5 transform transition-transform duration-300 hover:orange-2"
                 fill={
-                  favorites.some((e) => e.modelId === costume.modelId)
+                  favorites.some((e) => e.idModel === costume.modelId)
                     ? "white"
                     : "none"
                 }

@@ -16,7 +16,7 @@ export default async function handler(
       if (!search && !category && !size) {
         url += `/all`;
       } else {
-        if (search) url += `/byKeyWord/${search}`;
+        if (search) url += `/byKeyWord/${search}`; 
         if (category) url += `/byCategory/${category}`;
         if (size) url += `/bySize/${size}`;
       }
@@ -25,8 +25,11 @@ export default async function handler(
 
       const response = await fetch(url);
 
+      console.log(url)
+
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data)
         res.status(200).json(data);
       } else if (response.status === 204) {
         res.status(204).end();
