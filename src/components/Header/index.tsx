@@ -79,17 +79,21 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
               >
                 {favorites.length ? (
                   favorites.map((fav, idx) => (
-                    <Dropdown.Item key={idx}>
-                      <div className="flex justify-between w-full gap-4">
+                    <Dropdown.Item key={idx} onClick={() => router.push(`/costumes/${fav.idModel}`)}>
+                      <div className="flex justify-between w-full gap-4 items-center">
                         <span className="text-wrap">{fav.nameModel} </span>
-                        {/* <span>{fav.category.name}</span> */}
+                        <Image
+                          src={fav.urlImage || logoText}
+                          alt={`${fav.nameModel}'s image`}
+                          height={50}
+                          width={50}
+                        />
                       </div>
                     </Dropdown.Item>
                   ))
                 ) : (
                   <p>No favorites</p>
                 )}
-                {/* {favorites.length >= 3 && <p>dsdads</p>} */}
               </Dropdown>
             </>
           ) : (
@@ -114,9 +118,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                 <Dropdown.Item key={idx}>
                   <div className="flex justify-between w-full gap-6 items-center">
                     <div className="flex flex-col items-start">
-                      <span>
-                      {item.model} x 
-                      </span>
+                      <span>{item.model} x</span>
                       <span className="text-xs">Size: L</span>
                     </div>
                     <span>
