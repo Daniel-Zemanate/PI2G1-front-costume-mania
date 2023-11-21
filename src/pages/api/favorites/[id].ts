@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { id } = req.query;
-    const url = `${process.env.PRODUCT_API_URL}/fav/${id}`;
+    const url = `${process.env.PRODUCT_API_URL}/fav/user/${id}`;
     const response = await fetch(url);
     let data;
     if (response.ok) {

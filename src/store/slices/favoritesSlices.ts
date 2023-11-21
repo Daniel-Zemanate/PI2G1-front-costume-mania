@@ -56,7 +56,7 @@ export const addFav = createAsyncThunk<FetchResult, number>(
       const { status, statusText } = await fetch(`/api/favorites/`, {
         method: "POST",
         body: JSON.stringify({
-          user: DUMMY_USER,
+          users: DUMMY_USER,
           model: idModel,
         }),
       });
