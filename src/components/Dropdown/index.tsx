@@ -53,7 +53,7 @@ const Item = ({
       {({ active }) => (
         <button
           className={`${
-            active ? "bg-orange-2 text-white text-orange-2" : "text-purple-1"
+            active && onClick ? "text-orange-2" : "text-purple-1 cursor-auto"
           } flex w-full items-center rounded-md p-2`}
           onClick={onClick}
         >

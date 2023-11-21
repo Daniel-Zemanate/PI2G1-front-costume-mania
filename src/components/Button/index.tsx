@@ -1,9 +1,9 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styles from "./styles.module.css";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  label: string;
+  label: ReactNode;
   buttonStyle: "primary" | "secondary";
   type?: "button" | "submit" | "reset" | undefined;
   to?: string;

@@ -87,3 +87,15 @@ export type FavoriteCostume = {
   category: Category;
   urlImage: string;
 };
+
+export type SelectedSize = {
+  idCatalog: number;
+  size: string;
+};
+
+export type CartCostume = {
+  idCatalog: number;
+  size: string;
+  quantity: number;
+  costume: ApiCostume;
+};

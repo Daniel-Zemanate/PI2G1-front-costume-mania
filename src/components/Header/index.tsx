@@ -10,17 +10,24 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Dropdown from "../Dropdown";
 import { useRouter } from "next/router";
 import bwLogo from "@assets/logo-bw.svg";
-import { FaHeart, FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaHeart, FaShoppingCart, FaUser, FaRegTrashAlt } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
 import { useDispatch, useSelector } from "@/store/store";
-import { getCartState } from "@/store/slices/cartSlice";
+import {
+  getCartState,
+  validateCart,
+  removeItem,
+  submitCart,
+} from "@/store/slices/cartSlice";
 import { fetchFavs, getFavoritesState } from "@/store/slices/favoritesSlices";
+import { FetchResult } from "@/interfaces/costume";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
-  const { items: cartItems } = useSelector(getCartState);
+  const { items: cartItems, total, shipping } = useSelector(getCartState);
   const { favorites, status } = useSelector(getFavoritesState);
   const dispatch = useDispatch();
 
@@ -29,6 +36,44 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
       dispatch(fetchFavs());
     }
   }, [dispatch, status]);
+
+  const handleRemoveFromCart = (idCatalog: number) => {
+    dispatch(removeItem(idCatalog));
+  };
+
+  // TEMPORARY
+  const validateOrder = async () => {
+    const cart = cartItems.map((e) => ({
+      catalog: e.idCatalog,
+      quantitySold: e.quantity,
+    }));
+
+    const { payload } = (await dispatch(validateCart(cart))) as PayloadAction<
+      FetchResult & {
+        shipping: number;
+        total: number;
+        errorMessage: string | null;
+      }
+    >;
+    console.log(payload);
+  };
+
+  const submitOrder = async () => {
+    const cart = cartItems.map((e) => ({
+      catalog: e.idCatalog,
+      quantitySold: e.quantity,
+    }));
+
+    const { payload } = (await dispatch(submitCart(cart))) as PayloadAction<
+      FetchResult & {
+        shipping: number;
+        total: number;
+        errorMessage: string | null;
+      }
+    >;
+    console.log(payload);
+  };
+  //
 
   return (
     <div
@@ -79,7 +124,10 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
               >
                 {favorites.length ? (
                   favorites.map((fav, idx) => (
-                    <Dropdown.Item key={idx} onClick={() => router.push(`/costumes/${fav.idModel}`)}>
+                    <Dropdown.Item
+                      key={idx}
+                      onClick={() => router.push(`/costumes/${fav.idModel}`)}
+                    >
                       <div className="flex justify-between w-full gap-4 items-center">
                         <span className="text-wrap">{fav.nameModel} </span>
                         <Image
@@ -116,20 +164,40 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             {cartItems.length ? (
               cartItems.map((item, idx) => (
                 <Dropdown.Item key={idx}>
-                  <div className="flex justify-between w-full gap-6 items-center">
+                  <div className="flex justify-between w-full gap-6 ">
                     <div className="flex flex-col items-start">
-                      <span>{item.model} x</span>
-                      <span className="text-xs">Size: L</span>
+                      <span>
+                        {item.costume.model} x {item.quantity}
+                      </span>
+                      <span className="text-xs">Size: {item.size}</span>
                     </div>
-                    <span>
-                      ${(Number(item.price) * item.quantity).toFixed(2)}
+                    <span className="ml-auto">
+                      ${(Number(item.costume.price) * item.quantity).toFixed(2)}
                     </span>
+                    <button
+                      onClick={() => handleRemoveFromCart(item.idCatalog)}
+                    >
+                      <FaRegTrashAlt />
+                    </button>
                   </div>
                 </Dropdown.Item>
               ))
             ) : (
               <p>Nothing here... yet!</p>
             )}
+            <div className="flex flex-col items-end">
+              {shipping !== undefined && (
+                <p>Shipping: ${shipping.toFixed(2)}</p>
+              )}
+              {total && <p>Total: ${total.toFixed(2)}</p>}
+              {cartItems.length > 0 && (
+                <button onClick={validateOrder}>VALIDATE</button>
+              )}
+
+              {shipping !== undefined && (
+                <button onClick={submitOrder}>SUBMIT</button>
+              )}
+            </div>
           </Dropdown>
         </nav>
         <button

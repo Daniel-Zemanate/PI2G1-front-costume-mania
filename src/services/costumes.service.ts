@@ -35,7 +35,7 @@ export const getCostumes = async (query: any): Promise<ApiCostumeResponse> => {
   if (size) params.set("size", size);
   if (search) params.set("search", search);
   if (page) params.set("page", page);
-
+  
   const url = `${process.env.URL_LOCAL}/api/costumes?${params.toString()}`;
 
   const response = await fetch(url);
