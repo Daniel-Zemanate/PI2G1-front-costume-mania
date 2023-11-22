@@ -47,10 +47,9 @@ export const removeFav = createAsyncThunk<FetchResult, number>(
   }
 );
 
-export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: string}>(
+export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: string, token: string}>(
   "favorites/addFavorite",
-  async ({idModel, idUser}) => {
-    console.log(idUser)
+  async ({idModel, idUser, token}) => {
     try {
       const { status, statusText } = await fetch(`/api/favorites/`, {
         method: "POST",
@@ -58,6 +57,9 @@ export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: st
           users: idUser,
           model: idModel,
         }),
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
       console.log(status, statusText)
       return { status, statusText };
@@ -71,15 +73,7 @@ export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: st
 export const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
-  reducers: {
-    addFavorite: (
-      state: Draft<typeof initialState>,
-      action: PayloadAction<FavoriteCostume>
-    ) => {
-      const newItem = action.payload;
-      state.favorites.push(newItem);
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchFavs.pending, (state, action) => {
