@@ -16,13 +16,11 @@ const initialState: IFavorites = {
   status: "idle",
 };
 
-const DUMMY_USER = 3;
-
 export const fetchFavs = createAsyncThunk(
   "favorites/fetchFavorites",
-  async (): Promise<FavoriteCostume[]> => {
+  async (idUser: number): Promise<FavoriteCostume[]> => {
     try {
-      const res = await fetch(`/api/favorites/${DUMMY_USER}`);
+      const res = await fetch(`/api/favorites/${idUser}`);
       const data = await res.json();
       return data;
     } catch (error) {
@@ -49,17 +47,19 @@ export const removeFav = createAsyncThunk<FetchResult, number>(
   }
 );
 
-export const addFav = createAsyncThunk<FetchResult, number>(
+export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: string}>(
   "favorites/addFavorite",
-  async (idModel) => {
+  async ({idModel, idUser}) => {
+    console.log(idUser)
     try {
       const { status, statusText } = await fetch(`/api/favorites/`, {
         method: "POST",
         body: JSON.stringify({
-          users: DUMMY_USER,
+          users: idUser,
           model: idModel,
         }),
       });
+      console.log(status, statusText)
       return { status, statusText };
     } catch (error) {
       console.error(error);

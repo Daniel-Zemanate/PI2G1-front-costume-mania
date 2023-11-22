@@ -34,8 +34,10 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
       router.push("/auth/login");
       return;
     }
-
-    dispatch(addFav(costume.modelId));
+    
+    dispatch(
+      addFav({ idModel: costume.modelId, idUser: session.user.user_id })
+    );
   };
 
   const handleFavRemove = () => {

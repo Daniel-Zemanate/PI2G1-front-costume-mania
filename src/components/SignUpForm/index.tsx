@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FormInput from "@/components/Form/FormInput";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Form from "../Form";
 import Button from "../Button";
 import NavLink from "../NavLink/NavLink";
+import Swal from "sweetalert2";
+import { getSession, signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const SignUpSchema = yup.object().shape({
   firstName: yup
@@ -18,11 +21,10 @@ const SignUpSchema = yup.object().shape({
     .min(2, "Last name should have at least 2 characters")
     .max(50, "Last name should not exceed 50 characters")
     .required("Last name is required"),
-  address: yup
+  dni: yup
     .string()
-    .min(5, "Address should have at least 5 characters")
-    .max(100, "Address should not exceed 100 characters")
-    .required("Address is required"),
+    .min(8, "ID number should have at least 8 characters")
+    .required("ID number is required"),
   email: yup
     .string()
     .email("Enter a valid email")
@@ -44,10 +46,50 @@ function SignUpForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(SignUpSchema) });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const [error, setError] = useState<string>();
+  const { data: session, update: updateSession } = useSession();
+  const router = useRouter();
+
+  const onSubmit = handleSubmit(async (data) => {
+    const { passwordConfirmation, ...signUpData } = data;
+    setError("")
+
+    const response = await fetch("/api/auth/signup", {
+      method: "POST",
+      body: JSON.stringify(signUpData),
+    });
+
+    console.log(response)
+
+    if (response.ok) {
+      const result = (await signIn("credentials", {
+        email: signUpData.email,
+        password: signUpData.password,
+        redirect: false,
+      })) as any;
+  
+      if (result?.ok) {
+        const session = await getSession();
+  
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome, ${session?.user?.email}!`,
+        });
+        router.push("/");
+      } else {
+        setError(result?.error);
+      }
+    } else {
+      setError(response.statusText)
+    }
+  });
 
   return (
-    <Form onSubmit={onSubmit} className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto">
+    <Form
+      onSubmit={onSubmit}
+      className="bg-purple-3 bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg shadow min-w-[33%] m-auto"
+    >
       <Form.Header className="text-center p-4">
         <Form.Title className="text-2xl font-bold">Create account</Form.Title>
         <Form.TextSection className="mt-4 flex justify-center gap-4">
@@ -57,7 +99,10 @@ function SignUpForm() {
           </span>
         </Form.TextSection>
       </Form.Header>
-      <Form.Body register={register}  className="flex flex-col justify-center">
+
+      <Form.Errors>{error}</Form.Errors>
+
+      <Form.Body register={register} className="flex flex-col justify-center">
         <FormInput
           name="firstName"
           label="First Name"
@@ -72,10 +117,10 @@ function SignUpForm() {
           error={errors.lastName?.message}
         />
         <FormInput
-          name="address"
-          label="Address"
-          placeholder="Enter your address"
-          error={errors.address?.message}
+          name="dni"
+          label="Personal ID"
+          placeholder="Enter your ID"
+          error={errors.dni?.message}
         />
         <FormInput
           name="email"

@@ -37,8 +37,7 @@ function AccountPage() {
   useEffect(() => {
     if (!session) return;
     const userData = fetchDummyUserData({
-      email: session?.user?.email,
-      name: session?.user?.name,
+      email: session?.user?.email
     });
 
     setUser(userData);

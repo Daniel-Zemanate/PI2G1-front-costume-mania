@@ -1,4 +1,4 @@
-export function fetchDummyUserData(user: {email?: string  | null, name?: string | null}){
+export function fetchDummyUserData(user: {email?: string  | null}){
   if(!user) return
   
   return {

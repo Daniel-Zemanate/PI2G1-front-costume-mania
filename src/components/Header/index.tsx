@@ -32,10 +32,10 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchFavs());
+    if (status === "idle" && session) {
+      dispatch(fetchFavs(Number(session.user.user_id)));
     }
-  }, [dispatch, status]);
+  }, [dispatch, session, status]);
 
   const handleRemoveFromCart = (idCatalog: number) => {
     dispatch(removeItem(idCatalog));
@@ -109,7 +109,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                 buttonIcon={
                   !simple ? <Image src={bwLogo} alt="user avatar" /> : null
                 }
-                buttonText={session.user.name}
+                buttonText={session.user.email}
               >
                 <Dropdown.Item onClick={() => router.push("/account")}>
                   My Account
@@ -128,14 +128,14 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                       key={idx}
                       onClick={() => router.push(`/costumes/${fav.idModel}`)}
                     >
-                      <div className="flex justify-between w-full gap-4 items-center">
-                        <span className="text-wrap">{fav.nameModel} </span>
+                      <div className="flex justify-between gap-4 items-center">
                         <Image
                           src={fav.urlImage || logoText}
                           alt={`${fav.nameModel}'s image`}
                           height={50}
-                          width={50}
+                          width={35}
                         />
+                        <span className="text-sm">{fav.nameModel}</span>
                       </div>
                     </Dropdown.Item>
                   ))

@@ -29,12 +29,13 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
   const { items: cartItems } = useSelector(getCartState);
 
   const handleFavClick = () => {
+    console.log(session)
     if (!session) {
       router.push("/auth/login");
       return;
     }
 
-    dispatch(addFav(costume.modelId));
+    dispatch(addFav({ idModel: costume.modelId, idUser: session.user.user_id }));
   };
 
   const handleFavRemove = () => {
