@@ -12,6 +12,12 @@ export default async function handler(
         "Content-Type": "application/json",
       },
     });
+    
+    if (!response.ok) {
+      console.error(response)
+      throw new Error("Service unavailable");
+    }
+
     const data = await response.json()
     
     res.status(response.status).json(data);

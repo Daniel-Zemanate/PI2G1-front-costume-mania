@@ -10,6 +10,11 @@ export default async function handler(
     const response = await fetch(url);
     
     let data;
+    if (!response.ok) {
+      console.error(response)
+      throw new Error("Service unavailable");
+    }
+    
     if (response.ok) {
       data = await response.json();
     } else {

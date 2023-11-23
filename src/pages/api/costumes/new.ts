@@ -13,6 +13,7 @@ export default async function handler(
       const response = await fetch(url);
 
       if (!response.ok) {
+        console.error(response)
         throw new Error("Service unavailable");
       }
 

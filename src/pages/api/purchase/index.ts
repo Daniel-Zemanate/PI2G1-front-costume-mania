@@ -21,6 +21,12 @@ export default async function handler(
         "Authorization": authorizationHeader,
       },
     });
+
+    if (!response.ok) {
+      console.error(response)
+      throw new Error("Service unavailable");
+    }
+    
     const data = await response.json()
     
     res.status(response.status).json(data);

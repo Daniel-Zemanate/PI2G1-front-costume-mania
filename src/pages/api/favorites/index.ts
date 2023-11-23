@@ -35,6 +35,11 @@ export default async function handler(
         "Authorization": authorizationHeader,
       },
     });
+
+    if (!response.ok) {
+      console.error(response)
+      throw new Error("Service unavailable");
+    }
     
     res.status(response.status).json(response.statusText);
   } else {
