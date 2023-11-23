@@ -35,7 +35,7 @@ export const validateCart = createAsyncThunk<
   try {
     const body = {
       user: idUser,
-      city: 1,
+      city: 2,
       itemSoldList: cart,
     };
 

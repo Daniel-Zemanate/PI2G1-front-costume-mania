@@ -25,17 +25,12 @@ export default async function handler(
 
       const response = await fetch(url);
 
-      if (!response.ok) {
-        console.error(response)
-        throw new Error("Service unavailable");
-      }
-
       if (response.status === 200) {
         const data = await response.json();
         console.log(data)
         res.status(200).json(data);
-      } else if (response.status === 204) {
-        res.status(204).end();
+      } else if (response.status === 404) {
+        res.status(404).end();
       } else {
         console.error(response);
         throw new Error("Server error");

@@ -211,6 +211,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                 <button onClick={submitOrder}>SUBMIT</button>
               )}
             </div>
+            <NavLink route="/cart/checkout" textColor="black"> CHECKOUT </NavLink>
           </Dropdown>
         </nav>
         <button

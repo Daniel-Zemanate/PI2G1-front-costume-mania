@@ -39,7 +39,8 @@ export const getCostumes = async (query: any): Promise<ApiCostumeResponse> => {
   const url = `${process.env.URL_LOCAL}/api/costumes?${params.toString()}`;
 
   const response = await fetch(url);
-  if (!response.body) {
+  
+  if (response.status === 404) {
     return dummyEmptyData;
   }
 
