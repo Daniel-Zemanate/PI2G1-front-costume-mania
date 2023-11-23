@@ -16,8 +16,7 @@ export default async function handler(
     }
 
     res.status(200).json(data);
-  }
-  if (req.method === "POST") {
+  } else if (req.method === "POST") {
     res.status(200).json("asda");
   } else {
     res.status(400).json({ message: "Método no permitido" });

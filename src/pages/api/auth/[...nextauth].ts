@@ -10,44 +10,51 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const { email, password } = credentials as { email: string, password: string };
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
 
-        //TODO: CONEXIÓN CON API
-        // const res = await fetch(URL,{
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json"
-        //   },
-        //   body: JSON.stringify({
-        //     email,
-        //     password
-        //   })
-        // })
+        const body = {
+          username: email,
+          password: password,
+        };
 
-        // const user = await res.json()
+        const response = await fetch(
+          `${process.env.PRODUCT_API_URL}/auth/login`,
+          {
+            method: "POST",
+            body: JSON.stringify(body),
+          }
+        );
 
-        // if(res.ok && user){
-        //   return user
-        // } else return null
+        const user = await response.json();
 
-        if (email === "leomessi@mail.com" && password === "123456") {
-          return {
-            id: 1,
-            email: "leomessi@mail.com",
-            name: "Lionel Messi"
-          } as any;
+        if (response.ok && user) {
+          return user;
         } else {
-          throw new Error('The credentials are invalid')
+          throw new Error("The credentials are invalid");
         }
       },
     }),
   ],
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
-  pages:{
-    signIn:"/auth/login"
-  }
+  pages: {
+    signIn: "/auth/login",
+  },
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") return { ...token, ...session.user };
+      return { ...token, ...user };
+    },
+
+    async session({ session, token, user }) {
+      session.user = token as any;
+      return session;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

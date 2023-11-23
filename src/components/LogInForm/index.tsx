@@ -39,15 +39,13 @@ function LogInForm() {
       redirect: false,
     })) as any;
 
-    console.log(result);
-
     if (result?.ok) {
       const session = await getSession();
 
       Swal.fire({
         icon: "success",
         title: "Login Successful!",
-        text: `Welcome back, ${session?.user?.name}!`,
+        text: `Welcome back, ${session?.user?.email}!`,
       });
       router.push("/");
     } else {

@@ -13,10 +13,12 @@ import ErrorMessage from "../ErrorMessage";
 import { AppDispatch } from "@/store/store";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { FetchResult } from "@/interfaces/costume";
+import { useSession } from "next-auth/react";
 
 function Favorites() {
   const { favorites, status } = useSelector(getFavoritesState);
   const dispatch = useDispatch<AppDispatch>();
+  const { data: session } = useSession();
 
   const handleFavRemove = async (idFav: number) => {
     const { payload } = (await dispatch(
@@ -25,10 +27,10 @@ function Favorites() {
   };
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchFavs());
+    if (status === "idle" && session) {
+      dispatch(fetchFavs(Number(session.user.user_id)));
     }
-  }, [dispatch, status]);
+  }, [dispatch, session, status]);
 
   return (
     <section className="w-full rounded p-2 border mb-8">
