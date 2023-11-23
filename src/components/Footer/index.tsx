@@ -20,7 +20,7 @@ function Footer() {
             <NavLink label="Home" route="/" textColor="black" />
             <NavLink label="Models" route="/" textColor="black" />
             <NavLink label="Sale" route="/" textColor="black" />
-            <NavLink label="Cart" route="/" textColor="black" />
+            <NavLink label="Cart" route="/cart" textColor="black" />
             <NavLink label="Customer Service" route="/" textColor="black" />
           </nav>
           <div className="flex w-full justify-end gap-4">
