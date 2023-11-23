@@ -32,7 +32,7 @@ const CartPage = ({ cities }: Props) => {
 
   const [subtotal, setSubtotal] = useState(0)
 
-  const selectOptions = (cities || []).map((item) => ({
+  const selectOptions = (Array.isArray(cities) ? cities : []).map((item) => ({
     key: item.idShippping,
     value: item.destination,
   }));
