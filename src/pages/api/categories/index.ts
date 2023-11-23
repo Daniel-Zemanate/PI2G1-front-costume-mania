@@ -5,11 +5,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const url = `${process.env.PRODUCT_API_URL}/category`;
-    const response = await fetch(url);
-    const data = await response.json()
+    try {
+      const url = `${process.env.PRODUCT_API_URL}/category`;
+      const response = await fetch(url);
 
-    res.status(200).json(data);
+      if (!response.ok) {
+        throw new Error("Service unavailable");
+      }
+
+      const data = await response.json();
+      res.status(200).json(data);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(503).json({ message: "Service unavailable" });
+    }
   } else {
     res.status(400).json({ message: "Método no permitido" });
   }

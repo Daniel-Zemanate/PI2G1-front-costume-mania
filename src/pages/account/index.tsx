@@ -1,49 +1,34 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RootLayout from "@/layouts/rootLayout";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { Frijole } from "next/font/google";
 import AccountDetailsForm from "@/components/AccountDetailsForm";
-import { useSession } from "next-auth/react";
-import { fetchDummyUserData } from "@/utils/user";
 import Favorites from "@/components/Favorites";
 import Purchases from "@/components/Purchases";
 import { Tab } from "@headlessui/react";
+import { GetServerSideProps } from "next";
+import { getLastPurchases, getUserInfo } from "@/services/users.service";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { Order, UserData } from "@/interfaces/user";
 
 const frijole = Frijole({
   subsets: ["latin"],
   weight: "400",
 });
 
-export interface UserData {
-  email: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  personalId: string;
-  birth: string;
-  phone: string;
-  city: string;
-  zipCode: string;
-  country: string;
-  password: string;
-}
+type Props = {
+  userData: UserData;
+  purchases: Order[];
+};
 
-function AccountPage() {
-  const { data: session } = useSession();
-  const [user, setUser] = useState<UserData>();
-
-  useEffect(() => {
-    if (!session) return;
-    const userData = fetchDummyUserData({
-      email: session?.user?.email
-    });
-
-    setUser(userData);
-  }, [session]);
-
+function AccountPage({ userData, purchases }: Props) {
   const tabs = ["Account", "Favorites", "Purchases"];
+
+  console.log({userData})
+  console.log({purchases})
 
   return (
     <RootLayout>
@@ -89,24 +74,57 @@ function AccountPage() {
             </Tab.List>
             <Tab.Panels>
               <Tab.Panel>
-                {user && (
-                  <AccountDetailsForm className="flex-2" account={user} />
+                {userData && (
+                  <AccountDetailsForm className="flex-2" account={userData} />
                 )}
               </Tab.Panel>
               <Tab.Panel>
                 <Favorites />
               </Tab.Panel>
               <Tab.Panel>
-                <Purchases />
+                <Purchases purchases={purchases} />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
-
-          {/* <aside className="flex flex-col h-full justify-between gap-6 flex-1 m-0 md:ml-12"></aside> */}
         </div>
       </section>
     </RootLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
+  const session = await getServerSession(req, res, authOptions);
+  if (session) {
+    const { token, user_id: idUser } = session?.user;
+
+    try {
+      const userData = await getUserInfo(token);
+      const purchases = await getLastPurchases({ token, idUser });
+
+      return {
+        props: {
+          userData,
+          purchases,
+        },
+      };
+    } catch (error) {
+      // Handle errors if necessary
+      console.error("Error fetching data:", error);
+      return {
+        props: {
+          userData: null,
+          purchases: null,
+        },
+      };
+    }
+  }
+
+  return {
+    redirect: {
+      destination: '/', 
+      permanent: false,
+    },
+  };
+};
 
 export default AccountPage;

@@ -16,6 +16,7 @@ import custome2 from "@assets/custome2.png";
 import RootLayout from "@/layouts/rootLayout";
 import CategoriesBanner from "@/components/CategoriesBanner";
 import { getCategories } from "@/services/categories.service";
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface Props {
   newCostumes: ApiCostume[];
@@ -43,6 +44,11 @@ const HomePage: NextPage<Props> = ({
   popularCostumes,
   categories,
 }) => {
+
+  console.log({newCostumes})
+  console.log({popularCostumes})
+  console.log({categories})
+  
   return (
     <RootLayout>
       <Head>

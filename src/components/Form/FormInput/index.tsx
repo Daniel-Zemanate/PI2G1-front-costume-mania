@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   register?: any;
   wrapperClass?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 const FormInput: FC<InputProps> = ({
@@ -16,6 +17,7 @@ const FormInput: FC<InputProps> = ({
   label,
   wrapperClass,
   className,
+  disabled,
   ...rest
 }) => {
 
@@ -26,7 +28,7 @@ const FormInput: FC<InputProps> = ({
         aria-invalid={error ? "true" : "false"}
         {...register(name)}
         {...rest}
-        className={`${className} w-full rounded py-1 px-2`}
+        className={`${className} w-full rounded py-1 px-2 ${disabled ? 'bg-lightGrey text-grey' : ''}`}
       />
       <small className="h-5 overflow-hidden whitespace-nowrap text-overflow-ellipsis block self-end text-red">
         {error}

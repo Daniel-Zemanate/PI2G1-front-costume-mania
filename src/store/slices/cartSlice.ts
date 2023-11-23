@@ -23,17 +23,20 @@ type ValidatedCart = FetchResult & {
   errorMessage: string | null;
 };
 
-const DUMMY_USER = 3;
+type Cart = {
+  cart: { catalog: number; quantitySold: number }[],
+  idUser: string;
+}
 
 export const validateCart = createAsyncThunk<
   ValidatedCart,
-  { catalog: number; quantitySold: number }[]
->("cart/validateCart", async (items) => {
+  Cart
+>("cart/validateCart", async ({cart, idUser}) => {
   try {
     const body = {
-      user: DUMMY_USER,
+      user: idUser,
       city: 1,
-      itemSoldList: items,
+      itemSoldList: cart,
     };
 
     const response = await fetch(`/api/validateCart/`, {
@@ -53,24 +56,25 @@ export const validateCart = createAsyncThunk<
 
 export const submitCart = createAsyncThunk<
   FetchResult,
-  { catalog: number; quantitySold: number }[]
->("cart/submitCart", async (items) => {
+  Cart & {token: string}
+>("cart/submitCart", async ({cart, idUser, token}) => {
   try {
     const body = {
-      user: DUMMY_USER,
+      user: idUser,
       city: 1,
-      itemSoldList: items,
+      itemSoldList: cart,
       address: "dummy address"
     };
 
     const response = await fetch(`/api/purchase/`, {
       method: "POST",
       body: JSON.stringify(body),
+      headers:{
+        'Authorization': `Bearer ${token}`
+      }
     });
 
     const data = await response.json();
-
-    console.log(data)
 
     return data;
   } catch (error) {

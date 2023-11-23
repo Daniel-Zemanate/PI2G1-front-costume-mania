@@ -22,6 +22,8 @@ import {
 import { fetchFavs, getFavoritesState } from "@/store/slices/favoritesSlices";
 import { FetchResult } from "@/interfaces/costume";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { Purchase } from "@/interfaces/user";
+import Swal from "sweetalert2";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,14 +50,17 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
       quantitySold: e.quantity,
     }));
 
-    const { payload } = (await dispatch(validateCart(cart))) as PayloadAction<
-      FetchResult & {
-        shipping: number;
-        total: number;
-        errorMessage: string | null;
-      }
-    >;
-    console.log(payload);
+    if (session) {
+      const { payload } = (await dispatch(
+        validateCart({ cart: cart, idUser: session.user.user_id })
+      )) as PayloadAction<
+        FetchResult & {
+          shipping: number;
+          total: number;
+          errorMessage: string | null;
+        }
+      >;
+    }
   };
 
   const submitOrder = async () => {
@@ -64,14 +69,22 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
       quantitySold: e.quantity,
     }));
 
-    const { payload } = (await dispatch(submitCart(cart))) as PayloadAction<
-      FetchResult & {
-        shipping: number;
-        total: number;
-        errorMessage: string | null;
-      }
-    >;
-    console.log(payload);
+    if (session) {
+      const { payload } = (await dispatch(
+        submitCart({
+          cart: cart,
+          idUser: session.user.user_id,
+          token: session.user.token,
+        })
+      )) as PayloadAction<Purchase>;
+      
+      Swal.fire({
+        icon: "success",
+        title: `Purchase Successfull`,
+        text: `Invoice n°${payload.invoiceNumber} generated. Total: $ ${payload.total.toFixed(2)}`,
+      });
+      router.push("/");
+    }
   };
   //
 

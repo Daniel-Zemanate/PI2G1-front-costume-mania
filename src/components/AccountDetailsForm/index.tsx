@@ -2,12 +2,10 @@ import React from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { UserData } from "@/pages/account";
 import Form from "../Form";
 import FormInput from "../Form/FormInput";
 import Button from "../Button";
+import { UserData } from "@/interfaces/user";
 
 // validation
 const AccountDetailsSchema = yup.object().shape({
@@ -54,16 +52,18 @@ const AccountDetailsSchema = yup.object().shape({
     .required("City is required"),
 });
 
-function AccountDetailsForm({ account, className }: { account: UserData, className?: string }) {
+function AccountDetailsForm({
+  account,
+  className,
+}: {
+  account: UserData;
+  className?: string;
+}) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(AccountDetailsSchema) });
-
-  const { data: session } = useSession();
-
-  const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
@@ -71,8 +71,14 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
 
   return (
     <>
-      <Form className={`w-full rounded p-2 border mb-8 ${className}`} onSubmit={onSubmit} >
-        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">Account details</h3>
+      <Form
+        className={`w-full rounded p-2 border mb-8 ${className}`}
+        onSubmit={onSubmit}
+      >
+        {/* Personal information */}
+        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">
+          Personal Information
+        </h3>
         <Form.Body register={register} className="flex flex-wrap">
           <FormInput
             name="email"
@@ -81,28 +87,24 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             error={errors.email?.message}
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.email}
+            defaultValue={account.email}
+            disabled
           />
           <FormInput
-            name="password"
-            type="password"
-            label="Password"
+            name="personalId"
+            label="Identification Number"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.password}
-            error={errors.password?.message}
+            defaultValue={account.dni}
+            error={errors.personalId?.message}
+            disabled
           />
-        </Form.Body>
-
-        {/* Personal information */}
-        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">Personal Information</h3>
-        <Form.Body register={register} className="flex flex-wrap">
           <FormInput
             name="lastName"
             label="Last Name"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.lastName}
+            defaultValue={account.last_name}
             error={errors.lastName?.message}
           />
           <FormInput
@@ -110,36 +112,30 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             label="First Name"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.firstName}
+            defaultValue={account.first_name}
             error={errors.firstName?.message}
-          />
-          <FormInput
-            name="personalId"
-            label="Identification Number"
-            wrapperClass="w-full md:w-1/2 px-2 mb-4"
-            className="focus:outline-orange-2"
-            value={account.personalId}
-            error={errors.personalId?.message}
           />
           <FormInput
             name="birth"
             label="Birthday"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.birth}
+            defaultValue={"XX/XX/XXXX"}
             error={errors.address?.message}
           />
         </Form.Body>
 
         {/* Contact */}
-        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">Contact</h3>
+        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">
+          Contact
+        </h3>
         <Form.Body register={register} className="flex flex-wrap">
           <FormInput
             name="phone"
             label="Phone Number"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.phone}
+            defaultValue={"541112345678"}
             error={errors.phone?.message}
           />
           <FormInput
@@ -147,7 +143,7 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             label="Address"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.address}
+            defaultValue={"Calle falsa 123"}
             error={errors.address?.message}
           />
           <FormInput
@@ -155,7 +151,7 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             label="City"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.city}
+            defaultValue={"City"}
             error={errors.city?.message}
           />
           <FormInput
@@ -163,7 +159,7 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             label="Zip Code"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.zipCode}
+            defaultValue={"1111"}
             error={errors.zipCode?.message}
           />
           <FormInput
@@ -171,12 +167,12 @@ function AccountDetailsForm({ account, className }: { account: UserData, classNa
             label="Country"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            value={account.country}
+            defaultValue={"Country"}
             error={errors.country?.message}
           />
         </Form.Body>
         <Form.ButtonSection className="mt-4 flex justify-center gap-4">
-          <Button label="Save" buttonStyle="primary" type="submit"/>
+          <Button label="Save" buttonStyle="primary" type="submit" />
         </Form.ButtonSection>
       </Form>
     </>

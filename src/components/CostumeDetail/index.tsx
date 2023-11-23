@@ -36,7 +36,7 @@ export const CostumeCardDetail: FC<Props> = ({ costume }) => {
     }
     
     dispatch(
-      addFav({ idModel: costume.modelId, idUser: session.user.user_id })
+      addFav({ idModel: costume.modelId, idUser: session.user.user_id, token: session.user.token })
     );
   };
 

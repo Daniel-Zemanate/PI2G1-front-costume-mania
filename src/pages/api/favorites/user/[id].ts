@@ -8,6 +8,7 @@ export default async function handler(
     const { id } = req.query;
     const url = `${process.env.PRODUCT_API_URL}/fav/user/${id}`;
     const response = await fetch(url);
+    
     let data;
     if (response.ok) {
       data = await response.json();
