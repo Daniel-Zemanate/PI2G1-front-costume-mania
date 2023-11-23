@@ -119,26 +119,18 @@ const AccountDetailsSchema = yup.object().shape({
 
 const CheckoutPage: NextPage<Props> = ({ apiShipping }) => {
     const { data: session } = useSession();
-    const [user, setUser] = useState<UserData>();
     const [checkoutData, setCheckoutData] = useState<CheckoutData>();
     const [cities, setCities] = useState<SelectOption[]>();
     const { items: cartItems, total, shipping } = useSelector(getCartState);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!session) return;
-        const userData = fetchDummyUserData({
-            email: session?.user?.email,
-            name: session?.user?.name,
-        });
-
         const selectOptions: SelectOption[] = []
 
         apiShipping?.forEach((item) => {
             selectOptions.push({ value: item.idShippping, label: item.destination })
         })
         setCities(selectOptions)
-        setUser(userData);
     }, [session, apiShipping]);
 
     const {
