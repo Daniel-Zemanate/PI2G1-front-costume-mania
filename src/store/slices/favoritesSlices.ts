@@ -61,7 +61,6 @@ export const addFav = createAsyncThunk<FetchResult, {idModel: number, idUser: st
           'Authorization': `Bearer ${token}`
         }
       });
-      console.log(status, statusText)
       return { status, statusText };
     } catch (error) {
       console.error(error);
@@ -85,14 +84,12 @@ export const favoritesSlice = createSlice({
         state.favorites = favorites;
       })
       .addCase(removeFav.fulfilled, (state, action) => {
-        console.log(action);
         state.status = "idle";
       })
       .addCase(removeFav.rejected, (state, action) => {
-        console.log(action);
+        state.status = "idle";
       })
       .addCase(addFav.fulfilled, (state, action) => {
-        console.log(action);
         state.status = "idle";
       });
   },

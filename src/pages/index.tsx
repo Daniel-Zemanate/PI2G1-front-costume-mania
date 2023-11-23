@@ -1,8 +1,7 @@
 import Head from "next/head";
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import {
-  getPopularCostumes,
-  getNewCostumes,
+  getStaticNewCostumes,
 } from "@/services/costumes.service";
 import { ApiCostume, Category, Costume } from "@/interfaces/costume";
 import Banner from "@/components/MainBanner";
@@ -16,7 +15,6 @@ import custome2 from "@assets/custome2.png";
 import RootLayout from "@/layouts/rootLayout";
 import CategoriesBanner from "@/components/CategoriesBanner";
 import { getCategories } from "@/services/categories.service";
-import ErrorMessage from "@/components/ErrorMessage";
 
 interface Props {
   newCostumes: ApiCostume[];
@@ -67,7 +65,7 @@ const HomePage: NextPage<Props> = ({
         <CostumesSection title="New Arrivals" costumes={newCostumes} />
       </HomeSection>
       <HomeSection additionalClasses="bg-purple-3 bg-opacity-20">
-        <CostumesSection title="Popular Models" costumes={popularCostumes} />
+        <CostumesSection title="Popular Models" costumes={popularCostumes.reverse()} />
       </HomeSection>
       <HomeSection>
         <InfoBanner {...bannersInfo[0]} />
@@ -76,23 +74,15 @@ const HomePage: NextPage<Props> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  res,
-}) => {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
-  const popularCostumes = await getPopularCostumes();
-  const newCostumes = await getNewCostumes();
+export const getStaticProps: GetStaticProps = async () => {
+  // const popularCostumes = await getPopularCostumes();
+  const newCostumes = await getStaticNewCostumes();
   const categories = await getCategories();
 
   return {
     props: {
       newCostumes,
-      popularCostumes,
+      popularCostumes: newCostumes,
       categories,
     },
   };

@@ -59,8 +59,6 @@ function SignUpForm() {
       body: JSON.stringify(signUpData),
     });
 
-    console.log(response)
-
     if (response.ok) {
       const result = (await signIn("credentials", {
         email: signUpData.email,

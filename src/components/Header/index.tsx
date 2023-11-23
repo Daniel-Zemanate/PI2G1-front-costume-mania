@@ -15,15 +15,11 @@ import logoText from "@assets/logo-text.png";
 import { useDispatch, useSelector } from "@/store/store";
 import {
   getCartState,
-  validateCart,
   removeItem,
-  submitCart,
 } from "@/store/slices/cartSlice";
 import { fetchFavs, getFavoritesState } from "@/store/slices/favoritesSlices";
-import { FetchResult } from "@/interfaces/costume";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Purchase } from "@/interfaces/user";
-import Swal from "sweetalert2";
+
+import Button from "../Button";
 
 const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,51 +38,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
   const handleRemoveFromCart = (idCatalog: number) => {
     dispatch(removeItem(idCatalog));
   };
-
-  // TEMPORARY
-  const validateOrder = async () => {
-    const cart = cartItems.map((e) => ({
-      catalog: e.idCatalog,
-      quantitySold: e.quantity,
-    }));
-
-    if (session) {
-      const { payload } = (await dispatch(
-        validateCart({ cart: cart, idUser: session.user.user_id })
-      )) as PayloadAction<
-        FetchResult & {
-          shipping: number;
-          total: number;
-          errorMessage: string | null;
-        }
-      >;
-    }
-  };
-
-  const submitOrder = async () => {
-    const cart = cartItems.map((e) => ({
-      catalog: e.idCatalog,
-      quantitySold: e.quantity,
-    }));
-
-    if (session) {
-      const { payload } = (await dispatch(
-        submitCart({
-          cart: cart,
-          idUser: session.user.user_id,
-          token: session.user.token,
-        })
-      )) as PayloadAction<Purchase>;
-      
-      Swal.fire({
-        icon: "success",
-        title: `Purchase Successfull`,
-        text: `Invoice n°${payload.invoiceNumber} generated. Total: $ ${payload.total.toFixed(2)}`,
-      });
-      router.push("/");
-    }
-  };
-  //
 
   return (
     <div
@@ -198,7 +149,7 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             ) : (
               <p>Nothing here... yet!</p>
             )}
-            <div className="flex flex-col items-end">
+            {/* <div className="flex flex-col items-end">
               {shipping !== undefined && (
                 <p>Shipping: ${shipping.toFixed(2)}</p>
               )}
@@ -210,8 +161,19 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
               {shipping !== undefined && (
                 <button onClick={submitOrder}>SUBMIT</button>
               )}
-            </div>
-            <NavLink route="/cart/checkout" textColor="black"> CHECKOUT </NavLink>
+            </div> */}
+
+            {cartItems.length > 0 && (
+              <div className="flex ">
+                <Button
+                  label="Go to cart"
+                  className="m-auto"
+                  buttonStyle="primary"
+                  size="small"
+                  to="/cart"
+                />
+              </div>
+            )}
           </Dropdown>
         </nav>
         <button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,8 +9,14 @@ import { UserData } from "@/interfaces/user";
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import FormSelect, { SelectOption } from "../Form/FormSelect";
-import { getCartState } from "@/store/slices/cartSlice";
-import { useSelector } from "react-redux";
+import { getCartState, submitCart } from "@/store/slices/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { Purchase } from "@/interfaces/user";
+import Swal from "sweetalert2";
+import { useSession } from "next-auth/react";
+import { AppDispatch } from "@/store/store";
+import { useRouter } from "next/router";
 
 export interface CheckoutData {
   fullName: string;
@@ -54,6 +60,7 @@ const AccountDetailsSchema = yup.object().shape({
     .string()
     .min(8, "Phone number should have at least 8 characters")
     .required("Phone number is required"),
+  city: yup.string().required("City is required"),
   cardNumber: yup
     .string()
     .required("Card number is required")
@@ -91,48 +98,49 @@ function CheckoutForm({
   className?: string;
   cities: SelectOption[];
 }) {
+  const { data: session } = useSession();
+  const { items: cartItems, total, shipping, city } = useSelector(getCartState);
+  const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm({ resolver: yupResolver(AccountDetailsSchema) });
+  const [selectedCity, setSelectedCity] = useState(
+    cities.find((c) => c.value === city)?.label
+  );
 
-  const { items: cartItems, total, shipping } = useSelector(getCartState);
-
-  console.log(cartItems, total, shipping)
+  useEffect(() => {
+    setSelectedCity(cities.find((c) => c.value === city)?.label);
+  }, [cities, city]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
-    // const response = await fetch("/api/auth/signup", {
-    //   method: "POST",
-    //   body: JSON.stringify(signUpData),
-    // });
+    const cart = cartItems.map((e) => ({
+      catalog: e.idCatalog,
+      quantitySold: e.quantity,
+    }));
 
-    // console.log(response)
-
-    // if (response.ok) {
-    //   const result = (await signIn("credentials", {
-    //     email: signUpData.email,
-    //     password: signUpData.password,
-    //     redirect: false,
-    //   })) as any;
-
-    //   if (result?.ok) {
-    //     const session = await getSession();
-
-    //     Swal.fire({
-    //       icon: "success",
-    //       title: "Login Successful!",
-    //       text: `Welcome, ${session?.user?.email}!`,
-    //     });
-    //     router.push("/");
-    //   } else {
-    //     setError(result?.error);
-    //   }
-    // } else {
-    //   setError(response.statusText)
-    // }
+    if (session && city) {
+      const { payload } = (await dispatch(
+        submitCart({
+          cart: cart,
+          idUser: session.user.user_id,
+          token: session.user.token,
+          city: city,
+        })
+      )) as PayloadAction<Purchase>;
+      
+      Swal.fire({
+        icon: "success",
+        title: `Purchase Successfull`,
+        text: `Invoice n°${
+          payload.invoiceNumber
+        } generated. Total: $ ${payload.total.toFixed(2)}`,
+      });
+      router.push("/");
+    }
   });
 
   return (
@@ -142,9 +150,10 @@ function CheckoutForm({
         onSubmit={onSubmit}
       >
         {/* Shipping */}
-        <h3 className="border-b-2 border-purple-3 py-2 mb-4 text-2xl font-bold">
-          Shipping Address
-        </h3>
+        <div className="flex justify-between border-b-2 border-purple-3 py-2 mb-4 items-end">
+          <span className="text-2xl font-bold">Shipping Address</span>
+          <small className="w-1/2 text-orange-2 font-semibold">If the selected region is incorrect, please go back to the cart and select the appropiate</small>
+        </div>
         <Form.Body register={register} className="flex flex-wrap">
           <FormInput
             name="email"
@@ -154,13 +163,6 @@ function CheckoutForm({
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="ring-1 ring-black/30 focus:outline-orange-2"
             defaultValue={account.email}
-          />
-          <FormInput
-            name="personalId"
-            label="Identification Number"
-            wrapperClass="w-full md:w-1/2 px-2 mb-4"
-            className="ring-1 ring-black/30 focus:outline-orange-2"
-            defaultValue={account.dni}
           />
           <FormInput
             name="firstName"
@@ -179,19 +181,22 @@ function CheckoutForm({
             error={errors.lastName?.message}
           />
           <FormInput
-            name="addressBill"
-            label="Address"
-            error={errors.addressBill?.message}
-            wrapperClass="w-full md:w-1/2 px-2 mb-4"
-            className="ring-1 ring-black/30 focus:outline-orange-2"
-          />
-          <FormInput
             name="phone"
             label="Phone number"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="ring-1 ring-black/30 focus:outline-orange-2"
             error={errors.phone?.message}
           />
+          <FormInput
+            name="address"
+            label="Address"
+            error={errors.address?.message}
+            wrapperClass="w-full md:w-1/2 px-2 mb-4"
+            className="ring-1 ring-black/30 focus:outline-orange-2"
+          ></FormInput>
+          <div className="w-1/2 flex items-center mb-4">
+              <span className="text-xl font-bold">{selectedCity}</span>
+          </div>
         </Form.Body>
 
         {/* Payment */}

@@ -28,10 +28,14 @@ export const authOptions: NextAuthOptions = {
           }
         );
 
-        const user = await response.json();
+        if (response.ok) {
+          const user = await response.json();
 
-        if (response.ok && user) {
-          return user;
+          if (user) {
+            return user;
+          } else {
+            throw new Error("The credentials are invalid");
+          }
         } else {
           throw new Error("The credentials are invalid");
         }

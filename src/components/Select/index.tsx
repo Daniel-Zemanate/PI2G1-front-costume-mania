@@ -13,22 +13,24 @@ function Select({
   onChange,
   filter,
   className,
+  defaultValue,
 }: {
   label: string;
   options: { key: string; value: string }[];
   onChange: FilterCallback | ChangeCallback;
   filter?: boolean;
   className?: string;
+  defaultValue?: KeyValue;
 }) {
-  const allOption = useMemo(() => ({ key: "", value: "All" }), []);
-
-  const selectOptions = useMemo(
-    () => [allOption, ...options],
-    [options, allOption]
-  );
   const searchParams = useSearchParams();
+  
+  const selectOptions = useMemo(() => {
+    const allOption = { key: "", value: "All" };
+    const processedOptions = filter ? [allOption, ...options] : options;
+    return processedOptions;
+  }, [options, filter]);
 
-  const [value, setValue] = useState<KeyValue>(selectOptions[0]);
+  const [value, setValue] = useState<KeyValue>(defaultValue || selectOptions[0]);
 
   const handleChange = (newValue: KeyValue) => {
     setValue(newValue);
@@ -68,7 +70,11 @@ function Select({
           </Listbox.Button>
           <Listbox.Options className="absolute mt-0.5 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10">
             {selectOptions.map((option, idx) => (
-              <Listbox.Option key={`${idx}`} value={option} className="cursor-pointer hover:bg-orange-2 hover:bg-opacity-20">
+              <Listbox.Option
+                key={`${idx}`}
+                value={option}
+                className="cursor-pointer hover:bg-orange-2 hover:bg-opacity-20"
+              >
                 {({ selected }) => (
                   <span className="flex justify-between mx-3">
                     <span

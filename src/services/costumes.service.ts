@@ -49,6 +49,7 @@ export const getCostumes = async (query: any): Promise<ApiCostumeResponse> => {
   return data;
 };
 
+
 export const getPopularCostumes = async () => {
   const url = `${process.env.URL_LOCAL}/api/costumes/popular`;
   const response = await fetch(url);
@@ -60,3 +61,15 @@ export const getNewCostumes = async () => {
   const response = await fetch(url);
   return await response.json();
 };
+
+export const getStaticPopularCostumes = async () => {
+  const url = `${process.env.PRODUCT_API_URL}/catalog/news/10`;
+  const response = await fetch(url);
+  return await response.json();
+}; 
+
+export const getStaticNewCostumes =async () => {
+  const url = `${process.env.PRODUCT_API_URL}/catalog/news/10`;
+  const response = await fetch(url);
+  return await response.json();
+}

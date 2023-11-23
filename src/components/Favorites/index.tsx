@@ -71,9 +71,7 @@ function Favorites() {
             ))}
           </ul>
         ) : (
-          <div className="w-full flex">
-            <p className="m-auto">No favorites yet</p>
-          </div>
+          <h3 className="text-2xl text-center py-8">No favorites yet</h3>
         ))}
     </section>
   );

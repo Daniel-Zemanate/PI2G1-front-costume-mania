@@ -11,6 +11,7 @@ export interface ICart {
   total?: number;
   shipping?: number;
   error?: string;
+  city?: string;
 }
 
 const initialState: ICart = {
@@ -21,57 +22,61 @@ type ValidatedCart = FetchResult & {
   total: number;
   shippingCost: number;
   errorMessage: string | null;
+  city: string
 };
 
 type Cart = {
-  cart: { catalog: number; quantitySold: number }[],
+  cart: { catalog: number; quantitySold: number }[];
   idUser: string;
-}
+  city: string;
+};
 
-export const validateCart = createAsyncThunk<
-  ValidatedCart,
-  Cart
->("cart/validateCart", async ({cart, idUser}) => {
-  try {
-    const body = {
-      user: idUser,
-      city: 2,
-      itemSoldList: cart,
-    };
+export const validateCart = createAsyncThunk<ValidatedCart, Cart>(
+  "cart/validateCart",
+  async ({ cart, idUser, city }) => {
+    try {
+      const body = {
+        user: idUser,
+        city: city,
+        itemSoldList: cart,
+      };
 
-    const response = await fetch(`/api/validateCart/`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
+      const response = await fetch(`/api/validateCart/`, {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    return data;
-  } catch (error) {
-    console.log("ERROR");
-    console.error(error);
-    throw error;
+      const fullData = {...data, city}
+
+      return fullData;
+    } catch (error) {
+      console.log("ERROR");
+      console.error(error);
+      throw error;
+    }
   }
-});
+);
 
 export const submitCart = createAsyncThunk<
   FetchResult,
-  Cart & {token: string}
->("cart/submitCart", async ({cart, idUser, token}) => {
+  Cart & { token: string }
+>("cart/submitCart", async ({ cart, idUser, token, city }) => {
   try {
     const body = {
       user: idUser,
-      city: 1,
+      city: city,
       itemSoldList: cart,
-      address: "dummy address"
+      address: "dummy address",
     };
 
     const response = await fetch(`/api/purchase/`, {
       method: "POST",
       body: JSON.stringify(body),
-      headers:{
-        'Authorization': `Bearer ${token}`
-      }
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     const data = await response.json();
@@ -102,6 +107,9 @@ export const cartSlice = createSlice({
       } else {
         state.items.push(newItem);
       }
+
+      state.shipping = undefined;
+      state.total = undefined;
     },
 
     removeItem: (
@@ -118,14 +126,17 @@ export const cartSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-    .addCase(validateCart.fulfilled, (state, action) => {
-      state.shipping = action.payload.shippingCost;
-      state.total = action.payload.total;
-    })
-    .addCase(submitCart.fulfilled, (state, action) => {
-      console.log("DONE")
-      console.log(action)
-    })
+      .addCase(validateCart.fulfilled, (state, action) => {
+        state.shipping = action.payload.shippingCost;
+        state.total = action.payload.total;
+        state.city = action.payload.city;
+      })
+      .addCase(submitCart.fulfilled, (state, action) => {
+        state.items = [];
+        state.shipping = undefined;
+        state.total = undefined;
+        state.city = undefined;
+      });
   },
 });
 
