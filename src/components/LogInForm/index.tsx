@@ -9,6 +9,7 @@ import NavLink from "../NavLink/NavLink";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
+import Spinner from "../Spinner";
 
 // validation
 const LogInSchema = yup.object().shape({
@@ -29,10 +30,12 @@ function LogInForm() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(LogInSchema) });
   const [error, setError] = useState<string>();
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
+    setLoading(true)
     const result = (await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -51,7 +54,16 @@ function LogInForm() {
     } else {
       setError(result?.error);
     }
+    setLoading(false)
   });
+
+  if (loading) {
+    return (
+      <div className="m-auto">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <Form

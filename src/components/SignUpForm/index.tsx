@@ -9,6 +9,7 @@ import NavLink from "../NavLink/NavLink";
 import Swal from "sweetalert2";
 import { getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Spinner from "../Spinner";
 
 const SignUpSchema = yup.object().shape({
   firstName: yup
@@ -47,17 +48,28 @@ function SignUpForm() {
   } = useForm({ resolver: yupResolver(SignUpSchema) });
 
   const [error, setError] = useState<string>();
-  const { data: session, update: updateSession } = useSession();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
     const { passwordConfirmation, ...signUpData } = data;
-    setError("")
+    setError("");
+    setLoading(true);
 
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify(signUpData),
     });
+
+    console.log(response);
+
+    if (response.status === 400) {
+      setError(
+        "Oops! It looks like this email or ID is already taken."
+      );
+      setLoading(false);
+      return;
+    }
 
     if (response.ok) {
       const result = (await signIn("credentials", {
@@ -65,10 +77,10 @@ function SignUpForm() {
         password: signUpData.password,
         redirect: false,
       })) as any;
-  
+
       if (result?.ok) {
         const session = await getSession();
-  
+
         Swal.fire({
           icon: "success",
           title: "Login Successful!",
@@ -79,9 +91,19 @@ function SignUpForm() {
         setError(result?.error);
       }
     } else {
-      setError(response.statusText)
+      setError(response.statusText);
     }
+
+    setLoading(false);
   });
+
+  if (loading) {
+    return (
+      <div className="m-auto">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <Form
