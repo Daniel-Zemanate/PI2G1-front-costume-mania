@@ -39,6 +39,17 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
     dispatch(removeItem(idCatalog));
   };
 
+  const CartHeader = () => (
+    <>
+      <FaShoppingCart /> 
+      {
+        cartItems.length > 0 && (
+          <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-orange-2 border-2 border-white rounded-full -top-3 right-2 dark:border-gray-900">{cartItems.length}</div>
+        )
+      }
+    </>
+  );
+
   return (
     <div
       className={`fixed top-0 w-full bg-purple-1 shadow-lg border-b-2 border-gray-500 z-50 ${
@@ -122,8 +133,8 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             </>
           )}
           <Dropdown
-            buttonIcon={!simple ? <FaShoppingCart /> : null}
-            buttonText={"Cart"}
+            buttonIcon={!simple ? <CartHeader /> : null}
+            buttonText={`Cart`}
           >
             {cartItems.length ? (
               cartItems.map((item, idx) => (
@@ -149,19 +160,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
             ) : (
               <p>Nothing here... yet!</p>
             )}
-            {/* <div className="flex flex-col items-end">
-              {shipping !== undefined && (
-                <p>Shipping: ${shipping.toFixed(2)}</p>
-              )}
-              {total && <p>Total: ${total.toFixed(2)}</p>}
-              {cartItems.length > 0 && (
-                <button onClick={validateOrder}>VALIDATE</button>
-              )}
-
-              {shipping !== undefined && (
-                <button onClick={submitOrder}>SUBMIT</button>
-              )}
-            </div> */}
 
             {cartItems.length > 0 && (
               <div className="flex ">
