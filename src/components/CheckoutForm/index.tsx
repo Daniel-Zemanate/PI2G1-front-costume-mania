@@ -69,7 +69,7 @@ const AccountDetailsSchema = yup.object().shape({
   expirationDate: yup
     .string()
     .required("Expiration date is required")
-    .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiration date format invalid"),
+    .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Format invalid (MM/YY)"),
   cvc: yup
     .string()
     .required("CVC is required")
@@ -216,6 +216,7 @@ function CheckoutForm({
             wrapperClass="w-full px-2 mb-4"
             className="ring-1 ring-black/30 focus:outline-orange-2"
             error={errors.cardNumber?.message}
+            maxLength={16}
           />
           <FormInput
             name="cardName"
@@ -230,6 +231,7 @@ function CheckoutForm({
             wrapperClass="w-full md:w-1/4 px-2 mb-4"
             className="ring-1 ring-black/30 focus:outline-orange-2"
             error={errors.expirationDate?.message}
+            maxLength={5}
           />
           <FormInput
             name="cvc"
@@ -237,6 +239,7 @@ function CheckoutForm({
             wrapperClass="w-full md:w-1/4 px-2 mb-4"
             className="ring-1 ring-black/30 focus:outline-orange-2"
             error={errors.cvc?.message}
+            maxLength={3}
           />
         </Form.Body>
 
