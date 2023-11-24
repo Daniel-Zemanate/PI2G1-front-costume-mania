@@ -22,6 +22,6 @@
       "@styles/*": ["./src/styles/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/middleware.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/middleware.ts", "src/store/storage.js"],
   "exclude": ["node_modules"]
 }
