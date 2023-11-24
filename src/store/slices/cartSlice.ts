@@ -122,6 +122,9 @@ export const cartSlice = createSlice({
       if (indexToRemove !== -1) {
         const removedItem = state.items.splice(indexToRemove, 1)[0];
       }
+
+      state.shipping = undefined;
+      state.total = undefined;
     },
   },
   extraReducers(builder) {
