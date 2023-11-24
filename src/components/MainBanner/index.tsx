@@ -43,7 +43,7 @@ function Banner() {
           </div>
         </span>
         <div className="flex flex-row justify-center gap-6 mb-8 md:mb-10">
-          <Button buttonStyle="primary" label="Shop Now" />
+          <Button buttonStyle="primary" label="Shop Now" to="/costumes" />
           <Button buttonStyle="secondary" label="Flash Sales" />
         </div>
       </div>
