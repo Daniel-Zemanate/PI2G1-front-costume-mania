@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { AppDispatch } from "@/store/store";
 import { useRouter } from "next/router";
+import Spinner from "../Spinner";
 
 export interface CheckoutData {
   fullName: string;
@@ -102,6 +103,7 @@ function CheckoutForm({
   const { items: cartItems, total, shipping, city } = useSelector(getCartState);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -117,6 +119,7 @@ function CheckoutForm({
   }, [cities, city]);
 
   const onSubmit = handleSubmit(async (data) => {
+    setLoading(true);
     const cart = cartItems.map((e) => ({
       catalog: e.idCatalog,
       quantitySold: e.quantity,
@@ -131,17 +134,27 @@ function CheckoutForm({
           city: city,
         })
       )) as PayloadAction<Purchase>;
-      
+
       Swal.fire({
         icon: "success",
-        title: `Purchase Successfull`,
+        title: `Purchase successful!`,
         text: `Invoice n°${
           payload.invoiceNumber
         } generated. Total: $ ${payload.total.toFixed(2)}`,
       });
       router.push("/");
     }
+
+    setLoading(false);
   });
+
+  if (loading) {
+    return (
+      <div className="m-auto">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -152,7 +165,10 @@ function CheckoutForm({
         {/* Shipping */}
         <div className="flex justify-between border-b-2 border-purple-3 py-2 mb-4 items-end">
           <span className="text-2xl font-bold">Shipping Address</span>
-          <small className="w-1/2 text-orange-2 font-semibold">If the selected region is incorrect, please go back to the cart and select the appropiate</small>
+          <small className="w-1/2 text-orange-2 font-semibold">
+            If the selected region is incorrect, please go back to the cart and
+            select the appropiate
+          </small>
         </div>
         <Form.Body register={register} className="flex flex-wrap">
           <FormInput
@@ -195,7 +211,7 @@ function CheckoutForm({
             className="ring-1 ring-black/30 focus:outline-orange-2"
           ></FormInput>
           <div className="w-1/2 flex items-center mb-4">
-              <span className="text-xl font-bold">{selectedCity}</span>
+            <span className="text-xl font-bold">{selectedCity}</span>
           </div>
         </Form.Body>
 
