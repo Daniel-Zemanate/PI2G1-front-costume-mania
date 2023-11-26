@@ -61,7 +61,7 @@ const AccountDetailsSchema = yup.object().shape({
     .string()
     .min(8, "Phone number should have at least 8 characters")
     .required("Phone number is required"),
-  city: yup.string().required("City is required"),
+  city: yup.string(),
   cardNumber: yup
     .string()
     .required("Card number is required")
