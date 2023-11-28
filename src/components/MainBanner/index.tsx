@@ -42,10 +42,6 @@ function Banner() {
             <Image src={star} alt="star" />
           </div>
         </span>
-        <div className="flex flex-row justify-center gap-6 mb-8 md:mb-10">
-          <Button buttonStyle="primary" label="Shop Now" to="/costumes" />
-          <Button buttonStyle="secondary" label="Flash Sales" />
-        </div>
       </div>
       <div></div>
       <figure className="flex flex-col items-center">
