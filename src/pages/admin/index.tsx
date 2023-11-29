@@ -12,7 +12,7 @@ const frijole = Frijole({
 });
 
 function AdminPage() {
-  const tabs = ["Catalog", "Categories", "Models", "Sales", "Reports"];
+  const tabs = ["Catalog", "Categories", "Models", "Sales"];
 
   return (
     <SimpleLayout>
@@ -56,7 +56,7 @@ function AdminPage() {
                 </Tab>
               ))}
             </Tab.List>
-            <Tab.Panels>
+            <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
                 <p>Crear componente individual - CATALOG</p>
@@ -72,10 +72,6 @@ function AdminPage() {
               <Tab.Panel>
                 {/* Crear componente individual - SALES */}
                 <p>Crear componente individual - SALES</p>
-              </Tab.Panel>
-              <Tab.Panel>
-                {/* Crear componente individual - REPORTS */}
-                <p>Crear componente individual - REPORTS</p>
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
