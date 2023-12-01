@@ -43,3 +43,8 @@ body {
 .react-datepicker__year-text--in-range {
   background: theme("colors.purple-2") !important;
 }
+
+/* Sweet alert fix */
+body {
+  padding-right: 0 !important;
+}
