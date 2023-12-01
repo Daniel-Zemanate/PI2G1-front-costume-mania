@@ -65,7 +65,7 @@ function ReportsPage({ data }: Props) {
             </div>
           </div>
           <div className="flex flex-col lg:flex-row border rounded border-lightGrey/50 p-6 md:gap-8 ">
-            <div className="w-full lg:w-2/3">
+            <div className="w-full lg:w-2/3 h-60">
               <DonutChart data={data.generalShippingTime} />
             </div>
             <div className="w-full lg:w-1/3 md:h-60 flex flex-col gap-4">
