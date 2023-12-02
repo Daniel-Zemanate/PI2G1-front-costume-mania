@@ -13,7 +13,6 @@ import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { UserData } from "@/interfaces/user";
 import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
-import { constants } from "buffer";
 import { GridColDef } from "@mui/x-data-grid";
 
 const frijole = Frijole({
@@ -55,7 +54,7 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
         />
         <div className="flex gap-8">
           <Tab.Group>
-            <Tab.List className="flex flex-col bg-purple-3 bg-opacity-50 md:text-lg p-4 gap-1 md:gap-2 justify-center mb-2 shadow-md rounded">
+            <Tab.List className="flex flex-col bg-purple-3 bg-opacity-50 md:text-lg p-4 gap-1 md:gap-2 justify-center mb-2 shadow-md rounded self-start">
               {tabs.map((e, idx) => (
                 <Tab
                   key={idx}
