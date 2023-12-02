@@ -5,6 +5,7 @@ const CATEGORIES = {
   FANTASY: "Fantasy",
   SEXY: "Sexy",
   OLD_TIMES: "Old times",
+  CHRISTMAS: "Christmas",
 };
 
 export function getCategoryImage(category: string) {
@@ -20,6 +21,7 @@ export function getCategoryImage(category: string) {
     return "https://images.unsplash.com/photo-1676906242933-98a73e5441a7?q=80&w=1667&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   if (category === CATEGORIES.SEXY)
     return "https://images.unsplash.com/photo-1593756286967-24f3756c187e?q=80&w=1742&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
+  if (category === CATEGORIES.CHRISTMAS)
+    return "https://images.unsplash.com/photo-1511600173735-a896042389cf?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return null;
 }
