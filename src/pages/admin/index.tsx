@@ -1,6 +1,6 @@
 import SimpleLayout from "@/layouts/simpleLayout";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { Frijole } from "next/font/google";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
@@ -11,9 +11,16 @@ import { getServerSession } from "next-auth";
 import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
-import { getAdminInvoices } from "@/services/admin.invoice.service";
+import {
+  getAdminInvoices,
+  getInvoiceStatus,
+} from "@/services/admin.invoice.service";
 import { Invoice } from "@/interfaces/invoice";
 import AdminInvoices from "@/components/AdminInvoices";
+import { saveInvoiceStatus } from "@/store/slices/invoiceSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+import { KeyValue } from "@/interfaces/costume";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -22,11 +29,22 @@ const frijole = Frijole({
 
 type Props = {
   catalogDataTable: CatalogDataTable[];
-  invoices: Invoice[]
+  invoices: Invoice[];
+  invoiceStatus: KeyValue[];
 };
 
-const AdminPage: NextPage<Props> = ({ catalogDataTable, invoices }) => {
+const AdminPage: NextPage<Props> = ({
+  catalogDataTable,
+  invoices,
+  invoiceStatus,
+}) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(saveInvoiceStatus(invoiceStatus));
+  }, [dispatch, invoiceStatus]);
 
   return (
     <SimpleLayout>
@@ -107,12 +125,15 @@ export const getServerSideProps: GetServerSideProps = async ({
       const apiAdminCatalog = await getAdminCatalog();
       const catalogDataTable = formatCatalog(apiAdminCatalog);
       // INVOICES
-      const invoices = await getAdminInvoices()
+      const invoices = await getAdminInvoices();
+      // SHIPPING STATUS
+      const invoiceStatus = await getInvoiceStatus();
 
       return {
         props: {
           catalogDataTable,
           invoices,
+          invoiceStatus,
         },
       };
     } catch (error) {
@@ -121,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       return {
         props: {
           apiAdminCatalog: null,
-          apiAdminInvoices: null
+          apiAdminInvoices: null,
         },
       };
     }

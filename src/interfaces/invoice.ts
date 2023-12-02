@@ -1,15 +1,15 @@
 export interface Invoice {
   no_invoice:   number;
   status:       string;
-  items:        Item[];
+  items:        InvoiceItem[];
   shippingCity: string;
   shippingcost: number;
   total:        number;
-  invoiceDate:  Date;
-  shippingDate: null;
+  invoiceDate:  any;
+  shippingDate: any;
 }
 
-export interface Item {
+export interface InvoiceItem {
   catalog:  number;
   model:    string;
   quantity: number;
@@ -17,3 +17,10 @@ export interface Item {
   image:    string;
   pxQ:      number;
 }
+
+export interface InvoiceStatus {
+  idStatus: number;
+  status: string;
+}
+
+export type TableInvoice = Invoice & { id: string };
