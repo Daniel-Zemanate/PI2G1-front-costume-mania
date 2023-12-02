@@ -8,12 +8,12 @@ import { Tab } from "@headlessui/react";
 import AdminCatalog from "@/components/AdminCatalog";
 import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
-import { getUserInfo } from "@/services/users.service";
 import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { UserData } from "@/interfaces/user";
 import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
-import { GridColDef } from "@mui/x-data-grid";
+import { getAdminInvoices } from "@/services/admin.invoice.service";
+import { Invoice } from "@/interfaces/invoice";
+import AdminInvoices from "@/components/AdminInvoices";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -21,13 +21,12 @@ const frijole = Frijole({
 });
 
 type Props = {
-  userData: UserData;
   catalogDataTable: CatalogDataTable[];
+  invoices: Invoice[]
 };
 
-const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
+const AdminPage: NextPage<Props> = ({ catalogDataTable, invoices }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
-
 
   return (
     <SimpleLayout>
@@ -61,9 +60,10 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${selected
-                      ? "bg-white shadow"
-                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${
+                      selected
+                        ? "bg-white shadow"
+                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -73,7 +73,7 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
             <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
-                <AdminCatalog data={catalogDataTable} ></AdminCatalog>
+                <AdminCatalog data={catalogDataTable}></AdminCatalog>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -84,8 +84,7 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
                 <p>Crear componente individual - MODELS</p>
               </Tab.Panel>
               <Tab.Panel>
-                {/* Crear componente individual - SALES */}
-                <p>Crear componente individual - SALES</p>
+                <AdminInvoices invoices={invoices} />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>
@@ -93,8 +92,7 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
       </section>
     </SimpleLayout>
   );
-}
-
+};
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
@@ -106,15 +104,15 @@ export const getServerSideProps: GetServerSideProps = async ({
     const { token, user_id: idUser } = session?.user;
 
     try {
-      const userData = await getUserInfo(token);
       const apiAdminCatalog = await getAdminCatalog();
       const catalogDataTable = formatCatalog(apiAdminCatalog);
-      //const catalogColumnsTable = getColumns(catalogDataTable);
+      // INVOICES
+      const invoices = await getAdminInvoices()
 
       return {
         props: {
-          userData,
           catalogDataTable,
+          invoices,
         },
       };
     } catch (error) {
@@ -122,8 +120,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       console.error("Error fetching data:", error);
       return {
         props: {
-          userData: null,
           apiAdminCatalog: null,
+          apiAdminInvoices: null
         },
       };
     }
@@ -143,32 +141,16 @@ function formatCatalog(apiAdminCatalog: Catalog[]) {
     catalogData.push({
       id: data.idCatalog,
       model: data.model.nameModel,
-      adult: data.size.adult ? 'Yes' : 'No',
+      adult: data.size.adult ? "Yes" : "No",
       size: data.size.noSize,
       status: data.statusCatalog.description,
       stock: data.stock,
       price: data.price,
-      category: data.model.category.name
-    })
-  })
+      category: data.model.category.name,
+    });
+  });
 
-  return catalogData
-}
-
-function getColumns(Data: Object[]) {
-  let columns: GridColDef[] = []
-
-  if (Data.length > 0) {
-    Object.keys(Data[0]).map(field => {
-      columns.push({
-        headerName: field.charAt(0).toUpperCase() + field.slice(1),
-        field: field,
-      })
-    })
-  }
-
-  console.log(columns);
-  return columns;
+  return catalogData;
 }
 
 export default AdminPage;
