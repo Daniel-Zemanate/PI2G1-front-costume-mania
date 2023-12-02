@@ -5,7 +5,6 @@ export interface Catalog {
     stock: number
     price: number
     statusCatalog: Status
-    status: Status
 }
 
 export interface Model {
@@ -14,14 +13,12 @@ export interface Model {
     category: Category
     urlImage: string
     statusModel: Status
-    status: Status
 }
 
 export interface Category {
     idCategory: number
     name: string
     statusCategory: Status
-    status: Status
 }
 
 
@@ -34,6 +31,7 @@ export interface Size {
 
 export interface Status {
     id: number
+    description: string
 }
 
 export interface CatalogDataTable {

@@ -5,7 +5,7 @@ import { Frijole } from "next/font/google";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
 import { Tab } from "@headlessui/react";
-import AdminCatalog, { Column } from "@/components/AdminCatalog";
+import AdminCatalog from "@/components/AdminCatalog";
 import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getUserInfo } from "@/services/users.service";
@@ -14,6 +14,7 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { UserData } from "@/interfaces/user";
 import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
 import { constants } from "buffer";
+import { GridColDef } from "@mui/x-data-grid";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -23,7 +24,7 @@ const frijole = Frijole({
 type Props = {
   userData: UserData;
   catalogDataTable: CatalogDataTable[];
-  catalogColumnsTable: Column[]
+  catalogColumnsTable: GridColDef[]
 };
 
 const AdminPage: NextPage<Props> = ({ userData, catalogDataTable, catalogColumnsTable }) => {
@@ -147,7 +148,7 @@ function formatCatalog(apiAdminCatalog: Catalog[]) {
       model: data.model.nameModel,
       adult: data.size.adult ? 'Yes' : 'No',
       size: data.size.noSize,
-      status: data.statusCatalog.id === 1 ? 'Active' : 'Inactive',
+      status: data.statusCatalog.description,
       stock: data.stock,
       price: data.price,
       category: data.model.category.name
@@ -158,13 +159,13 @@ function formatCatalog(apiAdminCatalog: Catalog[]) {
 }
 
 function getColumns(Data: Object[]) {
-  let columns: Column[] = []
+  let columns: GridColDef[] = []
 
   if (Data.length > 0) {
     Object.keys(Data[0]).map(field => {
       columns.push({
-        Header: field.charAt(0).toUpperCase() + field.slice(1),
-        accessor: field
+        headerName: field.charAt(0).toUpperCase() + field.slice(1),
+        field: field,
       })
     })
   }

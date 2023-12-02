@@ -1,15 +1,10 @@
 import { CatalogDataTable } from '@/interfaces/catalog';
 import React from 'react';
 import Table from '../Table';
+import { GridColDef } from '@mui/x-data-grid';
 
 
-export type Column = {
-  Header: string;
-  accessor: any; // el nombre de la propiedad
-};
-
-
-function AdminCatalog({ columns, data }: { columns: Column[], data: CatalogDataTable[] }) {
+function AdminCatalog({ columns, data }: { columns: GridColDef[], data: CatalogDataTable[] }) {
   return (
     <>
       <Table columns={columns} data={data}></Table>
