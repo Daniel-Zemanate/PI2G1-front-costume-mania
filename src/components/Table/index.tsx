@@ -39,10 +39,10 @@ function Table({ columns, data }: { columns: Column[], data: Object[] }) {
         <>
             <table {...getTableProps()} className="table-auto">
                 <thead>
-                    {headerGroups.map(headerGroup => (
-                        <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                            {headerGroup.headers.map(column => (
-                                <th {...column.getHeaderProps(column.getSortByToggleProps())} className="px-4 py-2" key={column.id}>
+                    {headerGroups.map((headerGroup, index) => (
+                        <tr {...headerGroup.getHeaderGroupProps()} key={'H1-' + index}>
+                            {headerGroup.headers.map((column, index) => (
+                                <th {...column.getHeaderProps(column.getSortByToggleProps())} className="px-4 py-2" key={'H2-' + index}>
                                     {column.render('Header')}
                                     <span>
                                         {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
@@ -53,12 +53,12 @@ function Table({ columns, data }: { columns: Column[], data: Object[] }) {
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    {page.map(row => {
+                    {page.map((row, index) => {
                         prepareRow(row);
                         return (
-                            <tr {...row.getRowProps()} key={row.id}>
+                            <tr {...row.getRowProps()} key={"R1-" + index}>
                                 {row.cells.map((cell, index) => (
-                                    <td {...cell.getCellProps()} className="border px-4 py-2" key={index}>{cell.render('Cell')}</td>
+                                    <td {...cell.getCellProps()} className="border px-4 py-2" key={"R2-" + index}>{cell.render('Cell')}</td>
                                 ))}
                             </tr>
                         );

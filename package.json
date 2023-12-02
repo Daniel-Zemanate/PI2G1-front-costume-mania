@@ -20,6 +20,7 @@
     "nextjs-progressbar": "^0.0.16",
     "react": "^18",
     "react-credit-cards-2": "^1.0.1",
+    "react-datepicker": "^4.23.0",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
@@ -27,6 +28,7 @@
     "react-slick": "^0.29.0",
     "react-snowfall": "^1.2.1",
     "react-table": "^7.8.0",
+    "recharts": "^2.10.1",
     "redux-persist": "^6.0.0",
     "sharp": "^0.32.6",
     "slick-carousel": "^1.8.1",
@@ -37,6 +39,7 @@
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
+    "@types/react-datepicker": "^4.19.3",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.11",
     "autoprefixer": "^10.4.16",
