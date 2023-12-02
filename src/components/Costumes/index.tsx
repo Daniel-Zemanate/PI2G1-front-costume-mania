@@ -34,7 +34,13 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
       return;
     }
 
-    dispatch(addFav({ idModel: costume.modelId, idUser: session.user.user_id, token: session.user.token }));
+    dispatch(
+      addFav({
+        idModel: costume.modelId,
+        idUser: session.user.user_id,
+        token: session.user.token,
+      })
+    );
   };
 
   const handleFavRemove = () => {
@@ -56,6 +62,10 @@ export const CostumeCard: FC<Props> = ({ costume }) => {
 
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    if (!session) {
+      router.push("/auth/login");
+      return;
+    }
 
     const cartItem: CartCostume = {
       ...selectedSize,
