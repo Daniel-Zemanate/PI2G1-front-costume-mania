@@ -24,10 +24,9 @@ const frijole = Frijole({
 type Props = {
   userData: UserData;
   catalogDataTable: CatalogDataTable[];
-  catalogColumnsTable: GridColDef[]
 };
 
-const AdminPage: NextPage<Props> = ({ userData, catalogDataTable, catalogColumnsTable }) => {
+const AdminPage: NextPage<Props> = ({ userData, catalogDataTable }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
 
 
@@ -75,7 +74,7 @@ const AdminPage: NextPage<Props> = ({ userData, catalogDataTable, catalogColumns
             <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
-                <AdminCatalog columns={catalogColumnsTable} data={catalogDataTable} ></AdminCatalog>
+                <AdminCatalog data={catalogDataTable} ></AdminCatalog>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -111,13 +110,12 @@ export const getServerSideProps: GetServerSideProps = async ({
       const userData = await getUserInfo(token);
       const apiAdminCatalog = await getAdminCatalog();
       const catalogDataTable = formatCatalog(apiAdminCatalog);
-      const catalogColumnsTable = getColumns(catalogDataTable);
+      //const catalogColumnsTable = getColumns(catalogDataTable);
 
       return {
         props: {
           userData,
           catalogDataTable,
-          catalogColumnsTable
         },
       };
     } catch (error) {
@@ -169,6 +167,8 @@ function getColumns(Data: Object[]) {
       })
     })
   }
+
+  console.log(columns);
   return columns;
 }
 
