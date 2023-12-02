@@ -5,14 +5,30 @@ import { Frijole } from "next/font/google";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
 import { Tab } from "@headlessui/react";
+import AdminCatalog, { Column } from "@/components/AdminCatalog";
+import { GetServerSideProps, NextPage } from "next";
+import { getServerSession } from "next-auth";
+import { getUserInfo } from "@/services/users.service";
+import { getAdminCatalog } from "@/services/admin.catalog.service";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { UserData } from "@/interfaces/user";
+import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
+import { constants } from "buffer";
 
 const frijole = Frijole({
   subsets: ["latin"],
   weight: "400",
 });
 
-function AdminPage() {
+type Props = {
+  userData: UserData;
+  catalogDataTable: CatalogDataTable[];
+  catalogColumnsTable: Column[]
+};
+
+const AdminPage: NextPage<Props> = ({ userData, catalogDataTable, catalogColumnsTable }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
+
 
   return (
     <SimpleLayout>
@@ -46,10 +62,9 @@ function AdminPage() {
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${
-                      selected
-                        ? "bg-white shadow"
-                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${selected
+                      ? "bg-white shadow"
+                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -59,7 +74,7 @@ function AdminPage() {
             <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
-                <p>Crear componente individual - CATALOG</p>
+                <AdminCatalog columns={catalogColumnsTable} data={catalogDataTable} ></AdminCatalog>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -79,6 +94,81 @@ function AdminPage() {
       </section>
     </SimpleLayout>
   );
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+  res,
+}) => {
+  const session = await getServerSession(req, res, authOptions);
+  if (session) {
+    const { token, user_id: idUser } = session?.user;
+
+    try {
+      const userData = await getUserInfo(token);
+      const apiAdminCatalog = await getAdminCatalog();
+      const catalogDataTable = formatCatalog(apiAdminCatalog);
+      const catalogColumnsTable = getColumns(catalogDataTable);
+
+      return {
+        props: {
+          userData,
+          catalogDataTable,
+          catalogColumnsTable
+        },
+      };
+    } catch (error) {
+      // Handle errors if necessary
+      console.error("Error fetching data:", error);
+      return {
+        props: {
+          userData: null,
+          apiAdminCatalog: null,
+        },
+      };
+    }
+  }
+
+  return {
+    redirect: {
+      destination: "/",
+      permanent: false,
+    },
+  };
+};
+
+function formatCatalog(apiAdminCatalog: Catalog[]) {
+  let catalogData: CatalogDataTable[] = [];
+  apiAdminCatalog.map((data) => {
+    catalogData.push({
+      id: data.idCatalog,
+      model: data.model.nameModel,
+      adult: data.size.adult ? 'Yes' : 'No',
+      size: data.size.noSize,
+      status: data.statusCatalog.id === 1 ? 'Active' : 'Inactive',
+      stock: data.stock,
+      price: data.price,
+      category: data.model.category.name
+    })
+  })
+
+  return catalogData
+}
+
+function getColumns(Data: Object[]) {
+  let columns: Column[] = []
+
+  if (Data.length > 0) {
+    Object.keys(Data[0]).map(field => {
+      columns.push({
+        Header: field.charAt(0).toUpperCase() + field.slice(1),
+        accessor: field
+      })
+    })
+  }
+  return columns;
 }
 
 export default AdminPage;
