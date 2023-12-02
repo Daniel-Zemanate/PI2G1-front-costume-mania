@@ -13,11 +13,9 @@ import bwLogo from "@assets/logo-bw.svg";
 import { FaHeart, FaShoppingCart, FaUser, FaRegTrashAlt } from "react-icons/fa";
 import logoText from "@assets/logo-text.png";
 import { useDispatch, useSelector } from "@/store/store";
-import {
-  getCartState,
-  removeItem,
-} from "@/store/slices/cartSlice";
+import { getCartState, removeItem } from "@/store/slices/cartSlice";
 import { fetchFavs, getFavoritesState } from "@/store/slices/favoritesSlices";
+import { FaChartBar, FaDatabase } from "react-icons/fa";
 
 import Button from "../Button";
 
@@ -25,9 +23,11 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
-  const { items: cartItems, total, shipping } = useSelector(getCartState);
+  const { items: cartItems } = useSelector(getCartState);
   const { favorites, status } = useSelector(getFavoritesState);
   const dispatch = useDispatch();
+
+  console.log(session);
 
   useEffect(() => {
     if (status === "idle" && session) {
@@ -41,12 +41,12 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
 
   const CartHeader = () => (
     <>
-      <FaShoppingCart /> 
-      {
-        cartItems.length > 0 && (
-          <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-orange-2 border-2 border-white rounded-full -top-3 right-2 dark:border-gray-900">{cartItems.length}</div>
-        )
-      }
+      <FaShoppingCart />
+      {cartItems.length > 0 && (
+        <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-orange-2 border-2 border-white rounded-full -top-3 right-2 dark:border-gray-900">
+          {cartItems.length}
+        </div>
+      )}
     </>
   );
 
@@ -93,37 +93,39 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
                   Sign out
                 </Dropdown.Item>
               </Dropdown>
-              <Dropdown
-                buttonIcon={!simple ? <FaHeart /> : null}
-                buttonText={"Favorites"}
-              >
-                {favorites.length ? (
-                  favorites.map((fav, idx) => (
-                    <Dropdown.Item
-                      key={idx}
-                      onClick={() => router.push(`/costumes/${fav.idModel}`)}
-                    >
-                      <div className="flex justify-between gap-4 items-center">
-                        <Image
-                          src={fav.urlImage || logoText}
-                          alt={`${fav.nameModel}'s image`}
-                          height={50}
-                          width={35}
-                        />
-                        <span className="text-sm">{fav.nameModel}</span>
-                      </div>
-                    </Dropdown.Item>
-                  ))
-                ) : (
-                  <p>No favorites</p>
-                )}
-              </Dropdown>
+              {session.user.role === "USER" && (
+                <Dropdown
+                  buttonIcon={!simple ? <FaHeart /> : null}
+                  buttonText={"Favorites"}
+                >
+                  {favorites.length ? (
+                    favorites.map((fav, idx) => (
+                      <Dropdown.Item
+                        key={idx}
+                        onClick={() => router.push(`/costumes/${fav.idModel}`)}
+                      >
+                        <div className="flex justify-between gap-4 items-center">
+                          <Image
+                            src={fav.urlImage || logoText}
+                            alt={`${fav.nameModel}'s image`}
+                            height={50}
+                            width={35}
+                          />
+                          <span className="text-sm">{fav.nameModel}</span>
+                        </div>
+                      </Dropdown.Item>
+                    ))
+                  ) : (
+                    <p>No favorites</p>
+                  )}
+                </Dropdown>
+              )}
             </>
           ) : (
             <>
               <Dropdown
                 buttonIcon={!simple ? <FaUser /> : null}
-                buttonText={"Account "}
+                buttonText={"Account"}
               >
                 <Dropdown.Item onClick={() => signIn()}>Log in</Dropdown.Item>
                 <Dropdown.Item onClick={() => router.push("/auth/signup")}>
@@ -132,47 +134,76 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
               </Dropdown>
             </>
           )}
-          <Dropdown
-            buttonIcon={!simple ? <CartHeader /> : null}
-            buttonText={`Cart`}
-          >
-            {cartItems.length ? (
-              cartItems.map((item, idx) => (
-                <Dropdown.Item key={idx}>
-                  <div className="flex justify-between w-full gap-6 ">
-                    <div className="flex flex-col items-start">
-                      <span>
-                        {item.costume.model} x {item.quantity}
+          {session?.user.role === "USER" && (
+            <Dropdown
+              buttonIcon={!simple ? <CartHeader /> : null}
+              buttonText={`Cart`}
+            >
+              {cartItems.length ? (
+                cartItems.map((item, idx) => (
+                  <Dropdown.Item key={idx}>
+                    <div className="flex justify-between w-full gap-6 ">
+                      <div className="flex flex-col items-start">
+                        <span>
+                          {item.costume.model} x {item.quantity}
+                        </span>
+                        <span className="text-xs">Size: {item.size}</span>
+                      </div>
+                      <span className="ml-auto">
+                        $
+                        {(Number(item.costume.price) * item.quantity).toFixed(
+                          2
+                        )}
                       </span>
-                      <span className="text-xs">Size: {item.size}</span>
+                      <button
+                        onClick={() => handleRemoveFromCart(item.idCatalog)}
+                      >
+                        <FaRegTrashAlt />
+                      </button>
                     </div>
-                    <span className="ml-auto">
-                      ${(Number(item.costume.price) * item.quantity).toFixed(2)}
-                    </span>
-                    <button
-                      onClick={() => handleRemoveFromCart(item.idCatalog)}
-                    >
-                      <FaRegTrashAlt />
-                    </button>
-                  </div>
-                </Dropdown.Item>
-              ))
-            ) : (
-              <p>Nothing here... yet!</p>
-            )}
+                  </Dropdown.Item>
+                ))
+              ) : (
+                <p>Nothing here... yet!</p>
+              )}
 
-            {cartItems.length > 0 && (
-              <div className="flex ">
-                <Button
-                  label="Go to cart"
-                  className="m-auto"
-                  buttonStyle="primary"
-                  size="small"
-                  to="/cart"
-                />
-              </div>
-            )}
-          </Dropdown>
+              {cartItems.length > 0 && (
+                <div className="flex ">
+                  <Button
+                    label="Go to cart"
+                    className="m-auto"
+                    buttonStyle="primary"
+                    size="small"
+                    to="/cart"
+                  />
+                </div>
+              )}
+            </Dropdown>
+          )}
+
+          {session?.user.role === "ADMIN" && (
+            <button
+              className="flex flex-col space-y-2 w-full h-full items-center rounded-md px-4 text-sm font-medium text-white focus:outline-none"
+              onClick={() => router.push("/admin")}
+            >
+              <span className="text-3xl">
+                {!simple && <FaDatabase />}
+              </span>
+              <span className="flex m-auto whitespace-nowrap">Admin</span>
+            </button>
+          )}
+
+          {session?.user.role === "ADMIN" && (
+            <button
+              className="flex flex-col space-y-2 w-full h-full items-center rounded-md px-4 text-sm font-medium text-white focus:outline-none"
+              onClick={() => router.push("/admin/reports")}
+            >
+              <span className="text-3xl">
+                {!simple && <FaChartBar /> }
+              </span>
+              <span className="flex m-auto whitespace-nowrap">Reports</span>
+            </button>
+          )}
         </nav>
         <button
           onClick={() => setIsOpen(true)}

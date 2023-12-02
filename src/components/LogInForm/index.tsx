@@ -50,7 +50,7 @@ function LogInForm() {
         title: "Login Successful!",
         text: `Welcome back, ${session?.user?.email}!`,
       });
-      router.back();
+      router.push("/");
     } else {
       setError(result?.error);
     }
