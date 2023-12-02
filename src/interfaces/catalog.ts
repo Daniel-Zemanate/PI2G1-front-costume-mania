@@ -41,6 +41,7 @@ export interface CatalogDataTable {
     model: string,
     adult: string,
     size: string,
+    status: string,
     stock: number,
     price: number,
     category: string

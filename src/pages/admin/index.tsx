@@ -147,6 +147,7 @@ function formatCatalog(apiAdminCatalog: Catalog[]) {
       model: data.model.nameModel,
       adult: data.size.adult ? 'Yes' : 'No',
       size: data.size.noSize,
+      status: data.statusCatalog.id === 1 ? 'Active' : 'Inactive',
       stock: data.stock,
       price: data.price,
       category: data.model.category.name
