@@ -15,12 +15,15 @@ import {
   getAdminInvoices,
   getInvoiceStatus,
 } from "@/services/admin.invoice.service";
-import { Invoice } from "@/interfaces/invoice";
+import { TableInvoice } from "@/interfaces/invoice";
 import AdminInvoices from "@/components/AdminInvoices";
 import { saveInvoiceStatus } from "@/store/slices/invoiceSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { KeyValue } from "@/interfaces/costume";
+import { getAdminCategories } from "@/services/admin.category.service";
+import { TableCategory } from "@/interfaces/category";
+import AdminCategories from "@/components/AdminCategories";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -29,14 +32,16 @@ const frijole = Frijole({
 
 type Props = {
   catalogDataTable: CatalogDataTable[];
-  invoices: Invoice[];
+  invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
+  categories: TableCategory[];
 };
 
 const AdminPage: NextPage<Props> = ({
   catalogDataTable,
   invoices,
   invoiceStatus,
+  categories
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
 
@@ -95,7 +100,7 @@ const AdminPage: NextPage<Props> = ({
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
-                <p>Crear componente individual - CATEGORIES</p>
+                <AdminCategories categories={categories} />
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - MODELS */}
@@ -128,12 +133,15 @@ export const getServerSideProps: GetServerSideProps = async ({
       const invoices = await getAdminInvoices();
       // SHIPPING STATUS
       const invoiceStatus = await getInvoiceStatus();
+      // CATEGORIES
+      const categories = await getAdminCategories({ token });
 
       return {
         props: {
           catalogDataTable,
           invoices,
           invoiceStatus,
+          categories,
         },
       };
     } catch (error) {
