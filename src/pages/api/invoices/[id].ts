@@ -27,6 +27,8 @@ export default async function handler(
     if (response.ok) {
       const data = response.json();
       res.status(200).json(data);
+    } else {
+      res.status(response.status).json(response.statusText)
     }
   } else {
     res.status(400).json({ message: "Método no permitido" });

@@ -9,8 +9,8 @@ export const getAdminInvoices = async () => {
   const formattedData = data.map((invoice: Invoice) => ({
     ...invoice,
     id: invoice.no_invoice,
-    invoiceDate: formatInvoiceDate(invoice.invoiceDate),
-    shippingDate: formatInvoiceDate(invoice.shippingDate),
+    invoiceDateString: formatInvoiceDate(invoice.invoiceDate),
+    shippingDateString: formatInvoiceDate(invoice.shippingDate),
   }));
 
   return formattedData;

@@ -3,11 +3,11 @@ import { GridColDef } from "@mui/x-data-grid";
 export const columnsInvoices: GridColDef[] = [
     { headerName: 'Invoice', field: 'id', flex: 1 },
     { headerName: 'Shipping City', field: 'shippingCity', flex: 2 },
-    { headerName: 'Shipping Cost', field: 'shippingcost', flex: 1 },
+    { headerName: 'Shipping Cost', field: 'shippingcost', flex: 2 },
     { headerName: 'Total', field: 'total', flex: 1 },
     { headerName: 'Status', field: 'status', flex: 3 },
-    { headerName: 'Invoice Date', field: 'invoiceDate', flex: 1 },
-    { headerName: 'Shipping Date', field: 'shippingDate', flex: 1 },
+    { headerName: 'Invoice Date', field: 'invoiceDateString', flex: 2 },
+    { headerName: 'Shipping Date', field: 'shippingDateString', flex: 2 },
 ]
 
 export function formatInvoiceDate(dateString: Date | null) {
