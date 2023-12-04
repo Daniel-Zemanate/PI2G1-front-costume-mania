@@ -1,58 +1,52 @@
-import Table from "../Table";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import Button from "../Button";
-import PopUp from "../PopUp";
-import { columnsModel } from "@/utils/models";
-import { GridColDef } from "@mui/x-data-grid";
 import React from "react";
-
-
-
-
+import Table from "../Table";
+import PopUp from "../PopUp";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { columnsModel } from "@/utils/models";
+import AddModelPopUp from "./AddModelPopUp";
 
 // DEFINIR DENTRO DE CADA COMPONENTE <PopUp/> EL CONTENIDO DEL POP UP Y ACCIONES
 
-const renderActions = (rowData: any) => {
-    function testClickEdit(rowData: any): void {
-        throw new Error("Function not implemented.");
-    }
-
+function AdminModels({ data }: { data: any[] }) {
+  const renderActions = (rowData: any) => {
+    const model = data.find((e) => e.idModel === rowData.idModel);
     return (
       <>
-        <PopUp button={<FaEdit />}>
-          <p>test edit</p>
-          <p>{rowData.id}</p>
-          <p>{rowData.model}</p>
-          <Button
-            label="TEST"
-            buttonStyle="primary"
-            size="small"
-            onClick={() => testClickEdit(rowData)}
-          />
-        </PopUp>
         <PopUp button={<FaTrash />}>
           <p>test delete</p>
-          <p>{rowData.id}</p>
-          <p>{rowData.model}</p>
+          <p>{rowData.idModel}</p>
+          <p>{rowData.nameModel}</p>
+        </PopUp>
+        <PopUp button={<FaEdit />}>
+          <p>test edit</p>
+          <p>{rowData.idModel}</p>
+          <p>{rowData.nameModel}</p>
         </PopUp>
       </>
     );
   };
-  
-function AdminModels({
-    data,
-  }: {
-    data: any[];
-  }) {
-    return (
-      <>
-        <Table
-          columns={columnsModel}
-          data={data}
-          renderActions={renderActions}
-        />
-      </>
-    );
+
+  function getRowId(row: any) {
+    return row.idModel;
   }
+
+  return (
+    <>
+      <div className="mb-2">
+        <AddModelPopUp
+          onSave={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
+      </div>
+      <Table
+        getRowId={getRowId}
+        columns={columnsModel}
+        data={data}
+        renderActions={renderActions}
+      />
+    </>
+  );
+}
 
 export default AdminModels;

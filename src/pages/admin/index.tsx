@@ -10,7 +10,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Catalog } from "@/interfaces/catalog";
+import { Catalog, Model } from "@/interfaces/catalog";
 import {
   getAdminInvoices,
   getInvoiceStatus,
@@ -25,6 +25,8 @@ import { getAdminCategories } from "@/services/admin.category.service";
 import { TableCategory } from "@/interfaces/category";
 import AdminCategories from "@/components/AdminCategories";
 import { useSession } from "next-auth/react";
+import AdminModels from "@/components/AdminModels";
+import { getAdminModel } from "@/services/admin.models.service";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -36,6 +38,7 @@ type Props = {
   invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
   categories: TableCategory[];
+  models: Model[]
 };
 
 const AdminPage: NextPage<Props> = ({
@@ -43,6 +46,7 @@ const AdminPage: NextPage<Props> = ({
   invoices: initialInvoices,
   invoiceStatus,
   categories: initialCategories,
+  models
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
   const dispatch = useDispatch<AppDispatch>();
@@ -143,7 +147,7 @@ const AdminPage: NextPage<Props> = ({
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - MODELS */}
-                <p>Crear componente individual - MODELS</p>
+                <AdminModels data={models}></AdminModels>
               </Tab.Panel>
               <Tab.Panel>
                 <AdminInvoices
@@ -177,6 +181,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       const invoiceStatus = await getInvoiceStatus();
       // CATEGORIES
       const categories = await getAdminCategories({ token });
+      //MODELS
+      const models = await getAdminModel();
 
       return {
         props: {
@@ -184,6 +190,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           invoices,
           invoiceStatus,
           categories,
+          models
         },
       };
     } catch (error) {
