@@ -5,44 +5,51 @@ import Select from "@/components/Select";
 import { TableInvoice } from "@/interfaces/invoice";
 import { getInvoiceStatusState } from "@/store/slices/invoiceSlice";
 import { Dialog } from "@headlessui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 
-function EditInvoicePopUp({ data }: { data: TableInvoice }) {
-  const [newStatus, setNewStatus] = useState<string>();
-  const {invoiceStatus} = useSelector(getInvoiceStatusState);
+interface EditInvoicePopUpProps {
+  data: TableInvoice;
+  onSave: () => void;
+}
+
+function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
+  const [newStatus, setNewStatus] = useState<string>(data.status);
+  const { invoiceStatus } = useSelector(getInvoiceStatusState);
   const [date, setDate] = useState<Date | null>(null);
   const { data: session } = useSession();
+ 
+  console.log(invoiceStatus)
 
   const handleStatusChange = async (key: string, value: any) => {
-    setNewStatus(value); 
+    setNewStatus(value);
   };
 
   const handleSave = async () => {
     const result = await Swal.fire({
-      title: 'Confirm',
+      title: "Confirm",
       text: `Are you sure you want to modify invoice n° ${data.no_invoice}`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
     });
-  
+
     if (result.isConfirmed) {
       const body = {
         newStatus,
-        shippingDate: date?.toISOString().replace('Z', '')
-      }
+        shippingDate: date?.toISOString().replace("Z", ""),
+      };
 
-      console.log(body)
+      console.log(body);
 
       const res = await fetch(`/api/invoices/${data.no_invoice}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${session?.user.token}`,
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
       if (res.ok) {
         Swal.fire({
@@ -53,16 +60,21 @@ function EditInvoicePopUp({ data }: { data: TableInvoice }) {
           showConfirmButton: false,
           timer: 3000,
         });
+
+        onSave()
       } else {
-        Swal.fire('Error', 'Failed to cancel the invoice.', 'error');
+        Swal.fire("Error", "Failed to cancel the invoice.", "error");
       }
     }
-    
-    console.log(date);
-    console.log(newStatus);
   };
 
-  const defaultStatus = invoiceStatus.find(e => e.value === data.status)
+  const defaultStatus = invoiceStatus.find((e) => e.value === data.status)
+  
+  useEffect(() => {
+    if(!defaultStatus) return
+    setNewStatus(defaultStatus.key)
+  }, [data.status, defaultStatus, invoiceStatus])
+
 
   return (
     <PopUp button={<FaEdit />}>
@@ -74,12 +86,18 @@ function EditInvoicePopUp({ data }: { data: TableInvoice }) {
       </Dialog.Title>
       <div className="flex justify-between">
         <h3 className="text-lg mb-4 font-medium">Invoice Date</h3>
-        <span className="w-36 text-center">{data.invoiceDate}</span>
+        <span className="w-36 text-center">{data.invoiceDateString}</span>
       </div>
       <div className="flex justify-between">
         <h3 className="text-lg mb-4 font-medium">Shipping Date</h3>
         <div className="w-36">
-        <SingleDatePicker date={date} setDate={setDate} />
+          <SingleDatePicker
+            date={date}
+            setDate={setDate}
+            minDate={new Date(data.invoiceDate)}
+            maxDate={new Date()}
+            onChange={(date: Date | null) => setDate(date)}
+          />
         </div>
       </div>
       <div className="container mx-auto  py-8">
@@ -118,12 +136,14 @@ function EditInvoicePopUp({ data }: { data: TableInvoice }) {
         onChange={handleStatusChange}
         defaultValue={defaultStatus}
       />
-      <Button
-        label="Save"
-        buttonStyle="primary"
-        size="small"
-        onClick={handleSave}
-      />
+      <div className="flex justify-center">
+        <Button
+          label="Save"
+          buttonStyle="primary"
+          size="small"
+          onClick={handleSave}
+        />
+      </div>
     </PopUp>
   );
 }

@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { ReactDatePickerProps } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-interface DateRangeProps {
+interface DateRangeProps extends ReactDatePickerProps {
   date: Date | null;
   setDate: React.Dispatch<React.SetStateAction<Date | null>>;
 }
 
-function SingleDatePicker({ date, setDate }: DateRangeProps) {
+function SingleDatePicker({ date, setDate, ...props }: DateRangeProps) {
   return (
-      <DatePicker
-        selected={date}
-        onChange={(date: Date | null) => setDate(date)}
-        className="cursor-pointer text-center rounded border border-purple-2 text-purple-2 w-full"
-        dateFormat="dd/MM/yyyy"
-        closeOnScroll
-        maxDate={new Date()}
-      />
+    <DatePicker
+      selected={date}
+      className="cursor-pointer text-center rounded border border-purple-2 text-purple-2 w-full"
+      dateFormat="dd/MM/yyyy"
+      closeOnScroll
+      {...props}
+    />
   );
 }
 

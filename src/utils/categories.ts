@@ -1,3 +1,5 @@
+import { GridColDef } from "@mui/x-data-grid";
+
 const CATEGORIES = {
   HALLOWEEN: "Halloween",
   DISNEY: "Disney",
@@ -25,3 +27,14 @@ export function getCategoryImage(category: string) {
     return "https://images.unsplash.com/photo-1511600173735-a896042389cf?q=80&w=2012&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   return null;
 }
+
+export const columnsCategories: GridColDef[] = [
+  { headerName: 'ID', field: 'id', flex: 1 },
+  { headerName: 'Name', field: 'name', flex: 2 },
+  { headerName: 'Status', field: 'status', flex: 2 },
+]
+
+export const categoryStatus = [
+  { key: '1', value: 'Active' },
+  { key: '2', value: 'Inactive' },
+]

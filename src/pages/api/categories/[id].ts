@@ -14,7 +14,7 @@ export default async function handler(
   if (req.method === "PUT") {
     const { id } = req.query;
 
-    const url = `${process.env.PRODUCT_API_URL}/sale/modify/${id}`;
+    const url = `${process.env.PRODUCT_API_URL}/category/${id}`;
     const response = await fetch(url, {
       method: "PUT",
       headers: {

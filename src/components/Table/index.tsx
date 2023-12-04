@@ -22,7 +22,7 @@ const Table: React.FC<TableProps> = ({ columns, data, renderActions, getRowId })
   ];
 
   return (
-    <div style={{ width: '100%', minWidth: '600px' }}>
+    <div style={{ width: '100%', minWidth: '600px' }} className="mb-4">
       <DataGrid
         getRowId={getRowId}
         rows={data}
