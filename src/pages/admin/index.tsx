@@ -1,6 +1,6 @@
 import SimpleLayout from "@/layouts/simpleLayout";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Frijole } from "next/font/google";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { AiOutlineHome } from "react-icons/ai";
@@ -24,6 +24,7 @@ import { KeyValue } from "@/interfaces/costume";
 import { getAdminCategories } from "@/services/admin.category.service";
 import { TableCategory } from "@/interfaces/category";
 import AdminCategories from "@/components/AdminCategories";
+import { useSession } from "next-auth/react";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -39,13 +40,48 @@ type Props = {
 
 const AdminPage: NextPage<Props> = ({
   apiAdminCatalog,
-  invoices,
+  invoices: initialInvoices,
   invoiceStatus,
-  categories
+  categories: initialCategories,
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
-
   const dispatch = useDispatch<AppDispatch>();
+  const { data: session } = useSession();
+  // CATEGORIES
+  const [categories, setCategories] =
+    useState<TableCategory[]>(initialCategories);
+  // INVOICES
+  const [invoices, setInvoices] = useState<TableInvoice[]>(initialInvoices);
+
+  // BUSCAR CATEGORIAS ACTUALIZADAS
+  const fetchUpdatedCategories = async () => {
+    try {
+      const response = await fetch(`/api/categories/admin`, {
+        headers: {
+          Authorization: `Bearer ${session?.user.token}`,
+        },
+      });
+      if (response.ok) {
+        const updatedCategories = await response.json();
+        setCategories(updatedCategories);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // BUSCAR INVOICES ACTUALIZADAS
+  const fetchUpdatedInvoices = async () => {
+    try {
+      const response = await fetch(`/api/invoices`);
+      if (response.ok) {
+        const updatedInvoices = await response.json();
+        setInvoices(updatedInvoices);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     dispatch(saveInvoiceStatus(invoiceStatus));
@@ -83,9 +119,10 @@ const AdminPage: NextPage<Props> = ({
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${selected
-                      ? "bg-white shadow"
-                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${
+                      selected
+                        ? "bg-white shadow"
+                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -99,14 +136,20 @@ const AdminPage: NextPage<Props> = ({
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
-                <AdminCategories categories={categories} />
+                <AdminCategories
+                  onSave={fetchUpdatedCategories}
+                  categories={categories}
+                />
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - MODELS */}
                 <p>Crear componente individual - MODELS</p>
               </Tab.Panel>
               <Tab.Panel>
-                <AdminInvoices invoices={invoices} />
+                <AdminInvoices
+                  onSave={fetchUpdatedInvoices}
+                  invoices={invoices}
+                />
               </Tab.Panel>
             </Tab.Panels>
           </Tab.Group>

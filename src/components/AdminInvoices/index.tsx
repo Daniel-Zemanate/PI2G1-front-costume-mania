@@ -6,30 +6,17 @@ import EditInvoicePopUp from "./EditInvoicePopUp";
 
 type Props = {
   invoices: TableInvoice[];
+  onSave: () => void;
 };
 
-function AdminInvoices({ invoices: initialInvoices }: Props) {
-  const [invoices, setInvoices] = useState<TableInvoice[]>(initialInvoices);
-
-  const fetchUpdatedInvoices = async () => {
-    try {
-      const response = await fetch(`/api/invoices`);
-      if (response.ok) {
-        const updatedInvoices = await response.json();
-        setInvoices(updatedInvoices);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+function AdminInvoices({ invoices, onSave }: Props) {
   return (
     <Table
       columns={columnsInvoices}
       data={invoices}
       renderActions={(rowData: TableInvoice) => (
         <>
-          <EditInvoicePopUp data={rowData} onSave={fetchUpdatedInvoices} />
+          <EditInvoicePopUp data={rowData} onSave={onSave} />
         </>
       )}
     />
