@@ -6,8 +6,9 @@ import React, { useState, useEffect } from "react";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
-import { Catalog, Model, Size } from "@/interfaces/catalog";
-import { Autocomplete, TextField } from "@mui/material";
+import { Catalog, Category, Model, Size } from "@/interfaces/catalog";
+import { Autocomplete, FormControl, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { categoryStatus } from "@/utils/categories";
 
 function EditCatalogPopUp({ data }: { data: Catalog }) {
   const [newStatus, setNewStatus] = useState<string>();
@@ -15,6 +16,8 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
   const [selectedModel, setSelectedModel] = useState<Model | null>(null)
   const [sizes, setSizes] = useState<Size[]>([]);
   const [selectedSize, setSelectedSize] = useState<Size | null>(null)
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
   const { data: session } = useSession();
 
   const handleStatusChange = async (key: string, value: any) => {
@@ -76,7 +79,18 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
         const sizeInDataC = dataC.find((size: Size) => size.noSize === data.size.noSize);
         setSelectedSize(sizeInDataC);
       });
-  }, [data])
+    fetch(`/api/categories/admin`, {
+      headers: {
+        Authorization: `Bearer ${session?.user.token}`,
+      }
+    })
+      .then((response) => response.json())
+      .then((dataC) => {
+        setCategories(dataC)
+        const categoryInDataC = dataC.find((category: Category) => category.idCategory === data.model.category.idCategory);
+        setSelectedCategory(categoryInDataC);
+      });
+  }, [data, session])
 
   return (
     <PopUp button={<FaEdit />}>
@@ -87,18 +101,16 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
         Edit Catalog - n° {data.idCatalog}
       </Dialog.Title>
       <div className="flex justify-between flex-wrap">
-        <div>
-          <div className="w-56">
-            <Autocomplete
-              getOptionLabel={(modelo) => modelo.nameModel}
-              disablePortal
-              id="combo-box-demo"
-              options={models}
-              value={selectedModel}
-              sx={{ width: 222 }}
-              renderInput={(params) => <TextField {...params} label='Model' />}
-            />
-          </div>
+        <div className="w-56">
+          <Autocomplete
+            getOptionLabel={(modelo) => modelo.nameModel}
+            disablePortal
+            id="combo-box-demo"
+            options={models}
+            value={selectedModel}
+            sx={{ width: 222 }}
+            renderInput={(params) => <TextField {...params} label='Model' />}
+          />
         </div>
         <div className="w-56">
           <Select
@@ -118,6 +130,48 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
             value={selectedSize}
             sx={{ width: 100 }}
             renderInput={(params) => <TextField {...params} label='Size' />}
+          />
+        </div>
+        <div className="w-56">
+          <Select
+            label="Status"
+            options={categoryStatus}
+            onChange={handleStatusChange}
+            defaultValue={{ key: data.statusCatalog.id.toString(), value: data.statusCatalog.description }}
+            className="w-24 "
+          />
+        </div>
+        <div className="w-56 pt-3">
+          <TextField
+            value={data.stock}
+            label="Stock"
+            id="stock"
+            onChange={(event) => { }}
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </div>
+        <div className="w-56 pt-3">
+          <FormControl fullWidth>
+            <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-amount"
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              label="Amount"
+            />
+          </FormControl>
+        </div>
+        <div className="w-56 pt-3">
+          <Autocomplete
+            getOptionLabel={(category) => category.name}
+            disablePortal
+            id="combo-box-demo"
+            options={categories}
+            value={selectedCategory}
+            sx={{ width: 200 }}
+            renderInput={(params) => <TextField {...params} label='Category' />}
           />
         </div>
       </div>
