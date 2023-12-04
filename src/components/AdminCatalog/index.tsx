@@ -41,6 +41,7 @@ function AdminCatalog({
 }: {
   data: any[];
 }) {
+  console.log(data)
   return (
     <>
       <Table

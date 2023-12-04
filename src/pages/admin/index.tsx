@@ -10,7 +10,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
+import { Catalog, CatalogDataTable, Model } from "@/interfaces/catalog";
 import {
   getAdminInvoices,
   getInvoiceStatus,
@@ -24,16 +24,26 @@ import { KeyValue } from "@/interfaces/costume";
 import { getAdminCategories } from "@/services/admin.category.service";
 import { TableCategory } from "@/interfaces/category";
 import AdminCategories from "@/components/AdminCategories";
+import Button from "@/components/Button";
+import AdminModels from "@/components/AdminModels";
+import { FaPlusCircle } from "react-icons/fa";
+import { getAdminModel } from "@/services/admin.models.service";
+import { ModelDataTable } from "@/interfaces/model";
 
 const frijole = Frijole({
   subsets: ["latin"],
   weight: "400",
 });
 
+const testClickEdit = () => {
+  alert("hola");
+};
+
 type Props = {
   catalogDataTable: CatalogDataTable[];
   invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
+  modelDataTable: ModelDataTable[];
   categories: TableCategory[];
 };
 
@@ -41,7 +51,8 @@ const AdminPage: NextPage<Props> = ({
   catalogDataTable,
   invoices,
   invoiceStatus,
-  categories
+  categories,
+  modelDataTable
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
 
@@ -97,14 +108,53 @@ const AdminPage: NextPage<Props> = ({
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
                 <AdminCatalog data={catalogDataTable}></AdminCatalog>
+                <div className="my-8">
+                <Button
+                  label={
+                    <div className="flex items-center justify-center space-x-1">
+                      <span className="flex-shrink-0">Add Catalog</span>
+                      <FaPlusCircle />
+                    </div>
+                  }
+                  buttonStyle="primary"
+                  size="large"
+                  onClick={() => testClickEdit()}
+                />
+                </div>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
                 <AdminCategories categories={categories} />
+                <div className="my-8">
+                <Button
+                  label={
+                    <div className="flex items-center justify-center space-x-1">
+                      <span className="flex-shrink-0">Add Category</span>
+                      <FaPlusCircle />
+                    </div>
+                  }
+                  buttonStyle="primary"
+                  size="large"
+                  onClick={() => testClickEdit()}
+                />
+                </div>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - MODELS */}
-                <p>Crear componente individual - MODELS</p>
+                <AdminModels data={catalogDataTable}></AdminModels>
+                <div className="my-8">
+                <Button
+                  label={
+                    <div className="flex items-center justify-center space-x-1">
+                      <span className="flex-shrink-0">Add Model</span>
+                      <FaPlusCircle />
+                    </div>
+                  }
+                  buttonStyle="primary"
+                  size="large"
+                  onClick={() => testClickEdit()}
+                />
+                </div>
               </Tab.Panel>
               <Tab.Panel>
                 <AdminInvoices invoices={invoices} />
@@ -135,13 +185,16 @@ export const getServerSideProps: GetServerSideProps = async ({
       const invoiceStatus = await getInvoiceStatus();
       // CATEGORIES
       const categories = await getAdminCategories({ token });
+      // MODELS
+      const models = await getAdminModel();
+      const modelsDataTable = formatModels(models);
 
       return {
         props: {
           catalogDataTable,
           invoices,
           invoiceStatus,
-          categories,
+          // categories,
         },
       };
     } catch (error) {
@@ -180,6 +233,19 @@ function formatCatalog(apiAdminCatalog: Catalog[]) {
   });
 
   return catalogData;
+}
+
+function formatModels(apiModels: Model[]) {
+  let modelData: ModelDataTable[] = [];
+  apiModels.map((data) => {
+    modelData.push({
+      id: data.idModel,
+      model: data.nameModel,
+      category: data.category.name,
+    });
+  });
+
+  return modelData;
 }
 
 export default AdminPage;
