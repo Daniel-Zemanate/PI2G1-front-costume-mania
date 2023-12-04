@@ -1,14 +1,7 @@
-import { Model } from "@/interfaces/catalog";
+import { GridColDef } from "@mui/x-data-grid";
 
-export const getModelsToSelectFormat = (models: Model[]) => {
-    let selectFromat: { label: string, id: string }[] = [];
-
-    models.map(model => {
-        selectFromat.push({
-            id: model.idModel.toString(),
-            label: model.nameModel
-        })
-    })
-
-    return selectFromat
-}
+export const columnsModel: GridColDef[] = [
+    { headerName: 'Id', field: 'id', flex: 1 },
+    { headerName: 'Model', field: 'model', flex: 2 },
+    { headerName: 'Category', field: 'category', flex: 1 }
+]
