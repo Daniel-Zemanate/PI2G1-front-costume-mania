@@ -1,13 +1,14 @@
 import React from "react";
-import { DataGrid, GridColDef, GridRowId } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowId, GridRowIdGetter } from "@mui/x-data-grid";
 
 interface TableProps {
   columns: GridColDef[];
-  data: any[]; 
+  data: any[];
   renderActions?: (rowData: any) => React.ReactNode;
+  getRowId?: GridRowIdGetter<any>
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, renderActions }) => {
+const Table: React.FC<TableProps> = ({ columns, data, renderActions, getRowId }) => {
   const columnsWithButtons: GridColDef[] = [
     ...columns,
     {
@@ -23,6 +24,7 @@ const Table: React.FC<TableProps> = ({ columns, data, renderActions }) => {
   return (
     <div style={{ width: '100%', minWidth: '600px' }}>
       <DataGrid
+        getRowId={getRowId}
         rows={data}
         columns={columnsWithButtons}
         initialState={{

@@ -1,3 +1,4 @@
+
 export interface Catalog {
     idCatalog: number
     model: Model
@@ -32,15 +33,4 @@ export interface Size {
 export interface Status {
     id: number
     description: string
-}
-
-export interface CatalogDataTable {
-    id: number,
-    model: string,
-    adult: string,
-    size: string,
-    status: string,
-    stock: number,
-    price: number,
-    category: string
 }

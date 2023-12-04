@@ -10,7 +10,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
 import { getAdminCatalog } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Catalog, CatalogDataTable } from "@/interfaces/catalog";
+import { Catalog } from "@/interfaces/catalog";
 import {
   getAdminInvoices,
   getInvoiceStatus,
@@ -28,13 +28,13 @@ const frijole = Frijole({
 });
 
 type Props = {
-  catalogDataTable: CatalogDataTable[];
+  apiAdminCatalog: Catalog[];
   invoices: Invoice[];
   invoiceStatus: KeyValue[];
 };
 
 const AdminPage: NextPage<Props> = ({
-  catalogDataTable,
+  apiAdminCatalog,
   invoices,
   invoiceStatus,
 }) => {
@@ -78,10 +78,9 @@ const AdminPage: NextPage<Props> = ({
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${
-                      selected
-                        ? "bg-white shadow"
-                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${selected
+                      ? "bg-white shadow"
+                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -91,7 +90,7 @@ const AdminPage: NextPage<Props> = ({
             <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
-                <AdminCatalog data={catalogDataTable}></AdminCatalog>
+                <AdminCatalog data={apiAdminCatalog}></AdminCatalog>
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -122,8 +121,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     const { token, user_id: idUser } = session?.user;
 
     try {
+      // CATALOG
       const apiAdminCatalog = await getAdminCatalog();
-      const catalogDataTable = formatCatalog(apiAdminCatalog);
       // INVOICES
       const invoices = await getAdminInvoices();
       // SHIPPING STATUS
@@ -131,7 +130,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
       return {
         props: {
-          catalogDataTable,
+          apiAdminCatalog,
           invoices,
           invoiceStatus,
         },
@@ -155,23 +154,5 @@ export const getServerSideProps: GetServerSideProps = async ({
     },
   };
 };
-
-function formatCatalog(apiAdminCatalog: Catalog[]) {
-  let catalogData: CatalogDataTable[] = [];
-  apiAdminCatalog.map((data) => {
-    catalogData.push({
-      id: data.idCatalog,
-      model: data.model.nameModel,
-      adult: data.size.adult ? "Yes" : "No",
-      size: data.size.noSize,
-      status: data.statusCatalog.description,
-      stock: data.stock,
-      price: data.price,
-      category: data.model.category.name,
-    });
-  });
-
-  return catalogData;
-}
 
 export default AdminPage;
