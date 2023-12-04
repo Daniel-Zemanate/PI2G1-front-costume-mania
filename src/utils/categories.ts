@@ -33,3 +33,8 @@ export const columnsCategories: GridColDef[] = [
   { headerName: 'Name', field: 'name', flex: 2 },
   { headerName: 'Status', field: 'status', flex: 2 },
 ]
+
+export const categoryStatus = [
+  { key: '1', value: 'Active' },
+  { key: '2', value: 'Inactive' },
+]

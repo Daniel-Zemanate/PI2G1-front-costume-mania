@@ -15,9 +15,8 @@ function AdminInvoices({ invoices: initialInvoices }: Props) {
     try {
       const response = await fetch(`/api/invoices`);
       if (response.ok) {
-        const updatedPurchases = await response.json();
-        // Update the state with the fetched invoices
-        setInvoices(updatedPurchases);
+        const updatedInvoices = await response.json();
+        setInvoices(updatedInvoices);
       }
     } catch (error) {
       console.error(error);

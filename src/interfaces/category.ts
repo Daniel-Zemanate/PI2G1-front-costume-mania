@@ -12,5 +12,5 @@ export interface StatusCategory {
 export type TableCategory = AdminCategory & {
   id: string;
   status: string;
-  idStatus: number;
+  idStatus: string;
 };

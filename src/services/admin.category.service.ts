@@ -14,7 +14,7 @@ export const getAdminCategories = async ({ token }: { token: string }) => {
     ...category,
     id: category.idCategory,
     status: category.statusCategory.description,
-    idStatus: category.statusCategory.id
+    idStatus: String(category.statusCategory.id)
   }));
 
   return formattedData;

@@ -21,6 +21,8 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
   const { invoiceStatus } = useSelector(getInvoiceStatusState);
   const [date, setDate] = useState<Date | null>(null);
   const { data: session } = useSession();
+ 
+  console.log(invoiceStatus)
 
   const handleStatusChange = async (key: string, value: any) => {
     setNewStatus(value);
