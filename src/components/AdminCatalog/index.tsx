@@ -5,6 +5,7 @@ import PopUp from "../PopUp";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Button from "../Button";
 import EditCatalogPopUp from "./EditCatalogPopUp";
+import { Catalog } from "@/interfaces/catalog";
 
 const testClickEdit = (data: any) => {
   alert(data.model);
@@ -44,7 +45,16 @@ function AdminCatalog({
         getRowId={getRowId}
         columns={columnsCatalog}
         data={data}
-        renderActions={renderActions}
+        renderActions={(rowData: Catalog) => (
+          <>
+            <EditCatalogPopUp data={rowData} />
+            <PopUp button={<FaTrash />}>
+              <p>test delete</p>
+              <p>{rowData.idCatalog}</p>
+              <p>{rowData.model.nameModel}</p>
+            </PopUp>
+          </>
+        )}
       />
     </>
   );
