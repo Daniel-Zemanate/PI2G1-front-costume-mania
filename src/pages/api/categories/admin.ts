@@ -39,6 +39,23 @@ export default async function handler(
       console.error("Error:", error);
       res.status(503).json({ message: error });
     }
+  } else if (req.method === "POST") {
+    try {
+      const url = `${process.env.PRODUCT_API_URL}/category/create`;
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: authorizationHeader,
+          "Content-Type": "application/json"
+        },
+        body: req.body
+      });
+
+      res.status(200).json(response.statusText);
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(503).json({ message: error });
+    }
   } else {
     res.status(400).json({ message: "Método no permitido" });
   }
