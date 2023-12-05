@@ -19,21 +19,6 @@ type Props = {
   setIsOpen: (value: boolean) => void;
 };
 
-const dummyCart = [
-  {
-    model: "Little Wolf",
-    price: "50.50",
-  },
-  {
-    model: "Wolf",
-    price: "10.50",
-  },
-  {
-    model: "Scream",
-    price: "23",
-  },
-];
-
 export default function Drawer({ children, isOpen, setIsOpen }: Props) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -115,17 +100,32 @@ export default function Drawer({ children, isOpen, setIsOpen }: Props) {
                 </>
               )}
             </span>
-            <NavLink
-              route="/"
-              textColor="black"
-              className="flex items-center gap-4"
-            >
-              <span className="text-2xl">
-                <FaShoppingCart />
-              </span>
-              <span>Cart</span>
-            </NavLink>
+
+            {session?.user.role === "USER" && (
+              <NavLink
+                route="/"
+                textColor="black"
+                className="flex items-center gap-4"
+              >
+                <span className="text-2xl">
+                  <FaShoppingCart />
+                </span>
+                <span>Cart</span>
+              </NavLink>
+            )}
             {children}
+
+            {session?.user.role === "ADMIN" && (
+              <>
+                <NavLink label="Admin" route="/admin" textColor="black" />
+                <NavLink
+                  label="Reports"
+                  route="/admin/reports"
+                  textColor="black"
+                />
+              </>
+            )}
+
             <div className="mt-auto">
               <SearchBar />
             </div>
