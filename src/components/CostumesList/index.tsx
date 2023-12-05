@@ -8,6 +8,8 @@ type Props = {
 
 function CostumesList({costumes}: Props) {
 
+  console.log(costumes)
+
   return (
     <>
       {costumes?.length ? (
