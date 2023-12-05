@@ -1,39 +1,22 @@
 import React from "react";
 import Table from "../Table";
 import { columnsCatalog } from "@/utils/catalogs";
-import PopUp from "../PopUp";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import Button from "../Button";
 import EditCatalogPopUp from "./EditCatalogPopUp";
 import { Catalog } from "@/interfaces/catalog";
+import AddCatalogPopUp from "./AddCatalogPopUp";;
+import { useSession } from "next-auth/react";
+import DeleteCatalogPopUp from "./DeleteCatalogPopUp";
+import { FaTrash } from "react-icons/fa";
+import PopUp from "../PopUp";
 
-const testClickEdit = (data: any) => {
-  alert(data.model);
+type Props = {
+  catalogs: Catalog[];
+  onSave: () => void;
 };
 
-// DEFINIR DENTRO DE CADA COMPONENTE <PopUp/> EL CONTENIDO DEL POP UP Y ACCIONES
+function AdminCatalog({ catalogs, onSave }: Props) {
 
-
-
-function AdminCatalog({
-  data,
-}: {
-  data: any[];
-}) {
-
-  const renderActions = (rowData: any) => {
-    const catalog = data.find(e => e.idCatalog === rowData.idCatalog)
-    return (
-      <>
-        <EditCatalogPopUp data={catalog} />
-        <PopUp button={<FaTrash />}>
-          <p>test delete</p>
-          <p>{rowData.id}</p>
-          <p>{rowData.model}</p>
-        </PopUp>
-      </>
-    );
-  };
+  const { data: session } = useSession();
 
   function getRowId(row: any) {
     return row.idCatalog;
@@ -41,18 +24,19 @@ function AdminCatalog({
 
   return (
     <>
+      <div className="mb-2">
+        <AddCatalogPopUp onSave={onSave} />
+      </div>
       <Table
         getRowId={getRowId}
         columns={columnsCatalog}
-        data={data}
+        data={catalogs}
         renderActions={(rowData: Catalog) => (
           <>
-            <EditCatalogPopUp data={rowData} />
-            <PopUp button={<FaTrash />}>
-              <p>test delete</p>
-              <p>{rowData.idCatalog}</p>
-              <p>{rowData.model.nameModel}</p>
-            </PopUp>
+            <EditCatalogPopUp data={rowData} onSave={onSave} />
+            {/*
+            <DeleteCatalogPopUp data={rowData} onSave={onSave} />
+            */}
           </>
         )}
       />

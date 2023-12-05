@@ -7,60 +7,66 @@ import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { Catalog, Category, Model, Size } from "@/interfaces/catalog";
-import { Autocomplete, FormControl, Input, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
+import { Autocomplete, FormControl, Input, InputAdornment, InputLabel, NativeSelect, OutlinedInput, TextField } from "@mui/material";
 import { categoryStatus } from "@/utils/categories";
 
-function EditCatalogPopUp({ data }: { data: Catalog }) {
-  const [newStatus, setNewStatus] = useState<string>();
-  const [models, setModels] = useState<Model[]>([]);
-  const [selectedModel, setSelectedModel] = useState<Model | null>(null)
-  const [sizes, setSizes] = useState<Size[]>([]);
-  const [selectedSize, setSelectedSize] = useState<Size | null>(null)
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-  const { data: session } = useSession();
+interface Props {
+  data: Catalog;
+  onSave: () => void;
+}
 
-  const handleStatusChange = async (key: string, value: any) => {
-    setNewStatus(value);
-  };
+
+function EditCatalogPopUp({ data, onSave }: Props) {
+  const [models, setModels] = useState<Model[]>([]);
+  const [sizes, setSizes] = useState<Size[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedModel, setSelectedModel] = useState<Model | null>(data.model)
+  const [selectedSize, setSelectedSize] = useState<Size | null>(data.size)
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(data.model.category)
+  const [stock, setStock] = useState<number>(data.stock)
+  const [price, setPrice] = useState<number>(data.price)
+  const [newStatus, setNewStatus] = useState<number>(data.statusCatalog.id);
+
+  const { data: session } = useSession();
 
   const handleSave = async () => {
     const result = await Swal.fire({
-      title: 'Confirm',
-      text: `Are you sure you want to modify ${data.model} catalog `,
-      icon: 'warning',
+      title: "Confirm",
+      text: `Are you sure you want to modify catalog n° ${data.idCatalog}`,
+      icon: "warning",
       showCancelButton: true,
     });
 
     if (result.isConfirmed) {
       const body = {
-        newStatus,
-      }
-
-      console.log(body)
+        model: selectedModel?.idModel,
+        size: selectedSize?.id,
+        quantity: stock,
+        price: price,
+        status: newStatus,
+      };
 
       const res = await fetch(`/api/catalog/${data.idCatalog}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${session?.user.token}`,
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
       if (res.ok) {
         Swal.fire({
           icon: "success",
-          title: `${data.model} catalog successfully modified`,
+          title: `Catalog ${data.idCatalog} successfully modified`,
           toast: true,
           position: "bottom-end",
           showConfirmButton: false,
           timer: 3000,
         });
+        onSave()
       } else {
-        Swal.fire('Error', 'Failed to cancel the invoice.', 'error');
+        Swal.fire("Error", "Failed to modify catalog", "error");
       }
     }
-
-    console.log(newStatus);
   };
 
 
@@ -98,10 +104,10 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
         as="h2"
         className="text-2xl font-medium leading-6 text-center mb-8 text-purple-2"
       >
-        Edit Catalog - n° {data.idCatalog}
+        Edit Catalog - n° {data.idCatalog} - {data.statusCatalog.id}
       </Dialog.Title>
       <div className="flex justify-between flex-wrap">
-        <div className="w-56">
+        <div className="w-56 py-2">
           <Autocomplete
             getOptionLabel={(modelo) => modelo.nameModel}
             disablePortal
@@ -109,19 +115,28 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
             options={models}
             value={selectedModel}
             sx={{ width: 222 }}
+            onChange={(event, newValue) => setSelectedModel(newValue)}
             renderInput={(params) => <TextField {...params} label='Model' />}
           />
         </div>
-        <div className="w-56">
-          <Select
-            label="Adult"
-            options={[{ key: '0', value: 'No' }, { key: '1', value: 'Yes' }]}
-            onChange={handleStatusChange}
-            defaultValue={{ key: data.size.adult.toString(), value: data.size.adult === 0 ? 'No' : 'Yes' }}
-            className="w-24"
-          />
+        <div className="w-56 py-2">
+          <FormControl fullWidth>
+            <InputLabel htmlFor="adult">Adult</InputLabel>
+            <NativeSelect
+              defaultValue={selectedSize?.adult.toString()}
+              inputProps={{
+                name: 'adult',
+                id: 'adult',
+              }}
+              disabled
+            >
+              <option value='0'>No</option>
+              <option value='1'>Yes</option>
+            </NativeSelect>
+
+          </FormControl>
         </div>
-        <div className="w-56 pt-3">
+        <div className="w-56 py-2">
           <Autocomplete
             getOptionLabel={(size) => size.noSize}
             disablePortal
@@ -129,48 +144,59 @@ function EditCatalogPopUp({ data }: { data: Catalog }) {
             options={sizes}
             value={selectedSize}
             sx={{ width: 100 }}
+            onChange={(event, newValue) => setSelectedSize(newValue)}
             renderInput={(params) => <TextField {...params} label='Size' />}
           />
         </div>
-        <div className="w-56">
-          <Select
-            label="Status"
-            options={categoryStatus}
-            onChange={handleStatusChange}
-            defaultValue={{ key: data.statusCatalog.id.toString(), value: data.statusCatalog.description }}
-            className="w-24 "
-          />
+        <div className="w-56 py-2">
+          <FormControl fullWidth>
+            <InputLabel htmlFor="newStatus">Status</InputLabel>
+            <NativeSelect
+              defaultValue={newStatus}
+              inputProps={{
+                name: 'newStatus',
+                id: 'newStatus',
+              }}
+              onChange={event => setNewStatus(Number(event.target.value))}
+            >
+              {categoryStatus.map((s) => <option value={s.key} key={s.key}>{s.value}</option>)}
+            </NativeSelect>
+
+          </FormControl>
         </div>
-        <div className="w-56 pt-3">
+        <div className="w-56 py-2">
           <TextField
-            value={data.stock}
+            value={stock}
             label="Stock"
             id="stock"
-            onChange={(event) => { }}
+            onChange={(event) => setStock(Number(event.target.value))}
             type="number"
             InputLabelProps={{
               shrink: true,
             }}
           />
         </div>
-        <div className="w-56 pt-3">
+        <div className="w-56 py-2">
           <FormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
+            <InputLabel htmlFor="price">Price</InputLabel>
             <OutlinedInput
-              id="outlined-adornment-amount"
+              id="price"
               startAdornment={<InputAdornment position="start">$</InputAdornment>}
-              label="Amount"
+              label="Price"
+              type="number"
+              value={price}
+              onChange={event => setPrice(Number(event.target.value))}
             />
           </FormControl>
         </div>
-        <div className="w-56 pt-3">
+        <div className="w-56 py-2">
           <Autocomplete
             getOptionLabel={(category) => category.name}
             disablePortal
             id="combo-box-demo"
             options={categories}
             value={selectedCategory}
-            sx={{ width: 200 }}
+            onChange={(event, newValue) => setSelectedCategory(newValue)}
             renderInput={(params) => <TextField {...params} label='Category' />}
           />
         </div>

@@ -34,7 +34,7 @@ const frijole = Frijole({
 });
 
 type Props = {
-  apiAdminCatalog: Catalog[];
+  catalogs: Catalog[];
   invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
   categories: TableCategory[];
@@ -42,7 +42,7 @@ type Props = {
 };
 
 const AdminPage: NextPage<Props> = ({
-  apiAdminCatalog,
+  catalogs,
   invoices: initialInvoices,
   invoiceStatus,
   categories: initialCategories,
@@ -56,6 +56,19 @@ const AdminPage: NextPage<Props> = ({
     useState<TableCategory[]>(initialCategories);
   // INVOICES
   const [invoices, setInvoices] = useState<TableInvoice[]>(initialInvoices);
+
+  // BUSCAR CATALOGOS ACTUALIZADAS
+  const fetchUpdatedCatalogs = async () => {
+    try {
+      const response = await fetch(`/api/catalog`);
+      if (response.ok) {
+        const updatedCategories = await response.json();
+        setCategories(updatedCategories);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // BUSCAR CATEGORIAS ACTUALIZADAS
   const fetchUpdatedCategories = async () => {
@@ -123,10 +136,9 @@ const AdminPage: NextPage<Props> = ({
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${
-                      selected
-                        ? "bg-white shadow"
-                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${selected
+                      ? "bg-white shadow"
+                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -136,7 +148,9 @@ const AdminPage: NextPage<Props> = ({
             <Tab.Panels className="w-full">
               <Tab.Panel>
                 {/* Crear componente individual - CATALOG */}
-                <AdminCatalog data={apiAdminCatalog}></AdminCatalog>
+                <AdminCatalog
+                  onSave={fetchUpdatedCatalogs}
+                  catalogs={catalogs} />
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -174,7 +188,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     try {
       // CATALOG
-      const apiAdminCatalog = await getAdminCatalog();
+      const catalogs = await getAdminCatalog();
       // INVOICES
       const invoices = await getAdminInvoices();
       // SHIPPING STATUS
@@ -186,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
       return {
         props: {
-          apiAdminCatalog,
+          catalogs,
           invoices,
           invoiceStatus,
           categories,

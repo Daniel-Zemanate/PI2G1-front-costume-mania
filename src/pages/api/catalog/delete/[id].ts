@@ -14,7 +14,7 @@ export default async function handler(
     if (req.method === "PUT") {
         const { id } = req.query;
 
-        const url = `${process.env.PRODUCT_API_URL}/catalog/modify/${id}`;
+        const url = `${process.env.PRODUCT_API_URL}/catalog/delete/${id}`;
         const response = await fetch(url, {
             method: "PUT",
             headers: {
@@ -23,6 +23,8 @@ export default async function handler(
             },
             body: req.body,
         });
+
+        console.log(authorizationHeader)
 
         if (response.ok) {
             const data = response.json();
