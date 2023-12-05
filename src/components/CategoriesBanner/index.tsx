@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 import { Category } from "@/interfaces/costume";
 import Link from "next/link";
 import Carousel from "../Carousel";
-import logoText from "@assets/logo-text.png";
+import logoText from "@assets/logo-mask.png";
 import { getCategoryImage } from "@/utils/categories";
 
 const frijole = Frijole({

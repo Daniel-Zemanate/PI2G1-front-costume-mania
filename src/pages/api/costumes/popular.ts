@@ -9,7 +9,7 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     try {
-      let url = `${process.env.CATALOG_API_URL}/catalog/news/10`;
+      let url = `${process.env.CATALOG_API_URL}/catalog/news/17`;
       const response = await fetch(url);
 
       if (!response.ok) {

@@ -161,15 +161,15 @@ const AdminPage: NextPage<Props> = ({
           listClasses="hover:underline mx-2 font-bold"
           capitalizeLinks
         />
-        <div className="flex gap-8">
+        <div className="flex flex-col md:flex-row gap-8">
           <Tab.Group>
-            <Tab.List className="flex flex-col bg-purple-3 bg-opacity-50 md:text-lg p-4 gap-1 md:gap-2 justify-center mb-2 shadow-md rounded self-start">
+            <Tab.List className="flex flex-row md:flex-col bg-purple-3 bg-opacity-50 md:text-lg p-4 gap-1 md:gap-2 justify-center mb-2 shadow-md rounded self-start w-full md:w-auto">
               {tabs.map((e, idx) => (
                 <Tab
                   key={idx}
                   className={({
                     selected,
-                  }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
+                  }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-center md:text-start 
                     ${
                       selected
                         ? "bg-white shadow"

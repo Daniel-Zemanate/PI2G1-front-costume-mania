@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import { getStaticNewCostumes } from "@/services/costumes.service";
 import { ApiCostume, Category } from "@/interfaces/costume";
 import Banner from "@/components/MainBanner";
@@ -15,8 +15,6 @@ import RootLayout from "@/layouts/rootLayout";
 import CategoriesBanner from "@/components/CategoriesBanner";
 import { getCategories } from "@/services/categories.service";
 import Snowfall from "react-snowfall";
-import { useEffect } from "react";
-import Swal from "sweetalert2";
 
 interface Props {
   newCostumes: ApiCostume[];
@@ -92,7 +90,7 @@ const HomePage: NextPage<Props> = ({
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   // const popularCostumes = await getPopularCostumes();
   const newCostumes = await getStaticNewCostumes();
   const categories = await getCategories();

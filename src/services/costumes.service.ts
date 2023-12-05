@@ -63,13 +63,13 @@ export const getNewCostumes = async () => {
 };
 
 export const getStaticPopularCostumes = async () => {
-  const url = `${process.env.PRODUCT_API_URL}/catalog/news/10`;
+  const url = `${process.env.PRODUCT_API_URL}/catalog/news/15`;
   const response = await fetch(url);
   return await response.json();
 }; 
 
 export const getStaticNewCostumes =async () => {
-  const url = `${process.env.PRODUCT_API_URL}/catalog/news/10`;
+  const url = `${process.env.PRODUCT_API_URL}/catalog/news/15`;
   const response = await fetch(url);
   return await response.json();
 }

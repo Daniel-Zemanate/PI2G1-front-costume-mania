@@ -15,6 +15,8 @@ export default async function handler(
     const { id } = req.query;
 
     const url = `${process.env.PRODUCT_API_URL}/sale/modify/${id}`;
+
+    console.log(req.body)
     const response = await fetch(url, {
       method: "PUT",
       headers: {
@@ -23,6 +25,8 @@ export default async function handler(
       },
       body: req.body,
     });
+
+    console.log(response)
 
     if (response.ok) {
       const data = response.json();

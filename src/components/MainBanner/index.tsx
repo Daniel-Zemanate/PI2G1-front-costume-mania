@@ -17,9 +17,9 @@ function Banner() {
     <div className="container mx-auto text-center pb-4 md:pb-12">
       <figure className="flex flex-col items-center">
         <span className="flex flex-col md:flex-row items-center gap-4">
-          <Image className="-rotate-12" src={logo} alt="Logo" width="120" />
+          <Image className="-rotate-12" src={logo} alt="Logo" width="100" />
           <h1
-            className={`${frijole.className} text-2xl sm:text-5xl md:text-6xl ${styles.title}`}
+            className={`${frijole.className} text-3xl sm:text-5xl md:text-6xl ${styles.title}`}
           >
             CostumeMania
           </h1>
@@ -27,9 +27,9 @@ function Banner() {
         <div className={`${styles.cropped} flex justify-center`}>
           <Image
             src={banner}
-            alt="BannerPrincipal"
-            className={`${styles.primaryBanner}`}
-            style={{ width: "90%", maxWidth: "1400px", height: "auto" }}
+            alt="Banner principal"
+            className={`${styles.primaryBanner} `}
+            style={{ maxWidth: "1400px" }}
           />
         </div>
       </figure>

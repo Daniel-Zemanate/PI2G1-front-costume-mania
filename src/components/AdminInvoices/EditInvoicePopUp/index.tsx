@@ -59,7 +59,7 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
 
         onSave()
       } else {
-        Swal.fire("Error", "Failed to cancel the invoice.", "error");
+        Swal.fire("Error", "Failed to modify the invoice.", "error");
       }
     }
   };

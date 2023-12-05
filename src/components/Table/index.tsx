@@ -22,7 +22,7 @@ const Table: React.FC<TableProps> = ({ columns, data, renderActions, getRowId })
   ];
 
   return (
-    <div style={{ width: '100%', minWidth: '600px' }} className="mb-4">
+    <div className="mb-4">
       <DataGrid
         getRowId={getRowId}
         rows={data}
@@ -34,6 +34,7 @@ const Table: React.FC<TableProps> = ({ columns, data, renderActions, getRowId })
         }}
         pageSizeOptions={[5, 10]}
         disableRowSelectionOnClick
+        sx={{ overflowX: 'scroll' }}
       />
     </div>
   );

@@ -29,10 +29,10 @@ export function getCategoryImage(category: string) {
 }
 
 export const columnsCategories: GridColDef[] = [
-  { headerName: 'ID', field: 'id', flex: 1 },
-  { headerName: 'Name', field: 'name', flex: 2 },
-  { headerName: 'Status', field: 'status', flex: 2 },
-]
+  { headerName: 'ID', field: 'id', flex: 1, minWidth: 100 },
+  { headerName: 'Name', field: 'name', flex: 2, minWidth: 150 },
+  { headerName: 'Status', field: 'status', flex: 2, minWidth: 150 },
+];
 
 export const categoryStatus = [
   { key: '1', value: 'Active' },
