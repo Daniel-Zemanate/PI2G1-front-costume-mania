@@ -47,8 +47,6 @@ export default async function handler(
         body: req.body,
       });
 
-      console.log(response);
-
       const data = await response.json();
       res.status(200).json(data);
     } catch (error) {

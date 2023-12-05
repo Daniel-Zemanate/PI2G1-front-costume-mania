@@ -61,8 +61,6 @@ function SignUpForm() {
       body: JSON.stringify(signUpData),
     });
 
-    console.log(response);
-
     if (response.status === 400) {
       setError(
         "Oops! It looks like this email or ID is already taken."

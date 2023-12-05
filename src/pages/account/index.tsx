@@ -27,9 +27,6 @@ type Props = {
 function AccountPage({ userData, purchases }: Props) {
   const tabs = ["Account", "Favorites", "Purchases"];
 
-  console.log({userData})
-  console.log({purchases})
-
   return (
     <RootLayout>
       <Head>

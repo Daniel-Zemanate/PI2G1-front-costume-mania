@@ -38,15 +38,12 @@ function AddModelPopUp({ onSave }: AddModelPopUpProps) {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("adsa");
     try {
       const body = {
         nameModel: data.nameModel,
         category,
         urlImage: data.url,
       };
-
-      console.log("ada");
 
       const response = await fetch(`/api/models/`, {
         method: "POST",
@@ -55,8 +52,6 @@ function AddModelPopUp({ onSave }: AddModelPopUpProps) {
         },
         body: JSON.stringify(body),
       });
-
-      console.log(response);
 
       if (response.ok) {
         Swal.fire({

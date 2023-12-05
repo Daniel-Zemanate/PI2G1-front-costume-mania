@@ -21,8 +21,6 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
   const { invoiceStatus } = useSelector(getInvoiceStatusState);
   const [date, setDate] = useState<Date | null>(null);
   const { data: session } = useSession();
- 
-  console.log(invoiceStatus)
 
   const handleStatusChange = async (key: string, value: any) => {
     setNewStatus(value);
@@ -41,8 +39,6 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
         newStatus,
         shippingDate: date?.toISOString().replace("Z", ""),
       };
-
-      console.log(body);
 
       const res = await fetch(`/api/invoices/${data.no_invoice}`, {
         method: "PUT",

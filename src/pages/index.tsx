@@ -50,9 +50,6 @@ const HomePage: NextPage<Props> = ({
   popularCostumes,
   categories,
 }) => {
-  console.log({ newCostumes });
-  console.log({ popularCostumes });
-  console.log({ categories });
 
   return (
     <>

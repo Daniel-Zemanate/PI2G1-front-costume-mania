@@ -6,8 +6,6 @@ export default async function handler(
 ) {
   const authorizationHeader = req.headers.authorization;
 
-  console.log(authorizationHeader)
-
   if (!authorizationHeader) {
     res.status(401).json({ message: "Authorization header missing" });
     return;
@@ -51,16 +49,12 @@ export default async function handler(
         }
       );
 
-      console.log(response)
-
       if (!response.ok) {
         console.error(response);
         throw new Error("Service unavailable");
       }
 
       const data = await response.json();
-
-      console.log(data)
 
       res.status(response.status).json(data);
     } catch (error) {

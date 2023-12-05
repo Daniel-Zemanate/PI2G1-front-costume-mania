@@ -40,7 +40,6 @@ export const removeFav = createAsyncThunk<FetchResult, number>(
       });
       return { status, statusText };
     } catch (error) {
-      console.log("ERROR");
       console.error(error);
       throw error;
     }

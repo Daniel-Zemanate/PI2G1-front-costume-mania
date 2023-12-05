@@ -21,20 +21,19 @@ function Purchases({ purchases }: Props) {
 
   const handleCancelInvoiceClick = async (idInvoice: number) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'This action cannot be undone.',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "This action cannot be undone.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, remove it!',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonText: "Yes, remove it!",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     });
-  
+
     if (result.isConfirmed) {
-      console.log({ idInvoice });
       const res = await fetch(`/api/users/purchases/${idInvoice}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${session?.user.token}`,
         },
@@ -50,7 +49,7 @@ function Purchases({ purchases }: Props) {
           timer: 3000,
         });
       } else {
-        Swal.fire('Error', 'Failed to cancel the invoice.', 'error');
+        Swal.fire("Error", "Failed to cancel the invoice.", "error");
       }
     }
   };

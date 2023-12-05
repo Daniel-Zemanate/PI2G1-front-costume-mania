@@ -23,8 +23,6 @@ export default async function handler(
         },
       });
 
-      console.log(response)
-
       const data = await response.json();
 
       const formattedData = data.map((category: AdminCategory) => ({

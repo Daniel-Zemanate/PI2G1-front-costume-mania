@@ -24,8 +24,6 @@ export default async function handler(
             body: req.body,
         });
 
-        console.log(authorizationHeader)
-
         if (response.ok) {
             const data = response.json();
             res.status(200).json(data);

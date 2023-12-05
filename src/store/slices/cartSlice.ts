@@ -52,7 +52,6 @@ export const validateCart = createAsyncThunk<ValidatedCart, Cart>(
 
       return fullData;
     } catch (error) {
-      console.log("ERROR");
       console.error(error);
       throw error;
     }
@@ -83,7 +82,6 @@ export const submitCart = createAsyncThunk<
 
     return data;
   } catch (error) {
-    console.log("ERROR");
     console.error(error);
     throw error;
   }

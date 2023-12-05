@@ -59,8 +59,6 @@ function EditModelPopUp({ data, onSave }: AddModelPopUpProps) {
         body: JSON.stringify(body),
       });
 
-      console.log(response);
-
       if (response.ok) {
         Swal.fire({
           icon: "success",
