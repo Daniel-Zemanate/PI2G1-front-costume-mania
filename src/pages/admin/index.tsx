@@ -27,11 +27,9 @@ import AdminCategories from "@/components/AdminCategories";
 import { useSession } from "next-auth/react";
 import AdminModels from "@/components/AdminModels";
 import { getAdminModel } from "@/services/admin.models.service";
-import {
-  saveCategories,
-  saveModels,
-  saveSizes,
-} from "@/store/slices/catalogSlice";
+import { saveModels, saveSizes } from "@/store/slices/catalogSlice";
+import { saveCategories } from "@/store/slices/modelSlice";
+import { TableModel } from "@/interfaces/model";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -43,7 +41,7 @@ type Props = {
   invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
   categories: TableCategory[];
-  models: Model[];
+  models: TableModel[];
   sizes: Size[];
 };
 
@@ -52,7 +50,7 @@ const AdminPage: NextPage<Props> = ({
   invoices: initialInvoices,
   invoiceStatus,
   categories: initialCategories,
-  models,
+  models: initialModels,
   sizes,
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
@@ -63,7 +61,10 @@ const AdminPage: NextPage<Props> = ({
     useState<TableCategory[]>(initialCategories);
   // INVOICES
   const [invoices, setInvoices] = useState<TableInvoice[]>(initialInvoices);
+  // CATALOG
   const [catalog, setCatalog] = useState<TableCatalog[]>(initialCatalogs);
+  // MODELS
+  const [models, setModels] = useState<TableModel[]>(initialModels);
 
   // BUSCAR CATALOGOS ACTUALIZADAS
   const fetchUpdatedCatalogs = async () => {
@@ -108,13 +109,26 @@ const AdminPage: NextPage<Props> = ({
     }
   };
 
+  // BUSCAR MODELS ACTUALIZADOS
+  const fetchUpdatedModels = async () => {
+    try {
+      const response = await fetch(`/api/models`);
+      if (response.ok) {
+        const updatedModels = await response.json();
+        setModels(updatedModels);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     dispatch(saveInvoiceStatus(invoiceStatus));
   }, [dispatch, invoiceStatus]);
 
-  // useEffect(() => {
-  //   dispatch(saveCategories(categories));
-  // }, [categories, dispatch]);
+  useEffect(() => {
+    dispatch(saveCategories(categories));
+  }, [categories, dispatch]);
 
   useEffect(() => {
     dispatch(saveSizes(sizes));
@@ -168,22 +182,19 @@ const AdminPage: NextPage<Props> = ({
             </Tab.List>
             <Tab.Panels className="w-full">
               <Tab.Panel>
-                {/* Crear componente individual - CATALOG */}
                 <AdminCatalog
                   onSave={fetchUpdatedCatalogs}
                   catalogs={catalog}
                 />
               </Tab.Panel>
               <Tab.Panel>
-                {/* Crear componente individual - CATEGORIES */}
                 <AdminCategories
                   onSave={fetchUpdatedCategories}
                   categories={categories}
                 />
               </Tab.Panel>
               <Tab.Panel>
-                {/* Crear componente individual - MODELS */}
-                <AdminModels data={models}></AdminModels>
+                <AdminModels models={models} onSave={fetchUpdatedModels} />
               </Tab.Panel>
               <Tab.Panel>
                 <AdminInvoices

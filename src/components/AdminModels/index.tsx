@@ -4,12 +4,15 @@ import PopUp from "../PopUp";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { columnsModel } from "@/utils/models";
 import AddModelPopUp from "./AddModelPopUp";
+import { TableModel } from "@/interfaces/model";
 
-// DEFINIR DENTRO DE CADA COMPONENTE <PopUp/> EL CONTENIDO DEL POP UP Y ACCIONES
+type Props = {
+  models: TableModel[];
+  onSave: () => void;
+};
 
-function AdminModels({ data }: { data: any[] }) {
+function AdminModels({ models, onSave }: Props) {
   const renderActions = (rowData: any) => {
-    const model = data.find((e) => e.idModel === rowData.idModel);
     return (
       <>
         <PopUp button={<FaTrash />}>
@@ -26,23 +29,14 @@ function AdminModels({ data }: { data: any[] }) {
     );
   };
 
-  function getRowId(row: any) {
-    return row.idModel;
-  }
-
   return (
     <>
       <div className="mb-2">
-        <AddModelPopUp
-          onSave={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <AddModelPopUp onSave={onSave} />
       </div>
       <Table
-        getRowId={getRowId}
         columns={columnsModel}
-        data={data}
+        data={models}
         renderActions={renderActions}
       />
     </>
