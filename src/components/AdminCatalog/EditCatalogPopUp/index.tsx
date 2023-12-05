@@ -1,8 +1,7 @@
 import Button from "@/components/Button";
 import PopUp from "@/components/PopUp";
-import Select from "@/components/Select";
 import { Dialog } from "@headlessui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
@@ -17,12 +16,9 @@ interface Props {
   onSave: () => void;
 }
 
-
 function EditCatalogPopUp({ data, onSave }: Props) {
-  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedModel, setSelectedModel] = useState<Model | null>(data.model)
   const [selectedSize, setSelectedSize] = useState<Size | null>(data.size)
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(data.model.category)
   const [stock, setStock] = useState<number>(data.stock)
   const [price, setPrice] = useState<number>(data.price)
   const [newStatus, setNewStatus] = useState<number>(data.statusCatalog.id);
@@ -158,17 +154,6 @@ function EditCatalogPopUp({ data, onSave }: Props) {
               onChange={event => setPrice(Number(event.target.value))}
             />
           </FormControl>
-        </div>
-        <div className="w-56 py-2">
-          <Autocomplete
-            getOptionLabel={(category) => category.name}
-            disablePortal
-            id="combo-box-demo"
-            options={categories}
-            value={selectedCategory}
-            onChange={(event, newValue) => setSelectedCategory(newValue)}
-            renderInput={(params) => <TextField {...params} label='Category' />}
-          />
         </div>
       </div>
       <div className="flex justify-center">
