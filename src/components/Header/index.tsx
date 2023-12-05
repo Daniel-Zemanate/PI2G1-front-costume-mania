@@ -27,8 +27,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
   const { favorites, status } = useSelector(getFavoritesState);
   const dispatch = useDispatch();
 
-  console.log(session);
-
   useEffect(() => {
     if (status === "idle" && session) {
       dispatch(fetchFavs(Number(session.user.user_id)));
@@ -74,7 +72,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
           )}
           <nav className="flex space-x-16 hidden md:block">
             <NavLink label="Costumes" route="/costumes" textColor="white" />
-            <NavLink label="About us" route="/" textColor="white" />
           </nav>
         </div>
         <nav className="flex items-baseline hidden md:flex w-full lg:w-1/2 justify-end">
@@ -213,7 +210,6 @@ const Header = ({ simple = false }: { simple?: boolean }) => {
         </button>
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
           <NavLink label="Costumes" route="/costumes" textColor="black" />
-          <NavLink label="About us" route="/" textColor="black" />
         </Drawer>
       </div>
     </div>
