@@ -20,6 +20,8 @@ export default async function handler(
       const formattedData = data.map((model: Model) => ({
         ...model,
         id: model.idModel,
+        status: model.statusModel.description,
+        idStatus: String(model.statusModel.id),
       }));
 
       res.status(200).json(formattedData);
@@ -45,7 +47,7 @@ export default async function handler(
         body: req.body,
       });
 
-      console.log(response)
+      console.log(response);
 
       const data = await response.json();
       res.status(200).json(data);
@@ -53,7 +55,7 @@ export default async function handler(
       console.error("Error:", error);
       res.status(503).json({ message: error });
     }
-  } else {
+  } else  {
     res.status(400).json({ message: "Método no permitido" });
   }
 }

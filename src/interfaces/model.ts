@@ -6,7 +6,11 @@ export interface Model {
   statusModel: statusModel;
 }
 
-export type TableModel = Model & { id: string };
+export type TableModel = Model & {
+  id: string;
+  status: string;
+  idStatus: string;
+};
 
 export interface statusModel {
   id: number;
