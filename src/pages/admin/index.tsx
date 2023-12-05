@@ -8,9 +8,9 @@ import { Tab } from "@headlessui/react";
 import AdminCatalog from "@/components/AdminCatalog";
 import { GetServerSideProps, NextPage } from "next";
 import { getServerSession } from "next-auth";
-import { getAdminCatalog } from "@/services/admin.catalog.service";
+import { getAdminCatalog, getSizes } from "@/services/admin.catalog.service";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Catalog, Model } from "@/interfaces/catalog";
+import { Model, Size, TableCatalog } from "@/interfaces/catalog";
 import {
   getAdminInvoices,
   getInvoiceStatus,
@@ -27,6 +27,11 @@ import AdminCategories from "@/components/AdminCategories";
 import { useSession } from "next-auth/react";
 import AdminModels from "@/components/AdminModels";
 import { getAdminModel } from "@/services/admin.models.service";
+import {
+  saveCategories,
+  saveModels,
+  saveSizes,
+} from "@/store/slices/catalogSlice";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -34,19 +39,21 @@ const frijole = Frijole({
 });
 
 type Props = {
-  catalogs: Catalog[];
+  catalogs: TableCatalog[];
   invoices: TableInvoice[];
   invoiceStatus: KeyValue[];
   categories: TableCategory[];
-  models: Model[]
+  models: Model[];
+  sizes: Size[];
 };
 
 const AdminPage: NextPage<Props> = ({
-  catalogs,
+  catalogs: initialCatalogs,
   invoices: initialInvoices,
   invoiceStatus,
   categories: initialCategories,
-  models
+  models,
+  sizes,
 }) => {
   const tabs = ["Catalog", "Categories", "Models", "Sales"];
   const dispatch = useDispatch<AppDispatch>();
@@ -56,14 +63,15 @@ const AdminPage: NextPage<Props> = ({
     useState<TableCategory[]>(initialCategories);
   // INVOICES
   const [invoices, setInvoices] = useState<TableInvoice[]>(initialInvoices);
+  const [catalog, setCatalog] = useState<TableCatalog[]>(initialCatalogs);
 
   // BUSCAR CATALOGOS ACTUALIZADAS
   const fetchUpdatedCatalogs = async () => {
     try {
       const response = await fetch(`/api/catalog`);
       if (response.ok) {
-        const updatedCategories = await response.json();
-        setCategories(updatedCategories);
+        const updatedCatalog = await response.json();
+        setCatalog(updatedCatalog);
       }
     } catch (error) {
       console.error(error);
@@ -104,6 +112,18 @@ const AdminPage: NextPage<Props> = ({
     dispatch(saveInvoiceStatus(invoiceStatus));
   }, [dispatch, invoiceStatus]);
 
+  // useEffect(() => {
+  //   dispatch(saveCategories(categories));
+  // }, [categories, dispatch]);
+
+  useEffect(() => {
+    dispatch(saveSizes(sizes));
+  }, [sizes, dispatch]);
+
+  useEffect(() => {
+    dispatch(saveModels(models));
+  }, [models, dispatch]);
+
   return (
     <SimpleLayout>
       <Head>
@@ -136,9 +156,10 @@ const AdminPage: NextPage<Props> = ({
                   className={({
                     selected,
                   }) => `w-full rounded-lg py-2.5 px-4 leading-5 text-orange-2 ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-1 text-start 
-                    ${selected
-                      ? "bg-white shadow"
-                      : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
+                    ${
+                      selected
+                        ? "bg-white shadow"
+                        : "text-purple-1 hover:bg-white/[0.12] hover:text-white"
                     }`}
                 >
                   {e}
@@ -150,7 +171,8 @@ const AdminPage: NextPage<Props> = ({
                 {/* Crear componente individual - CATALOG */}
                 <AdminCatalog
                   onSave={fetchUpdatedCatalogs}
-                  catalogs={catalogs} />
+                  catalogs={catalog}
+                />
               </Tab.Panel>
               <Tab.Panel>
                 {/* Crear componente individual - CATEGORIES */}
@@ -195,8 +217,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       const invoiceStatus = await getInvoiceStatus();
       // CATEGORIES
       const categories = await getAdminCategories({ token });
-      //MODELS
+      // MODELS
       const models = await getAdminModel();
+      // SIZES
+      const sizes = await getSizes();
 
       return {
         props: {
@@ -204,7 +228,8 @@ export const getServerSideProps: GetServerSideProps = async ({
           invoices,
           invoiceStatus,
           categories,
-          models
+          models,
+          sizes,
         },
       };
     } catch (error) {

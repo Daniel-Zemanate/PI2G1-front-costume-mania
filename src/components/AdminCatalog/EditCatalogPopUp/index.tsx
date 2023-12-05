@@ -9,6 +9,8 @@ import { useSession } from "next-auth/react";
 import { Catalog, Category, Model, Size } from "@/interfaces/catalog";
 import { Autocomplete, FormControl, Input, InputAdornment, InputLabel, NativeSelect, OutlinedInput, TextField } from "@mui/material";
 import { categoryStatus } from "@/utils/categories";
+import { useSelector } from "react-redux";
+import { getCatalogState } from "@/store/slices/catalogSlice";
 
 interface Props {
   data: Catalog;
@@ -17,8 +19,6 @@ interface Props {
 
 
 function EditCatalogPopUp({ data, onSave }: Props) {
-  const [models, setModels] = useState<Model[]>([]);
-  const [sizes, setSizes] = useState<Size[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedModel, setSelectedModel] = useState<Model | null>(data.model)
   const [selectedSize, setSelectedSize] = useState<Size | null>(data.size)
@@ -26,6 +26,7 @@ function EditCatalogPopUp({ data, onSave }: Props) {
   const [stock, setStock] = useState<number>(data.stock)
   const [price, setPrice] = useState<number>(data.price)
   const [newStatus, setNewStatus] = useState<number>(data.statusCatalog.id);
+  const { models, sizes } = useSelector(getCatalogState);
 
   const { data: session } = useSession();
 
@@ -69,42 +70,13 @@ function EditCatalogPopUp({ data, onSave }: Props) {
     }
   };
 
-
-  useEffect(() => {
-    fetch(`/api/models`)
-      .then((response) => response.json())
-      .then((dataC) => {
-        setModels(dataC)
-        const modelInDataC = dataC.find((model: Model) => model.idModel === data.model.idModel);
-        setSelectedModel(modelInDataC);
-      });
-    fetch(`/api/sizes`)
-      .then((response) => response.json())
-      .then((dataC) => {
-        setSizes(dataC)
-        const sizeInDataC = dataC.find((size: Size) => size.noSize === data.size.noSize);
-        setSelectedSize(sizeInDataC);
-      });
-    fetch(`/api/categories/admin`, {
-      headers: {
-        Authorization: `Bearer ${session?.user.token}`,
-      }
-    })
-      .then((response) => response.json())
-      .then((dataC) => {
-        setCategories(dataC)
-        const categoryInDataC = dataC.find((category: Category) => category.idCategory === data.model.category.idCategory);
-        setSelectedCategory(categoryInDataC);
-      });
-  }, [data, session])
-
   return (
     <PopUp button={<FaEdit />}>
       <Dialog.Title
         as="h2"
         className="text-2xl font-medium leading-6 text-center mb-8 text-purple-2"
       >
-        Edit Catalog - n° {data.idCatalog} - {data.statusCatalog.id}
+        Edit Catalog - n° {data.idCatalog}
       </Dialog.Title>
       <div className="flex justify-between flex-wrap">
         <div className="w-56 py-2">
@@ -114,7 +86,6 @@ function EditCatalogPopUp({ data, onSave }: Props) {
             id="combo-box-demo"
             options={models}
             value={selectedModel}
-            sx={{ width: 222 }}
             onChange={(event, newValue) => setSelectedModel(newValue)}
             renderInput={(params) => <TextField {...params} label='Model' />}
           />
@@ -143,7 +114,6 @@ function EditCatalogPopUp({ data, onSave }: Props) {
             id="combo-box-demo"
             options={sizes}
             value={selectedSize}
-            sx={{ width: 100 }}
             onChange={(event, newValue) => setSelectedSize(newValue)}
             renderInput={(params) => <TextField {...params} label='Size' />}
           />
@@ -159,7 +129,7 @@ function EditCatalogPopUp({ data, onSave }: Props) {
               }}
               onChange={event => setNewStatus(Number(event.target.value))}
             >
-              {categoryStatus.map((s) => <option value={s.key} key={s.key}>{s.value}</option>)}
+              {categoryStatus.map((s) => <option value={s.key} key={s.key} className="p-2">{s.value}</option>)}
             </NativeSelect>
 
           </FormControl>
@@ -201,12 +171,14 @@ function EditCatalogPopUp({ data, onSave }: Props) {
           />
         </div>
       </div>
-      <Button
-        label="Save"
-        buttonStyle="primary"
-        size="small"
-        onClick={handleSave}
-      />
+      <div className="flex justify-center">
+        <Button
+          label="Save"
+          buttonStyle="primary"
+          size="small"
+          onClick={handleSave}
+        />
+      </div>
     </PopUp>
   );
 }

@@ -8,6 +8,8 @@ export interface Catalog {
     statusCatalog: Status
 }
 
+export type TableCatalog = Catalog & {id: string}
+
 export interface Model {
     idModel: number
     nameModel: string

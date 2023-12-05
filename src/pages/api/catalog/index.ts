@@ -1,3 +1,4 @@
+import { Catalog } from "@/interfaces/catalog";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -10,12 +11,18 @@ export default async function handler(
       const response = await fetch(url);
 
       if (!response.ok) {
-        console.error(response)
+        console.error(response);
         throw new Error("Service unavailable");
       }
 
       const data = await response.json();
-      res.status(200).json(data);
+
+      const formattedData = data.map((invoice: Catalog) => ({
+        ...invoice,
+        id: invoice.idCatalog,
+      }));
+
+      res.status(200).json(formattedData);
     } catch (error) {
       console.error("Error:", error);
       res.status(503).json({ message: "Service unavailable" });
@@ -33,9 +40,9 @@ export default async function handler(
         method: "POST",
         headers: {
           Authorization: authorizationHeader,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: req.body
+        body: req.body,
       });
 
       res.status(200).json(response.statusText);

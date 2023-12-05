@@ -2,7 +2,7 @@ import React from "react";
 import Table from "../Table";
 import { columnsCatalog } from "@/utils/catalogs";
 import EditCatalogPopUp from "./EditCatalogPopUp";
-import { Catalog } from "@/interfaces/catalog";
+import { Catalog, TableCatalog } from "@/interfaces/catalog";
 import AddCatalogPopUp from "./AddCatalogPopUp";;
 import { useSession } from "next-auth/react";
 import DeleteCatalogPopUp from "./DeleteCatalogPopUp";
@@ -10,13 +10,11 @@ import { FaTrash } from "react-icons/fa";
 import PopUp from "../PopUp";
 
 type Props = {
-  catalogs: Catalog[];
+  catalogs: TableCatalog[];
   onSave: () => void;
 };
 
 function AdminCatalog({ catalogs, onSave }: Props) {
-
-  const { data: session } = useSession();
 
   function getRowId(row: any) {
     return row.idCatalog;
