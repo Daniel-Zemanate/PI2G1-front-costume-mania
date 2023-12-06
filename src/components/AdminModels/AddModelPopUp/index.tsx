@@ -63,6 +63,12 @@ function AddModelPopUp({ onSave }: AddModelPopUpProps) {
           showConfirmButton: false,
           timer: 3000,
         });
+      } else if (response.status === 422) {
+        Swal.fire(
+          "Error",
+          "Model already exists in specified category",
+          "error"
+        );
       }
       onSave();
     } catch (error) {

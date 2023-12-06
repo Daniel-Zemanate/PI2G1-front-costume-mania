@@ -47,13 +47,21 @@ export default async function handler(
         body: req.body,
       });
 
-      const data = await response.json();
-      res.status(200).json(data);
+      console.log(response);
+
+      if (response.ok) {
+        const data = await response.json();
+        res.status(200).json(data);
+      } else if (response.status === 422) {
+        res
+          .status(422)
+          .json({ message: "Model already exists in specified category" });
+      }
     } catch (error) {
       console.error("Error:", error);
       res.status(503).json({ message: error });
     }
-  } else  {
+  } else {
     res.status(400).json({ message: "Método no permitido" });
   }
 }
