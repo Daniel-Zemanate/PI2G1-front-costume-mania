@@ -3,11 +3,7 @@ import Table from "../Table";
 import { columnsCatalog } from "@/utils/catalogs";
 import EditCatalogPopUp from "./EditCatalogPopUp";
 import { Catalog, TableCatalog } from "@/interfaces/catalog";
-import AddCatalogPopUp from "./AddCatalogPopUp";;
-import { useSession } from "next-auth/react";
-import DeleteCatalogPopUp from "./DeleteCatalogPopUp";
-import { FaTrash } from "react-icons/fa";
-import PopUp from "../PopUp";
+import AddCatalogPopUp from "./AddCatalogPopUp";
 
 type Props = {
   catalogs: TableCatalog[];
@@ -32,9 +28,6 @@ function AdminCatalog({ catalogs, onSave }: Props) {
         renderActions={(rowData: Catalog) => (
           <>
             <EditCatalogPopUp data={rowData} onSave={onSave} />
-            {/*
-            <DeleteCatalogPopUp data={rowData} onSave={onSave} />
-            */}
           </>
         )}
       />
