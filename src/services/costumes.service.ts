@@ -1,4 +1,4 @@
-import { ApiCostumeResponse } from "@/interfaces/costume";
+import { ApiCostume, ApiCostumeResponse, ApiFavModel } from "@/interfaces/costume";
 
 export const getCostume = async (costumeId: number) => {
   const url = `${process.env.URL_LOCAL}/api/costumes/${costumeId}`;
@@ -35,11 +35,11 @@ export const getCostumes = async (query: any): Promise<ApiCostumeResponse> => {
   if (size) params.set("size", size);
   if (search) params.set("search", search);
   if (page) params.set("page", page);
-  
+
   const url = `${process.env.URL_LOCAL}/api/costumes?${params.toString()}`;
 
   const response = await fetch(url);
-  
+
   if (response.status === 204) {
     return dummyEmptyData;
   }
@@ -48,7 +48,6 @@ export const getCostumes = async (query: any): Promise<ApiCostumeResponse> => {
 
   return data;
 };
-
 
 export const getPopularCostumes = async () => {
   const url = `${process.env.URL_LOCAL}/api/costumes/popular`;
@@ -62,14 +61,54 @@ export const getNewCostumes = async () => {
   return await response.json();
 };
 
-export const getStaticPopularCostumes = async () => {
-  const url = `${process.env.PRODUCT_API_URL}/catalog/news/15`;
-  const response = await fetch(url);
-  return await response.json();
-}; 
+// {
+//   "count": 4,
+//   "idModel": 27,
+//   "nameModel": "Spiderman child",
+//   "category": {
+//       "idCategory": 4,
+//       "name": "Fantasy",
+//       "statusCategory": {
+//           "id": 1,
+//           "description": "Active"
+//       }
+//   },
+//   "urlImage": "https://costumemania.s3.amazonaws.com/spiderman_small.jpg",
+//   "price": 50.0,
+//   "sizes": [
+//       {
+//           "idCatalog": 44,
+//           "size": "8",
+//           "quantity": 1
+//       },
+//       {
+//           "idCatalog": 43,
+//           "size": "6",
+//           "quantity": 1
+//       }
+//   ]
+// }
 
-export const getStaticNewCostumes =async () => {
+export const getStaticPopularCostumes = async () => {
+  const url = `${process.env.PRODUCT_API_URL}/fav/FavModelV2`;
+  const response = await fetch(url);
+  const data: ApiFavModel[] = await response.json();
+
+  const formattedData: ApiCostume[] = data.map(e => ({
+    modelId: e.idModel,
+    category: e.category.name,
+    image: e.urlImage,
+    price: e.price,
+    model: e.nameModel,
+    sizeType: e.sizeType,
+    sizes: e.sizes,
+  }))
+
+  return formattedData;
+};
+
+export const getStaticNewCostumes = async () => {
   const url = `${process.env.PRODUCT_API_URL}/catalog/news/15`;
   const response = await fetch(url);
   return await response.json();
-}
+};

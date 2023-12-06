@@ -1,3 +1,5 @@
+import { StatusCategory } from "./category";
+
 export interface Costume {
   // id: number,
   // name: string,
@@ -98,4 +100,15 @@ export type CartCostume = {
   size: string;
   quantity: number;
   costume: ApiCostume;
+};
+
+export type ApiFavModel = {
+  count: number;
+  idModel: number;
+  nameModel: string;
+  category: Category & {statusCategory: StatusCategory};
+  urlImage: string;
+  sizeType: number;
+  price: number;
+  sizes: ApiSize[];
 };

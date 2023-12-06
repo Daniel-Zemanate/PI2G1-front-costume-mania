@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
-import { getStaticNewCostumes } from "@/services/costumes.service";
+import { getStaticNewCostumes, getStaticPopularCostumes } from "@/services/costumes.service";
 import { ApiCostume, Category } from "@/interfaces/costume";
 import Banner from "@/components/MainBanner";
 import HomeSection from "@/components/HomeSection";
@@ -91,14 +91,14 @@ const HomePage: NextPage<Props> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  // const popularCostumes = await getPopularCostumes();
+  const popularCostumes = await getStaticPopularCostumes();
   const newCostumes = await getStaticNewCostumes();
   const categories = await getCategories();
 
   return {
     props: {
       newCostumes,
-      popularCostumes: newCostumes,
+      popularCostumes,
       categories,
     },
   };
