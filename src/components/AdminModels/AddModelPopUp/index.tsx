@@ -12,6 +12,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { getModelState } from "@/store/slices/modelSlice";
 import Select from "@/components/Select";
+import { Dialog } from "@headlessui/react";
 
 interface AddModelPopUpProps {
   onSave: () => void;
@@ -77,14 +78,16 @@ function AddModelPopUp({ onSave }: AddModelPopUpProps) {
         </span>
       }
     >
+      <Dialog.Title
+        as="h2"
+        className="text-2xl font-medium leading-6 text-center mb-8 text-purple-2"
+      >
+        New model
+      </Dialog.Title>
       <Form
         onSubmit={onSubmit}
         className="bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg min-w-[33%] m-auto"
       >
-        <Form.Header className="text-center p-4">
-          <Form.Title className="text-2xl font-bold">New Model</Form.Title>
-        </Form.Header>
-
         <Form.Errors>{error}</Form.Errors>
 
         <Form.Body register={register} className="flex flex-col justify-center">

@@ -8,13 +8,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import PopUp from "@/components/PopUp";
-import { IoMdAddCircle } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { getModelState } from "@/store/slices/modelSlice";
 import Select from "@/components/Select";
 import { TableModel } from "@/interfaces/model";
 import { FaEdit } from "react-icons/fa";
 import { modelStatus } from "@/utils/models";
+import { Dialog } from "@headlessui/react";
 
 interface AddModelPopUpProps {
   data: TableModel;
@@ -97,16 +97,16 @@ function EditModelPopUp({ data, onSave }: AddModelPopUpProps) {
 
   return (
     <PopUp button={<FaEdit />}>
+      <Dialog.Title
+        as="h2"
+        className="text-2xl font-medium leading-6 text-center mb-8 text-purple-2"
+      >
+        Edit Model - ID {data.idModel}
+      </Dialog.Title>
       <Form
         onSubmit={onSubmit}
         className="bg-opacity-25 px-16 py-8 my-8 rounded-lg flex flex-col max-w-screen-lg min-w-[33%] m-auto"
       >
-        <Form.Header className="text-center p-4">
-          <Form.Title className="text-2xl font-bold">
-            Edit Model - ID {data.idModel}
-          </Form.Title>
-        </Form.Header>
-
         <Form.Errors>{error}</Form.Errors>
 
         <Form.Body register={register} className="flex flex-col justify-center">

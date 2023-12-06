@@ -64,6 +64,8 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
     }
   };
 
+  console.log(data.items)
+
   const defaultStatus = invoiceStatus.find((e) => e.value === data.status)
   
   useEffect(() => {
@@ -90,13 +92,13 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
           <SingleDatePicker
             date={date}
             setDate={setDate}
-            minDate={new Date(data.invoiceDate)}
+            minDate={data.invoiceDate ? new Date(new Date(data.invoiceDate).getTime() + 24 * 60 * 60 * 1000) : null}
             maxDate={new Date()}
             onChange={(date: Date | null) => setDate(date)}
           />
         </div>
       </div>
-      <div className="container mx-auto  py-8">
+      <div className="container mx-auto py-8">
         <h3 className="text-lg mb-4 font-medium">Details</h3>
         <div className="mx-4">
           <table className="min-w-full text-sm">
@@ -104,9 +106,9 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
               <tr className="bg-lightGrey">
                 <th className="px-4 py-2">ID Catalog</th>
                 <th className="px-4 py-2">Model</th>
+                <th className="px-4 py-2">Size</th>
                 <th className="px-4 py-2">Quantity</th>
                 <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">pxQ</th>
               </tr>
             </thead>
             <tbody>
@@ -117,9 +119,9 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
                 >
                   <td className="px-4 py-2">{costume.catalog}</td>
                   <td className="px-4 py-2">{costume.model}</td>
+                  <td className="px-4 py-2">{costume.size}</td>
                   <td className="px-4 py-2">{costume.quantity}</td>
                   <td className="px-4 py-2">{costume.price}</td>
-                  <td className="px-4 py-2">{costume.pxQ}</td>
                 </tr>
               ))}
             </tbody>

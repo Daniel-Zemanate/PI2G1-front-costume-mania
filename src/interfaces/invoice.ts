@@ -16,6 +16,7 @@ export interface InvoiceItem {
   price: number;
   image: string;
   pxQ: number;
+  size: string;
 }
 
 export interface InvoiceStatus {
