@@ -1,7 +1,7 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 import RootLayout from "@/layouts/rootLayout";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { Frijole } from "next/font/google";
 import AccountDetailsForm from "@/components/AccountDetailsForm";
@@ -13,6 +13,7 @@ import { getLastPurchases, getUserInfo } from "@/services/users.service";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { Order, UserData } from "@/interfaces/user";
+import { useSession } from "next-auth/react";
 
 const frijole = Frijole({
   subsets: ["latin"],
@@ -24,8 +25,27 @@ type Props = {
   purchases: Order[];
 };
 
-function AccountPage({ userData, purchases }: Props) {
+function AccountPage({ userData: intialUserData, purchases }: Props) {
   const tabs = ["Account", "Favorites", "Purchases"];
+
+  const { data: session } = useSession();
+  const [userData, setUserData] = useState(intialUserData);
+
+  const fetchUpdatedUserData = async () => {
+    try {
+      const response = await fetch(`/api/users/me`, {
+        headers: {
+          Authorization: `Bearer ${session?.user.token}`,
+        },
+      });
+      if (response.ok) {
+        const updatedData = await response.json();
+        setUserData(updatedData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <RootLayout>
@@ -72,7 +92,7 @@ function AccountPage({ userData, purchases }: Props) {
             <Tab.Panels>
               <Tab.Panel>
                 {userData && (
-                  <AccountDetailsForm className="flex-2" account={userData} />
+                  <AccountDetailsForm className="flex-2" account={userData} onUpdate={fetchUpdatedUserData} />
                 )}
               </Tab.Panel>
               <Tab.Panel>
@@ -89,7 +109,11 @@ function AccountPage({ userData, purchases }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  req,
+  res,
+}) => {
   const session = await getServerSession(req, res, authOptions);
   if (session) {
     const { token, user_id: idUser } = session?.user;
@@ -118,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
 
   return {
     redirect: {
-      destination: '/', 
+      destination: "/",
       permanent: false,
     },
   };

@@ -6,6 +6,8 @@ import Form from "../Form";
 import FormInput from "../Form/FormInput";
 import Button from "../Button";
 import { UserData } from "@/interfaces/user";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 // validation
 const AccountDetailsSchema = yup.object().shape({
@@ -18,6 +20,9 @@ const AccountDetailsSchema = yup.object().shape({
     .min(6, "Password should have at least 6 characters")
     .max(32, "Max password length is 32")
     .required("Password is required"),
+  passwordConfirmation: yup
+    .string()
+    .oneOf([yup.ref("password"), undefined], "Passwords must match"),
   lastName: yup
     .string()
     .min(2, "Last name should have at least 2 characters")
@@ -55,9 +60,11 @@ const AccountDetailsSchema = yup.object().shape({
 function AccountDetailsForm({
   account,
   className,
+  onUpdate,
 }: {
   account: UserData;
   className?: string;
+  onUpdate: () => void;
 }) {
   const {
     register,
@@ -65,8 +72,41 @@ function AccountDetailsForm({
     formState: { errors },
   } = useForm({ resolver: yupResolver(AccountDetailsSchema) });
 
+  const { data: session } = useSession();
+
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    if (!session) return;
+    const { firstName, lastName, personalId, email, password } = data;
+    const id = session.user.user_id;
+
+    const body = {
+      id,
+      dni: personalId,
+      email,
+      password,
+      firstName,
+      lastName,
+    };
+
+    const response = await fetch("/api/users/update", {
+      method: "PUT",
+      body: JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${session?.user.token}`,
+      },
+    });
+
+    if (response.ok) {
+      Swal.fire({
+        icon: "success",
+        title: `User data successfully modified`,
+        toast: true,
+        position: "bottom-end",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      onUpdate();
+    }
   });
 
   return (
@@ -97,7 +137,6 @@ function AccountDetailsForm({
             className="focus:outline-orange-2"
             defaultValue={account.dni}
             error={errors.personalId?.message}
-            disabled
           />
           <FormInput
             name="lastName"
@@ -116,12 +155,18 @@ function AccountDetailsForm({
             error={errors.firstName?.message}
           />
           <FormInput
-            name="birth"
-            label="Birthday"
+            name="password"
+            label="Change password"
             wrapperClass="w-full md:w-1/2 px-2 mb-4"
             className="focus:outline-orange-2"
-            defaultValue={"XX/XX/XXXX"}
-            error={errors.address?.message}
+            error={errors.password?.message}
+          />
+          <FormInput
+            name="passwordConfirmation"
+            label="Confirm new password"
+            wrapperClass="w-full md:w-1/2 px-2 mb-4"
+            className="focus:outline-orange-2"
+            error={errors.passwordConfirmation?.message}
           />
         </Form.Body>
 
