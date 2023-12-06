@@ -24,8 +24,6 @@ export default async function handler(
       }
     );
 
-    console.log(response)
-
     if (response.status === 400) {
       res.status(400).json({ message: "Método no permitido" });
     }

@@ -5,8 +5,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-
-    console.log(req.body)
     const response = await fetch(
       `${process.env.PRODUCT_API_URL}/users/reset`,
       {

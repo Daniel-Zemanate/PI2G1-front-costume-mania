@@ -49,10 +49,6 @@ function PasswordRecoveryForm() {
 
     const { message } = await response.json();
 
-    console.log(response);
-    console.log(response.statusText);
-    console.log(message);
-
     Swal.fire({
       icon: response.ok ? "success" : "error",
       title: response.ok ? "Success!" : "Error",

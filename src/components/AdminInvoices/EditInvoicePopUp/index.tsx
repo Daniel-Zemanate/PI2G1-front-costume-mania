@@ -64,8 +64,6 @@ function EditInvoicePopUp({ data, onSave }: EditInvoicePopUpProps) {
     }
   };
 
-  console.log(data.items)
-
   const defaultStatus = invoiceStatus.find((e) => e.value === data.status)
   
   useEffect(() => {
