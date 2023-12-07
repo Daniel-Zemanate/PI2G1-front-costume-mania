@@ -83,7 +83,7 @@ function AddCategoryPopUp({ onSave }: AddCategoryPopUpProps) {
           <FormInput
             name="categoryName"
             label="Category Name"
-            placeholder="Enter your email"
+            placeholder="Enter the category's name"
             error={errors.categoryName?.message}
             autoFocus
             autoComplete="false"
