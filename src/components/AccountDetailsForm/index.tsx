@@ -69,6 +69,7 @@ function AccountDetailsForm({
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({ resolver: yupResolver(AccountDetailsSchema) });
 
@@ -105,6 +106,8 @@ function AccountDetailsForm({
         showConfirmButton: false,
         timer: 3000,
       });
+      resetField("password")
+      resetField("passwordConfirmation")
       onUpdate();
     }
   });
